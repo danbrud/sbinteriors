@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
+import { useStore } from './utils'
+import { observer } from 'mobx-react'
+import Todo from './components/Todo'
 
-function App() {
+const App = observer(() => {
+  const todos = useStore()
+  const [input, setInput] = useState('')
+  console.log(todos)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input type="text" onChange={e => setInput(e.target.value)} />
+      <button onClick={ () => todos.addTodo(input) }>add</button>
+      {todos.todos.map(t => <Todo todo={t} />)}
     </div>
-  );
-}
+  )
+})
 
-export default App;
+export default App
