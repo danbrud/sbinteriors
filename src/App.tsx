@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import { useStore } from './utils'
 import { observer } from 'mobx-react'
-import Todo from './components/Todo'
 
-const App = observer(() => {
-  const todos = useStore()
-  const [input, setInput] = useState('')
-  console.log(todos)
+
+const App: React.FC = observer(() => {
+  const state = useStore()
+
+  useEffect(() => {
+    state.getClients()
+  }, [])
 
   return (
     <div>
-      <input type="text" onChange={e => setInput(e.target.value)} />
-      <button onClick={ () => todos.addTodo(input) }>add</button>
-      {todos.todos.map(t => <Todo todo={t} />)}
+      {state.clients.map(c => <div>{c.name}</div>)}
     </div>
   )
 })
