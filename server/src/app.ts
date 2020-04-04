@@ -1,6 +1,9 @@
 import express from 'express'
 import * as bodyParser from 'body-parser'
 import cors from 'cors'
+import { Sequelize } from 'sequelize-typescript'
+import { Client } from './models/Client.model'
+import { Transfer } from './models/Transfer.model'
 
 class App {
   public app: express.Application
@@ -11,6 +14,8 @@ class App {
     this.port = port
 
     this.initializeMiddlewares()
+    this.initializeDB()
+
     this.initializeControllers(controllers)
   }
 
@@ -21,6 +26,18 @@ class App {
 
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({ extended: false }))
+  }
+
+  private initializeDB() {
+    const sequelize = new Sequelize({
+      database: 'sbinteriors',
+      dialect: 'mysql',
+      username: 'root',
+      host: 'localhost',
+      models: [Client, Transfer]
+    })
+
+    sequelize.sync()
   }
 
   private initializeControllers(controllers) {

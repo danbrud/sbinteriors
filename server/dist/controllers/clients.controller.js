@@ -10,15 +10,19 @@ class ClientsController {
         this.clientsService = new clients_service_1.ClientsService();
         this.path = 'clients';
         this.router = express_1.default.Router();
-        this.getClients = (req, res) => {
-            const response = this.clientsService.getClients();
+        this.getClients = async (req, res) => {
+            const response = await this.clientsService.getClients();
+            res.send(response);
+        };
+        this.createClient = async (req, res) => {
+            const response = await this.clientsService.createClient(req.body);
             res.send(response);
         };
         this.intializeRoutes();
     }
     intializeRoutes() {
         this.router.get('/', this.getClients);
-        // this.router.post(this.path, )
+        this.router.post('/', this.createClient);
     }
 }
 exports.ClientsController = ClientsController;

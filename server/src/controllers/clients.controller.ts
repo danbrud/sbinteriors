@@ -13,15 +13,16 @@ export class ClientsController {
 
   private intializeRoutes() {
     this.router.get('/', this.getClients)
-    // this.router.post(this.path, )
+    this.router.post('/', this.createClient)
   }
 
-  private getClients: express.RequestHandler = (req, res) => {
-    const response = this.clientsService.getClients()
+  private getClients: express.RequestHandler = async (req, res) => {
+    const response = await this.clientsService.getClients()
     res.send(response)
   }
 
-  // createClient: express.RequestHandler = (request, response) => {
-
-  // }
+  private createClient: express.RequestHandler = async (req, res) => {
+    const response = await this.clientsService.createClient(req.body)
+    res.send(response)
+  }
 }

@@ -13,11 +13,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const bodyParser = __importStar(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
+const sequelize_typescript_1 = require("sequelize-typescript");
+const Client_model_1 = require("./models/Client.model");
+const Transfer_model_1 = require("./models/Transfer.model");
 class App {
     constructor(controllers, port) {
         this.app = express_1.default();
         this.port = port;
         this.initializeMiddlewares();
+        this.initializeDB();
         this.initializeControllers(controllers);
     }
     initializeMiddlewares() {
@@ -26,6 +30,16 @@ class App {
         }
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
+    }
+    initializeDB() {
+        const sequelize = new sequelize_typescript_1.Sequelize({
+            database: 'sbinteriors',
+            dialect: 'mysql',
+            username: 'root',
+            host: 'localhost',
+            models: [Client_model_1.Client, Transfer_model_1.Transfer]
+        });
+        sequelize.sync();
     }
     initializeControllers(controllers) {
         controllers.forEach(controller => {
