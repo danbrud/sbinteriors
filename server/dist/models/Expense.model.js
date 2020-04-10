@@ -10,45 +10,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Transfer_model_1 = require("./Transfer.model");
 const Project_model_1 = require("./Project.model");
-let Client = class Client extends sequelize_typescript_1.Model {
+let Expense = class Expense extends sequelize_typescript_1.Model {
 };
 __decorate([
+    sequelize_typescript_1.ForeignKey(() => Project_model_1.Project),
     sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "firstName", void 0);
+    __metadata("design:type", Number)
+], Expense.prototype, "projectId", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
-], Client.prototype, "lastName", void 0);
+], Expense.prototype, "paymentMethod", void 0);
 __decorate([
     sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "email", void 0);
+    __metadata("design:type", Date)
+], Expense.prototype, "date", void 0);
 __decorate([
+    sequelize_typescript_1.Default(false),
     sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "phone", void 0);
+    __metadata("design:type", Boolean)
+], Expense.prototype, "isPaid", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "spouseName", void 0);
-__decorate([
-    sequelize_typescript_1.Default(0),
     sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),
     __metadata("design:type", Number)
-], Client.prototype, "balance", void 0);
+], Expense.prototype, "amount", void 0);
 __decorate([
-    sequelize_typescript_1.HasMany(() => Transfer_model_1.Transfer),
-    __metadata("design:type", Array)
-], Client.prototype, "transfers", void 0);
-__decorate([
-    sequelize_typescript_1.HasMany(() => Project_model_1.Project),
-    __metadata("design:type", Array)
-], Client.prototype, "projects", void 0);
-Client = __decorate([
+    sequelize_typescript_1.BelongsTo(() => Project_model_1.Project),
+    __metadata("design:type", Project_model_1.Project)
+], Expense.prototype, "project", void 0);
+Expense = __decorate([
     sequelize_typescript_1.Table
-], Client);
-exports.Client = Client;
-//# sourceMappingURL=Client.model.js.map
+], Expense);
+exports.Expense = Expense;
+//# sourceMappingURL=Expense.model.js.map

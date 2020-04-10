@@ -16,6 +16,9 @@ const cors_1 = __importDefault(require("cors"));
 const sequelize_typescript_1 = require("sequelize-typescript");
 const Client_model_1 = require("./models/Client.model");
 const Transfer_model_1 = require("./models/Transfer.model");
+const Project_model_1 = require("./models/Project.model");
+const Task_model_1 = require("./models/Task.model");
+const Expense_model_1 = require("./models/Expense.model");
 class App {
     constructor(controllers, port) {
         this.app = express_1.default();
@@ -37,7 +40,7 @@ class App {
             dialect: 'mysql',
             username: 'root',
             host: 'localhost',
-            models: [Client_model_1.Client, Transfer_model_1.Transfer]
+            models: [Client_model_1.Client, Project_model_1.Project, Task_model_1.Task, Expense_model_1.Expense, Transfer_model_1.Transfer]
         });
         sequelize.sync();
     }

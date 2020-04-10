@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const Transfer_model_1 = require("./Transfer.model");
-const Project_model_1 = require("./Project.model");
 let Client = class Client extends sequelize_typescript_1.Model {
 };
 __decorate([
@@ -43,12 +42,8 @@ __decorate([
     sequelize_typescript_1.HasMany(() => Transfer_model_1.Transfer),
     __metadata("design:type", Array)
 ], Client.prototype, "transfers", void 0);
-__decorate([
-    sequelize_typescript_1.HasMany(() => Project_model_1.Project),
-    __metadata("design:type", Array)
-], Client.prototype, "projects", void 0);
 Client = __decorate([
     sequelize_typescript_1.Table
 ], Client);
 exports.Client = Client;
-//# sourceMappingURL=Client.model.js.map
+//# sourceMappingURL=Client.model copy.js.map

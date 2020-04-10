@@ -1,5 +1,6 @@
 import { Table, Column, Model, HasMany, DataType, Default } from 'sequelize-typescript'
 import { Transfer } from './Transfer.model'
+import { Project } from './Project.model'
 
 @Table
 export class Client extends Model<Client> {
@@ -25,4 +26,7 @@ export class Client extends Model<Client> {
 
   @HasMany(() => Transfer)
   transfers: Transfer[]
+
+  @HasMany(() => Project)
+  projects: Project[]
 }

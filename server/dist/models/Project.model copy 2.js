@@ -10,45 +10,49 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Transfer_model_1 = require("./Transfer.model");
-const Project_model_1 = require("./Project.model");
-let Client = class Client extends sequelize_typescript_1.Model {
+const Client_model_1 = require("./Client.model");
+let Project = class Project extends sequelize_typescript_1.Model {
 };
 __decorate([
+    sequelize_typescript_1.ForeignKey(() => Client_model_1.Client),
     sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "firstName", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "lastName", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "email", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "phone", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Client.prototype, "spouseName", void 0);
-__decorate([
-    sequelize_typescript_1.Default(0),
-    sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),
     __metadata("design:type", Number)
-], Client.prototype, "balance", void 0);
+], Project.prototype, "clientId", void 0);
 __decorate([
-    sequelize_typescript_1.HasMany(() => Transfer_model_1.Transfer),
-    __metadata("design:type", Array)
-], Client.prototype, "transfers", void 0);
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Project.prototype, "name", void 0);
 __decorate([
-    sequelize_typescript_1.HasMany(() => Project_model_1.Project),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Project.prototype, "address", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Project.prototype, "city", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Project.prototype, "description", void 0);
+__decorate([
+    sequelize_typescript_1.Default(false),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Boolean)
+], Project.prototype, "isComplete", void 0);
+__decorate([
+    sequelize_typescript_1.HasMany(() => Tasks),
     __metadata("design:type", Array)
-], Client.prototype, "projects", void 0);
-Client = __decorate([
+], Project.prototype, "tasks", void 0);
+__decorate([
+    sequelize_typescript_1.HasMany(() => Expenses),
+    __metadata("design:type", Array)
+], Project.prototype, "expenses", void 0);
+__decorate([
+    BelongsTo(() => Client_model_1.Client),
+    __metadata("design:type", Client_model_1.Client)
+], Project.prototype, "client", void 0);
+Project = __decorate([
     sequelize_typescript_1.Table
-], Client);
-exports.Client = Client;
-//# sourceMappingURL=Client.model.js.map
+], Project);
+exports.Project = Project;
+//# sourceMappingURL=Project.model copy 2.js.map
