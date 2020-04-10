@@ -30,7 +30,7 @@ const ClientDetailItems: React.FC<ClientDetailItemsProps> = (props) => {
         <TableBody>
           {detailItems.map(item => (
             <TableRow key={item} >
-                <Link to={`/clients/${props.clientId}/${item}`}>
+                <Link to={`/admin/clients/${props.clientId}/${item}`}>
                 <TableCell align="left" className={classes.row}>{item[0].toUpperCase() + item.slice(1)}</TableCell>
                 <TableCell align="right">
                   <ArrowForwardIosIcon />

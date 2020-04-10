@@ -6,12 +6,22 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL
 export class Projects {
   @observable projects: Project[] = []
 
-  @action async getProjectsFromDB() {
-    const response = await axios.get<Project[]>(`${SERVER_URL}/projects`)
+  @action async getClientProjectsFromDB(clientId: string) {
+    const response = await axios.get<Project[]>(`${SERVER_URL}/projects/${clientId}`)
     const projects = response.data.map(p => (
-      new Project(p.id)
+      new Project(p.id, p.clientId, p.name, p.address, p.city, p.description, p.isComplete)
     ))
     this.projects = projects
+  }
+
+  getProject(id: string) {
+    const parsedId = parseInt(id)
+    const project = this.projects.find(project => project.id === parsedId)
+    return project
+  }
+
+  @action clearStore() {
+    this.projects = []
   }
 
   @computed get isPopulated() {

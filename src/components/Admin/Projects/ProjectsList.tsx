@@ -2,21 +2,32 @@ import React, { useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { useProjectsStore } from '../../../context/Projects.context'
 import Loader from '../../Loader'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
+import ProjectCard from './ProjectCard'
 
 
 interface ProjectsListProps {
-  match: { params: { clientId: string } }
+  match: {
+    params: { clientId: string }
+    url: string
+  }
 }
 
 const ProjectsList: React.FC<ProjectsListProps> = observer((props) => {
   const clientId = props.match.params.clientId
   const ProjectStore = useProjectsStore()
   const projects = ProjectStore.projects
+  const history = useHistory()
 
   useEffect(() => {
     if (!ProjectStore.isPopulated) {
-      ProjectStore.getProjectsFromDB()
+      ProjectStore.getClientProjectsFromDB(clientId)
+    }
+
+    return () => {
+      if (!history.location.pathname.includes('projects')) {
+        ProjectStore.clearStore()
+      }
     }
   }, [])
 
@@ -24,10 +35,10 @@ const ProjectsList: React.FC<ProjectsListProps> = observer((props) => {
     !ProjectStore.isPopulated
       ? <Loader />
       : projects.length < 2
-        ? <Redirect to={`/clients/${clientId}/projects/${projects[0].id}`} />
+        ? <Redirect to={`/admin/clients/${clientId}/projects/${projects[0].id}`} />
         : <div>
           {projects.map(project => (
-            <div key={project.id}>project detail</div>
+            <ProjectCard key={project.id} clientId={clientId} project={project} />
           ))}
         </div>
   )

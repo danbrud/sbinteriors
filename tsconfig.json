@@ -20,7 +20,7 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-    "sourceMap": true
+    "inlineSourceMap": true
   },
   "include": [
     "src"

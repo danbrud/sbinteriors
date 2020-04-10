@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button'
 import CardActions from '@material-ui/core/CardActions'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react'
-import { Client as ClientStore } from '../../../stores/Client.store'
+import { Project as ProjectStore } from '../../../stores/Project.store'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -25,11 +25,13 @@ const useStyles = makeStyles(theme => ({
     width: 151,
   }
 }))
-interface ClientCardProps {
-  client: ClientStore
+
+interface PrjectCardProps {
+  project: ProjectStore
+  clientId: string
 }
 
-const ClientCard: React.FC<ClientCardProps> = observer((props) => {
+const ProjectCard: React.FC<PrjectCardProps> = observer((props) => {
   const classes = useStyles()
 
   return (
@@ -37,20 +39,17 @@ const ClientCard: React.FC<ClientCardProps> = observer((props) => {
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {
-              `${props.client.firstName[0].toUpperCase() + props.client.firstName.slice(1).toLowerCase()}
-              ${props.client.lastName[0].toUpperCase() + props.client.lastName.slice(1).toLowerCase()}`
-            }
+            {props.project.name}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            <i className="fas fa-phone"></i> {props.client.phone}
+            <i className="fas fa-phone"></i> {props.project.address}, {props.project.city}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            <i className="far fa-envelope-open"></i> {props.client.email}
+            <i className="far fa-envelope-open"></i> {props.project.isComplete ? "Completed" : "In progress"}
           </Typography>
         </CardContent>
         <CardActions>
-          <Link to={`/admin/clients/${props.client.id}`}>
+          <Link to={`/admin/clients/${props.clientId}/projects/${props.project.id}`}>
             <Button size="small" color="primary" variant="outlined">
               Select
             </Button>
@@ -61,4 +60,4 @@ const ClientCard: React.FC<ClientCardProps> = observer((props) => {
   )
 })
 
-export default ClientCard
+export default ProjectCard

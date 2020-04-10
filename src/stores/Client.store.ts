@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx'
-import axios from 'axios'
-const SERVER_URL = process.env.REACT_APP_SERVER_URL
+// import axios from 'axios'
+// const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 export class Client {
   @observable id: number

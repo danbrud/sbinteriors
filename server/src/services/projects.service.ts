@@ -1,5 +1,4 @@
 import { Project } from '../models/Project.model'
-import { try } from 'bluebird'
 
 export class ProjectsService {
 
