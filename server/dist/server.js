@@ -7,9 +7,11 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 const app_1 = __importDefault(require("./app"));
 const clients_controller_1 = require("./controllers/clients.controller");
+const projects_controller_1 = require("./controllers/projects.controller");
 const config = dotenv_1.default.config({ path: path_1.default.join(__dirname, '../..', '.env') });
 const app = new app_1.default([
-    new clients_controller_1.ClientsController()
+    new clients_controller_1.ClientsController(),
+    new projects_controller_1.ProjectsController()
 ], config.parsed.PORT);
 app.listen();
 //# sourceMappingURL=server.js.map

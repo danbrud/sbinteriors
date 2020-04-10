@@ -11,12 +11,12 @@ class ClientsController {
         this.path = 'clients';
         this.router = express_1.default.Router();
         this.getClients = async (req, res) => {
-            const response = await this.clientsService.getClients();
-            res.send(response);
+            const clients = await this.clientsService.getClients();
+            res.send(clients);
         };
         this.createClient = async (req, res) => {
-            const response = await this.clientsService.createClient(req.body);
-            res.send(response);
+            const client = await this.clientsService.createClient(req.body);
+            res.send(client);
         };
         this.intializeRoutes();
     }

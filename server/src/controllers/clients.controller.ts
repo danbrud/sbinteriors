@@ -1,5 +1,6 @@
 import express from 'express'
 import { ClientsService } from '../services/clients.service'
+import { Client } from '../models/Client.model'
 
 
 export class ClientsController {
@@ -17,12 +18,12 @@ export class ClientsController {
   }
 
   private getClients: express.RequestHandler = async (req, res) => {
-    const response = await this.clientsService.getClients()
-    res.send(response)
+    const clients = await this.clientsService.getClients()
+    res.send(clients)
   }
 
   private createClient: express.RequestHandler = async (req, res) => {
-    const response = await this.clientsService.createClient(req.body)
-    res.send(response)
+    const client = await this.clientsService.createClient(req.body)
+    res.send(client)
   }
 }
