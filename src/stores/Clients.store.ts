@@ -3,10 +3,8 @@ import { Client } from './Client.store'
 import axios from 'axios'
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
-export class AppState {
+export class Clients {
   @observable clients: Client[] = []
-  // @observable transfers: Transfer[] = []
-  // @observable
 
   @action async getClients() {
     const response = await axios.get<Client[]>(`${SERVER_URL}/clients`)

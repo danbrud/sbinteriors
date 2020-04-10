@@ -1,20 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './App.css'
-import { useStore } from './utils'
 import { observer } from 'mobx-react'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import AdminHome from './components/AdminHome'
 
 
 const App: React.FC = observer(() => {
-  const state = useStore()
-
-  useEffect(() => {
-    state.getClients()
-  }, [])
 
   return (
-    <div>
-      {state.clients.map(c => <div>{c.name}</div>)}
-    </div>
+    <Router>
+      {window.location.pathname === '/' ? <Redirect to='/admin' /> : null}
+      <Route exact path='/admin' render={() => <AdminHome />} />
+    </Router>
   )
 })
 

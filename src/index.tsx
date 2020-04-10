@@ -2,15 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import { StoreProvider } from './utils'
-import { AppState } from './stores/AppState.store'
+import { ClientsProvider } from './context/Clients.context'
+import { Clients } from './stores/Clients.store'
 
-const state = new AppState()
+const ClientsStore = new Clients()
 
 ReactDOM.render(
-  <StoreProvider value={state}>
+  <ClientsProvider value={ClientsStore}>
     <App />
-  </StoreProvider>,
+  </ClientsProvider>,
   document.getElementById('root')
 )
 

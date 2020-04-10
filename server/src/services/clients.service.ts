@@ -2,7 +2,7 @@ import { Client } from "../models/Client.model"
 
 export class ClientsService {
 
-  public async getClients() {
+  public async getClients(): Promise<Client[]> {
     const clients = await Client.findAll()
     return clients
   }
