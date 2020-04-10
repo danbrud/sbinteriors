@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
@@ -8,7 +8,6 @@ import CardActions from '@material-ui/core/CardActions'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import { Client as ClientStore } from '../../../stores/Client.store'
-import { mainTheme } from '../../../themes/main.theme'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -51,12 +50,10 @@ const ClientCard: React.FC<ClientCardProps> = observer((props) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Link to={`/client/${props.client.id}`}>
-            <ThemeProvider theme={mainTheme}>
-              <Button size="small" color="primary" variant="outlined">
-                Select
-              </Button>
-            </ThemeProvider>
+          <Link to={`/clients/${props.client.id}`}>
+            <Button size="small" color="primary" variant="outlined">
+              Select
+            </Button>
           </Link>
         </CardActions>
       </div>

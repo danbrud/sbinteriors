@@ -1,4 +1,6 @@
-import { observable } from 'mobx'
+import { observable, action } from 'mobx'
+import axios from 'axios'
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 export class Client {
   @observable id: number
@@ -22,5 +24,13 @@ export class Client {
     this.spouseName = spouseName ? spouseName : null
   }
 
-  
+  @action async updateClient(prop: string, value: string) {
+    await this.updateClientInDB(prop, value)
+    this[prop] = value
+  }
+
+  async updateClientInDB(prop: string, value: string) {
+    //Make http request to update client
+    console.log(prop, value)
+  }
 }
