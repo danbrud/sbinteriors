@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import { Project as ProjectStore } from '../../../stores/Project.store'
 
+
 const useStyles = makeStyles(theme => ({
   card: {
     display: 'flex',
@@ -42,10 +43,10 @@ const ProjectCard: React.FC<PrjectCardProps> = observer((props) => {
             {props.project.name}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            <i className="fas fa-phone"></i> {props.project.address}, {props.project.city}
+            <i className="fas fa-map-marker-alt"></i> {props.project.address}, {props.project.city}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            <i className="far fa-envelope-open"></i> {props.project.isComplete ? "Completed" : "In progress"}
+            <i className="fas fa-sync-alt"></i> {props.project.isComplete ? "Completed" : "In progress"}
           </Typography>
         </CardContent>
         <CardActions>

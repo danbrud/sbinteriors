@@ -31,6 +31,8 @@ const ProjectDetailsWrapper: React.FC<ProjectDetailsWrapperProps> = observer((pr
     return () => {
       if (!history.location.pathname.includes('projects')) {
         ProjectsStore.clearStore()
+        TasksStore.clearStore()
+        ExpensesStore.clearStore()
       }
     }
   }, [])

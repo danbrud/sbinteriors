@@ -1,7 +1,13 @@
-/* body {
-  background-color: #8EBDC3;
-} */
+body {
+  margin: 0;
+  font-family: Montserrat, sans-serif;
+}
 
 a {
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app-container {
+  margin: 10px;
 }

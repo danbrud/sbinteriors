@@ -9,10 +9,11 @@ export class Expense extends Model<Expense> {
   projectId: number
 
   @Column
-  paymentMethod: string
-
-  @Column
   name: string
+
+  @Default(null)
+  @Column
+  paymentMethod: string
 
   @Column
   date: Date
