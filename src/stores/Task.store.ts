@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import { observable, computed } from 'mobx'
 
 export class Task {
   @observable id: number
@@ -20,5 +20,10 @@ export class Task {
     this.endTime = endTime
     this.price = price
     this. description = description
+  }
+
+  @computed get duration() {
+    // const duration = this.endTime - this.startTime
+    return 10
   }
 }

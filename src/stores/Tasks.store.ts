@@ -7,11 +7,12 @@ export class Tasks {
   @observable tasks: Task[] = [new Task(1, 1, 'AutoCad', new Date(), new Date(), 900, 'hello there all you beings')]
 
   @action async getProjectTasksFromDB(projectId: string) {
-    const response = await axios.get<Task[]>(`${SERVER_URL}/tasks/${projectId}`)
-    const tasks = response.data.map(t => (
-      new Task(t.id, t.projectId, t.type, t.startTime, t.endTime, t.price, t.description)
-    ))
-    this.tasks = tasks
+    console.log('getting tasks', projectId)
+    // const response = await axios.get<Task[]>(`${SERVER_URL}/tasks/${projectId}`)
+    // const tasks = response.data.map(t => (
+    //   new Task(t.id, t.projectId, t.type, t.startTime, t.endTime, t.price, t.description)
+    // ))
+    // this.tasks = tasks
   }
 
   // getProject(id: string) {

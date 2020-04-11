@@ -6,10 +6,10 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { observer } from 'mobx-react'
-import { useTasksStore } from '../../../context/Tasks.context'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { Button, ExpansionPanelActions } from '@material-ui/core'
+import { useExpensesStore } from '../../../context/Expenses.context'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
+    flexBasis: '65%',
     flexShrink: 0,
   },
   secondaryHeading: {
@@ -27,18 +27,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-interface TaskPanelsProps {
+interface ExpensePanelsProps {
   projectId: string
 }
 
-const TaskPanels: React.FC<TaskPanelsProps> = observer((props) => {
-  const TasksStore = useTasksStore()
+const ExpensePanels: React.FC<ExpensePanelsProps> = observer((props) => {
+  const ExpensesStore = useExpensesStore()
   const classes = useStyles()
   const [expanded, setExpanded] = useState<number | boolean>(false)
 
   useEffect(() => {
-    if (!TasksStore.isPopulated) {
-      TasksStore.getProjectTasksFromDB(props.projectId)
+    if (!ExpensesStore.isPopulated) {
+      ExpensesStore.getProjectExpensesFromDB(props.projectId)
     }
   }, [])
 
@@ -48,32 +48,32 @@ const TaskPanels: React.FC<TaskPanelsProps> = observer((props) => {
 
   return (
     <div className={classes.root}>
-      {TasksStore.tasks.map(task => (
-        <ExpansionPanel key={task.id} expanded={expanded === task.id} onChange={handleChange(task.id)}>
+      {ExpensesStore.expenses.map(expense => (
+        <ExpansionPanel key={expense.id} expanded={expanded === expense.id} onChange={handleChange(expense.id)}>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography className={classes.heading}>{task.type}</Typography>
+            <Typography className={classes.heading}>{expense.name}</Typography>
             {/* <Typography className={classes.secondaryHeading}>{task.duration} h</Typography>
             <Typography className={classes.secondaryHeading}>s{task.price}</Typography> */}
-            <Typography className={classes.secondaryHeading}>{moment(task.startTime).format('MMM Do YY')}</Typography>
+            <Typography className={classes.secondaryHeading}>{expense.amount}</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
-              {task.description}
+              {moment(expense.date).format('MMM Do YY')}{expense.isPaid ? ` | Paid via: ${expense.paymentMethod}` : null}
             </Typography>
           </ExpansionPanelDetails>
-            <ExpansionPanelActions>
+            {/* <ExpansionPanelActions>
               <Link to={``}>
                 <Button size="small" color="primary" variant="outlined">
                   Select
               </Button>
               </Link>
-            </ExpansionPanelActions>
+            </ExpansionPanelActions> */}
         </ExpansionPanel>
       ))}
     </div>
   )
 })
 
-export default TaskPanels
+export default ExpensePanels
