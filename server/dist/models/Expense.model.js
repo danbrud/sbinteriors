@@ -24,6 +24,10 @@ __decorate([
 ], Expense.prototype, "paymentMethod", void 0);
 __decorate([
     sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Expense.prototype, "name", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
     __metadata("design:type", Date)
 ], Expense.prototype, "date", void 0);
 __decorate([

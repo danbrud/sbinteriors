@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
@@ -35,12 +35,6 @@ const ExpensePanels: React.FC<ExpensePanelsProps> = observer((props) => {
   const ExpensesStore = useExpensesStore()
   const classes = useStyles()
   const [expanded, setExpanded] = useState<number | boolean>(false)
-
-  useEffect(() => {
-    if (!ExpensesStore.isPopulated) {
-      ExpensesStore.getProjectExpensesFromDB(props.projectId)
-    }
-  }, [])
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false)

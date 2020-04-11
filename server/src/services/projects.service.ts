@@ -21,6 +21,5 @@ export class ProjectsService {
     } catch (e) {
       return { error: 'Must have a valid client id' }
     }
-
   }
 }

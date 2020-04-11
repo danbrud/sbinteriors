@@ -12,6 +12,9 @@ export class Expense extends Model<Expense> {
   paymentMethod: string
 
   @Column
+  name: string
+
+  @Column
   date: Date
 
   @Default(false)

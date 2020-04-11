@@ -27,7 +27,7 @@ interface ProjectDetailsProps {
 
 const ProjectDetails: React.FC<ProjectDetailsProps> = observer((props) => {
   const { projectId, clientId } = props
-  
+
   const classes = useStyles()
   const theme = useTheme()
   const [value, setValue] = useState(0)
@@ -69,6 +69,8 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = observer((props) => {
     </div>
   )
 })
+
+
 
 function a11yProps(index) {
   return {
