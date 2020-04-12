@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import HomeIcon from '@material-ui/icons/Home'
 import { Link, useLocation } from 'react-router-dom'
+import { toProperCase } from '../utils'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,11 +38,10 @@ const MenuBar: React.FC = () => {
     let title: string
 
     if (isNaN(parseInt(path[path.length - 1]))) {
-      title = path[path.length - 1]
-      title = title[0].toUpperCase() + title.slice(1).toLowerCase()
+      title = toProperCase(path[path.length - 1])
     } else {
-      title = path[path.length - 2]
-      title = title[0].toUpperCase() + title.slice(1, title.length - 1).toLowerCase()
+      title = toProperCase(path[path.length - 2])
+      title = title.slice(0, title.length - 1)
     }
 
     setTitle(title)

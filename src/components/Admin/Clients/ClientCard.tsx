@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import { Client as ClientStore } from '../../../stores/Client.store'
+import { toProperCase } from '../../../utils'
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -31,26 +32,24 @@ interface ClientCardProps {
 
 const ClientCard: React.FC<ClientCardProps> = observer((props) => {
   const classes = useStyles()
+  const { client } = props
 
   return (
     <Card className={classes.card}>
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {
-              `${props.client.firstName[0].toUpperCase() + props.client.firstName.slice(1).toLowerCase()}
-              ${props.client.lastName[0].toUpperCase() + props.client.lastName.slice(1).toLowerCase()}`
-            }
+            {`${toProperCase(client.firstName)} ${toProperCase(client.lastName)}`}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            <i className="fas fa-phone"></i> {props.client.phone}
+            <i className="fas fa-phone"></i> {client.phone}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            <i className="far fa-envelope-open"></i> {props.client.email}
+            <i className="far fa-envelope-open"></i> {client.email}
           </Typography>
         </CardContent>
         <CardActions>
-          <Link to={`/admin/clients/${props.client.id}`}>
+          <Link to={`/admin/clients/${client.id}`}>
             <Button size="small" color="primary" variant="outlined">
               Select
             </Button>

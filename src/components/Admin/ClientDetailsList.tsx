@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import { Link } from 'react-router-dom'
+import { toProperCase } from '../../utils'
 
 const useStyles = makeStyles({
   row: {
@@ -31,7 +32,7 @@ const ClientDetailItems: React.FC<ClientDetailItemsProps> = (props) => {
           {detailItems.map(item => (
             <TableRow key={item} >
                 <Link to={`/admin/clients/${props.clientId}/${item}`}>
-                <TableCell align="left" className={classes.row}>{item[0].toUpperCase() + item.slice(1)}</TableCell>
+                <TableCell align="left" className={classes.row}>{toProperCase(item)}</TableCell>
                 <TableCell align="right">
                   <ArrowForwardIosIcon />
                 </TableCell>

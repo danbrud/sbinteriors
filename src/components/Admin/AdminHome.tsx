@@ -3,7 +3,11 @@ import Clients from './Clients/Clients'
 
 const AdminHome: React.FC = () => {
 
-  return <Clients />
+  return (
+    <div>
+      <Clients />
+    </div>
+  )
 }
 
 export default AdminHome

@@ -14,6 +14,12 @@ export class Clients {
     this.clients = clients
   }
 
+  @action async addClient(client) {
+    const { data } = await axios.post<Client>(`${SERVER_URL}/clients`, client)
+    const newClient = new Client(data.id, data.firstName, data.lastName, data.email, data.phone, data.balance, data.spouseName)
+    this.clients.push(newClient)
+  }
+
   getClient(id: string) {
     const parsedId = parseInt(id)
     const client = this.clients.find(client => client.id === parsedId)

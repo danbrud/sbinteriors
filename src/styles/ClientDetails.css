@@ -20,3 +20,6 @@
 #balance {
   justify-self: end;
 }
+#client-details-container {
+  margin-bottom: 12px;
+}
