@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-interface TaskPanelsProps {
-  projectId: string
-}
+// interface TaskPanelsProps {
+//   clientId?: string
+// }
 
-const TaskPanels: React.FC<TaskPanelsProps> = observer((props) => {
+const TaskPanels: React.FC = observer((props) => {
   const TasksStore = useTasksStore()
   const classes = useStyles()
   const [expanded, setExpanded] = useState<number | boolean>(false)

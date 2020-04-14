@@ -52,9 +52,9 @@ const AddTask: React.FC<AddItemProps> = (props) => {
   const handleSubmit = () => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
-    const projectId = ClientsStore.getClientByFullName(clientName).projects[0].id
-    const task = { projectId, type: taskType, startTime, endTime, price, description }
-    TasksStore.createProjectTask(task)
+    const client = ClientsStore.getClientByName(clientName)
+    const task = { clientId: client.id, type: taskType, startTime, endTime, price, description }
+    TasksStore.createTask(task)
     clearInputs()
   }
 
@@ -79,7 +79,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
         />
         <datalist id="clients">
           {ClientsStore.clients.map(c => (
-            <option value={`${toProperCase(c.firstName)} ${toProperCase(c.lastName)}`} />
+            <option value={c.formattedName} />
           ))}
         </datalist>
       <FormControl className={classes.formControl}>
