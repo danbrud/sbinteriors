@@ -12,15 +12,11 @@ export class TransfersService {
     return transfers
   }
 
-  public async createTransfer(body): Promise<Transfer | { error: string }> {
-    try {
+  public async createTransfer(body): Promise<Transfer> {
       //Make sure to update client balance
       const transfer = new Transfer(body)
       await transfer.save()
 
       return transfer
-    } catch (e) {
-      return { error: 'Must have a valid client id' }
-    }
   }
 }

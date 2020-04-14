@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript'
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, Default } from 'sequelize-typescript'
 import { Client } from './Client.model'
 
 @Table
@@ -12,11 +12,16 @@ export class Transfer extends Model<Transfer> {
   date: Date
 
   @Column({ type: DataType.FLOAT })
-  amount: number
+  ilsAmount: number
+
+  @Default(null)
+  @Column({ type: DataType.FLOAT })
+  usdAmount: number
 
   @Column
   transferMethod: string
 
+  @Default(null)
   @Column
   description: string
 

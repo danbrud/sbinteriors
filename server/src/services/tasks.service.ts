@@ -7,19 +7,17 @@ export class TasksService {
     return tasks
   }
 
-  public async getTasksByProjectId(projectId: string): Promise<Task[]> {
-    const tasks = await Task.findAll({ where: { projectId } })
+  public async getTasksByClientId(clientId: string): Promise<Task[]> {
+    const tasks = await Task.findAll({ where: { clientId } })
     return tasks
   }
 
-  public async createTask(body): Promise<Task | { error: string }> {
-    try {
-      const task = new Task(body)
-      await task.save()
+  public async createTask(body): Promise<Task> {
+    //Update the client's balance
+    //Possibly update the task current balance or isPaid
+    const task = new Task(body)
+    await task.save()
 
-      return task
-    } catch (e) {
-      return { error: 'Must have a valid project id' }
-    }
+    return task
   }
 }

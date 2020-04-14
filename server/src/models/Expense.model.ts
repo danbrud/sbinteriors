@@ -1,30 +1,29 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo, Default } from 'sequelize-typescript'
-import { Project } from './Project.model'
+import { Client } from './Client.model'
 
 @Table
 export class Expense extends Model<Expense> {
 
-  @ForeignKey(() => Project)
+  @ForeignKey(() => Client)
   @Column
-  projectId: number
+  clientId: number
 
   @Column
   name: string
 
-  @Default(null)
-  @Column
-  paymentMethod: string
-
   @Column
   date: Date
 
-  @Default(false)
-  @Column
-  isPaid: boolean
+  // @Default(false)
+  // @Column
+  // isPaid: boolean
+
+  // @Column({ type: DataType.FLOAT })
+  // currentBalance: number
 
   @Column({ type: DataType.FLOAT })
   amount: number
 
-  @BelongsTo(() => Project)
-  project: Project
+  @BelongsTo(() => Client)
+  client: Client
 }

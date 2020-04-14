@@ -1,4 +1,4 @@
-import { Project } from '../models/Project.model'
+import { Project } from './Project.model'
 
 export class ProjectsService {
 

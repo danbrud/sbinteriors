@@ -1,5 +1,5 @@
 import express from 'express'
-import { ProjectsService } from '../services/projects.service'
+import { ProjectsService } from './projects.service'
 
 
 export class ProjectsController {

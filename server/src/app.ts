@@ -4,7 +4,6 @@ import cors from 'cors'
 import { Sequelize } from 'sequelize-typescript'
 import { Client } from './models/Client.model'
 import { Transfer } from './models/Transfer.model'
-import { Project } from './models/Project.model'
 import { Task } from './models/Task.model'
 import { Expense } from './models/Expense.model'
 
@@ -37,7 +36,7 @@ class App {
       dialect: 'mysql',
       username: 'root',
       host: 'localhost',
-      models: [Client, Project, Task, Expense, Transfer]
+      models: [Client, Task, Expense, Transfer]
     })
 
     sequelize.sync()

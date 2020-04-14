@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Project_model_1 = require("../not-used/Project.model");
+const Project_model_1 = require("./Project.model");
 class ProjectsService {
     async getProjects() {
         const projects = await Project_model_1.Project.findAll();

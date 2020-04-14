@@ -6,20 +6,16 @@ class ExpensesService {
         const expenses = await Expense_model_1.Expense.findAll();
         return expenses;
     }
-    async getExpensesByProjectId(projectId) {
-        const expenses = await Expense_model_1.Expense.findAll({ where: { projectId } });
+    async getExpensesByClientId(clientId) {
+        const expenses = await Expense_model_1.Expense.findAll({ where: { clientId } });
         return expenses;
     }
     async createExpense(body) {
-        try {
-            //Update the client's balance
-            const expense = new Expense_model_1.Expense(body);
-            await expense.save();
-            return expense;
-        }
-        catch (e) {
-            return { error: 'Must have a valid project id' };
-        }
+        //Update the client's balance
+        //Possibly update the task current balance or isPaid
+        const expense = new Expense_model_1.Expense(body);
+        await expense.save();
+        return expense;
     }
 }
 exports.ExpensesService = ExpensesService;

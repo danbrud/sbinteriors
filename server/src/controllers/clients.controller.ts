@@ -1,6 +1,5 @@
 import express from 'express'
 import { ClientsService } from '../services/clients.service'
-import { Client } from '../models/Client.model'
 
 
 export class ClientsController {

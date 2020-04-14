@@ -1,15 +1,14 @@
 import { Table, Column, Model, HasMany, DataType, Default } from 'sequelize-typescript'
 import { Transfer } from './Transfer.model'
-import { Project } from './Project.model'
+import { Project } from '../not-used/Project.model'
+import { Task } from './Task.model'
+import { Expense } from './Expense.model'
 
 @Table
 export class Client extends Model<Client> {
 
   @Column
-  firstName: string
-
-  @Column
-  lastName: string
+  name: string
 
   @Column
   email: string
@@ -17,16 +16,35 @@ export class Client extends Model<Client> {
   @Column
   phone: string
 
+  @Default(null)
   @Column
   spouseName: string
+
+  @Column
+  address: string
+
+  @Column
+  city: string
+
+  @Default(null)
+  @Column
+  description: string
 
   @Default(0)
   @Column({ type: DataType.FLOAT })
   balance: number
 
+  @Default(false)
+  @Column
+  isComplete: boolean
+
   @HasMany(() => Transfer)
   transfers: Transfer[]
 
-  @HasMany(() => Project)
-  projects: Project[]
+  @HasMany(() => Task)
+  tasks: Task[]
+
+  @HasMany(() => Expense)
+  expenses: Expense[]
+
 }

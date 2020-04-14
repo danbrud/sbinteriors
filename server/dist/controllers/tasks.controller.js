@@ -14,9 +14,9 @@ class TasksController {
             const tasks = await this.tasksService.getTasks();
             res.send(tasks);
         };
-        this.getTasksByProjectId = async (req, res) => {
-            const { projectId } = req.params;
-            const tasks = await this.tasksService.getTasksByProjectId(projectId);
+        this.getTasksByClientId = async (req, res) => {
+            const { clientId } = req.params;
+            const tasks = await this.tasksService.getTasksByClientId(clientId);
             res.send(tasks);
         };
         this.createExpense = async (req, res) => {
@@ -27,7 +27,7 @@ class TasksController {
     }
     intializeRoutes() {
         this.router.get('/', this.getTasks);
-        this.router.get('/:projectId', this.getTasksByProjectId);
+        this.router.get('/:clientId', this.getTasksByClientId);
         this.router.post('/', this.createExpense);
     }
 }

@@ -10,14 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Project_model_1 = require("./Project.model");
+const Client_model_1 = require("./Client.model");
 let Task = class Task extends sequelize_typescript_1.Model {
 };
 __decorate([
-    sequelize_typescript_1.ForeignKey(() => Project_model_1.Project),
+    sequelize_typescript_1.ForeignKey(() => Client_model_1.Client),
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], Task.prototype, "projectId", void 0);
+], Task.prototype, "clientId", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
@@ -31,16 +31,18 @@ __decorate([
     __metadata("design:type", Date)
 ], Task.prototype, "endTime", void 0);
 __decorate([
+    sequelize_typescript_1.Default(null),
     sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),
     __metadata("design:type", Number)
 ], Task.prototype, "price", void 0);
 __decorate([
+    sequelize_typescript_1.Default(null),
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Task.prototype, "description", void 0);
 __decorate([
-    sequelize_typescript_1.BelongsTo(() => Project_model_1.Project),
-    __metadata("design:type", Project_model_1.Project)
+    sequelize_typescript_1.BelongsTo(() => Client_model_1.Client),
+    __metadata("design:type", Client_model_1.Client)
 ], Task.prototype, "project", void 0);
 Task = __decorate([
     sequelize_typescript_1.Table

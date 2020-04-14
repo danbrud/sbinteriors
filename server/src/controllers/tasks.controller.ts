@@ -13,7 +13,7 @@ export class TasksController {
 
   private intializeRoutes() {
     this.router.get('/', this.getTasks)
-    this.router.get('/:projectId', this.getTasksByProjectId)
+    this.router.get('/:clientId', this.getTasksByClientId)
     this.router.post('/', this.createExpense)
   }
 
@@ -22,10 +22,10 @@ export class TasksController {
     res.send(tasks)
   }
 
-  private getTasksByProjectId: express.RequestHandler = async (req, res) => {
-    const { projectId } = req.params
+  private getTasksByClientId: express.RequestHandler = async (req, res) => {
+    const { clientId } = req.params
 
-    const tasks = await this.tasksService.getTasksByProjectId(projectId)
+    const tasks = await this.tasksService.getTasksByClientId(clientId)
     res.send(tasks)
   }
 

@@ -10,40 +10,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const Project_model_1 = require("./Project.model");
+const Client_model_1 = require("./Client.model");
 let Expense = class Expense extends sequelize_typescript_1.Model {
 };
 __decorate([
-    sequelize_typescript_1.ForeignKey(() => Project_model_1.Project),
+    sequelize_typescript_1.ForeignKey(() => Client_model_1.Client),
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], Expense.prototype, "projectId", void 0);
+], Expense.prototype, "clientId", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Expense.prototype, "name", void 0);
 __decorate([
-    sequelize_typescript_1.Default(null),
     sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Expense.prototype, "paymentMethod", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Date)
+    __metadata("design:type", Date
+    // @Default(false)
+    // @Column
+    // isPaid: boolean
+    // @Column({ type: DataType.FLOAT })
+    // currentBalance: number
+    )
 ], Expense.prototype, "date", void 0);
-__decorate([
-    sequelize_typescript_1.Default(false),
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Boolean)
-], Expense.prototype, "isPaid", void 0);
 __decorate([
     sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),
     __metadata("design:type", Number)
 ], Expense.prototype, "amount", void 0);
 __decorate([
-    sequelize_typescript_1.BelongsTo(() => Project_model_1.Project),
-    __metadata("design:type", Project_model_1.Project)
-], Expense.prototype, "project", void 0);
+    sequelize_typescript_1.BelongsTo(() => Client_model_1.Client),
+    __metadata("design:type", Client_model_1.Client)
+], Expense.prototype, "client", void 0);
 Expense = __decorate([
     sequelize_typescript_1.Table
 ], Expense);

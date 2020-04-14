@@ -11,15 +11,10 @@ class TransfersService {
         return transfers;
     }
     async createTransfer(body) {
-        try {
-            //Make sure to update client balance
-            const transfer = new Transfer_model_1.Transfer(body);
-            await transfer.save();
-            return transfer;
-        }
-        catch (e) {
-            return { error: 'Must have a valid client id' };
-        }
+        //Make sure to update client balance
+        const transfer = new Transfer_model_1.Transfer(body);
+        await transfer.save();
+        return transfer;
     }
 }
 exports.TransfersService = TransfersService;

@@ -1,7 +1,7 @@
 import { Table, Column, Model, HasMany, Default, ForeignKey, BelongsTo } from 'sequelize-typescript'
-import { Client } from './Client.model'
-import { Task } from './Task.model'
-import { Expense } from './Expense.model'
+import { Client } from '../models/Client.model'
+import { Task } from '../models/Task.model'
+import { Expense } from '../models/Expense.model'
 
 @Table
 export class Project extends Model<Project> {

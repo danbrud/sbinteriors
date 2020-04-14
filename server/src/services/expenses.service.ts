@@ -7,20 +7,17 @@ export class ExpensesService {
     return expenses
   }
 
-  public async getExpensesByProjectId(projectId: string): Promise<Expense[]> {
-    const expenses = await Expense.findAll({ where: { projectId } })
+  public async getExpensesByClientId(clientId: string): Promise<Expense[]> {
+    const expenses = await Expense.findAll({ where: { clientId } })
     return expenses
   }
 
-  public async createExpense(body): Promise<Expense | { error: string }> {
-    try {
-      //Update the client's balance
-      const expense = new Expense(body)
-      await expense.save()
+  public async createExpense(body): Promise<Expense> {
+    //Update the client's balance
+    //Possibly update the task current balance or isPaid
+    const expense = new Expense(body)
+    await expense.save()
 
-      return expense
-    } catch (e) {
-      return { error: 'Must have a valid project id' }
-    }
+    return expense
   }
 }

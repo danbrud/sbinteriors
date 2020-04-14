@@ -13,7 +13,7 @@ export class ExpensesController {
 
   private intializeRoutes() {
     this.router.get('/', this.getExpenses)
-    this.router.get('/:projectId', this.getExpensesByProjectId)
+    this.router.get('/:clientId', this.getExpensesByClientId)
     this.router.post('/', this.createExpense)
   }
 
@@ -22,10 +22,10 @@ export class ExpensesController {
     res.send(expenses)
   }
 
-  private getExpensesByProjectId: express.RequestHandler = async (req, res) => {
-    const { projectId } = req.params
+  private getExpensesByClientId: express.RequestHandler = async (req, res) => {
+    const { clientId } = req.params
 
-    const expenses = await this.expensesService.getExpensesByProjectId(projectId)
+    const expenses = await this.expensesService.getExpensesByClientId(clientId)
     res.send(expenses)
   }
 

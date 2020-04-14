@@ -1,12 +1,12 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript'
-import { Project } from './Project.model'
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, Default } from 'sequelize-typescript'
+import { Client } from './Client.model'
 
 @Table
 export class Task extends Model<Task> {
 
-  @ForeignKey(() => Project)
+  @ForeignKey(() => Client)
   @Column
-  projectId: number
+  clientId: number
 
   @Column
   type: string
@@ -17,12 +17,14 @@ export class Task extends Model<Task> {
   @Column
   endTime: Date
 
+  @Default(null)
   @Column({ type: DataType.FLOAT })
   price: number
 
+  @Default(null)
   @Column
   description: string
 
-  @BelongsTo(() => Project)
-  project: Project
+  @BelongsTo(() => Client)
+  project: Client
 }

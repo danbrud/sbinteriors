@@ -14,9 +14,9 @@ class ExpensesController {
             const expenses = await this.expensesService.getExpenses();
             res.send(expenses);
         };
-        this.getExpensesByProjectId = async (req, res) => {
-            const { projectId } = req.params;
-            const expenses = await this.expensesService.getExpensesByProjectId(projectId);
+        this.getExpensesByClientId = async (req, res) => {
+            const { clientId } = req.params;
+            const expenses = await this.expensesService.getExpensesByClientId(clientId);
             res.send(expenses);
         };
         this.createExpense = async (req, res) => {
@@ -27,7 +27,7 @@ class ExpensesController {
     }
     intializeRoutes() {
         this.router.get('/', this.getExpenses);
-        this.router.get('/:projectId', this.getExpensesByProjectId);
+        this.router.get('/:clientId', this.getExpensesByClientId);
         this.router.post('/', this.createExpense);
     }
 }

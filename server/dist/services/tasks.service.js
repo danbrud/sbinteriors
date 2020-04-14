@@ -6,19 +6,16 @@ class TasksService {
         const tasks = await Task_model_1.Task.findAll();
         return tasks;
     }
-    async getTasksByProjectId(projectId) {
-        const tasks = await Task_model_1.Task.findAll({ where: { projectId } });
+    async getTasksByClientId(clientId) {
+        const tasks = await Task_model_1.Task.findAll({ where: { clientId } });
         return tasks;
     }
     async createTask(body) {
-        try {
-            const task = new Task_model_1.Task(body);
-            await task.save();
-            return task;
-        }
-        catch (e) {
-            return { error: 'Must have a valid project id' };
-        }
+        //Update the client's balance
+        //Possibly update the task current balance or isPaid
+        const task = new Task_model_1.Task(body);
+        await task.save();
+        return task;
     }
 }
 exports.TasksService = TasksService;
