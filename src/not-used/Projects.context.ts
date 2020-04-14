@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { Projects } from '../stores/Projects.store'
+import { Projects } from './Projects.store'
 
 
 const ProjectsContext = createContext<Projects>({} as Projects)

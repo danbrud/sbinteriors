@@ -1,30 +1,35 @@
-import { observable, action } from 'mobx'
-import { Project } from './Project.store'
+import { observable, action, computed } from 'mobx'
+import { Project } from '../not-used/Project.store'
 import axios from 'axios'
+import { toProperCase } from '../utils'
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 export class Client {
   @observable id: number
-  @observable firstName: string
-  @observable lastName: string
+  @observable name: string
   @observable email: string
   @observable phone: string
-  @observable balance: number
-  @observable projects: Project[]
   @observable spouseName: string | null
+  @observable address: string
+  @observable city: string
+  @observable description: string
+  @observable balance: number
+  @observable isComplete: boolean
 
   constructor(
-    id: number, firstName: string, lastName: string, email: string,
-    phone: string, balance: number, projects: Project[], spouseName?: string
+    id: number, name: string, email: string, phone: string, spouseName: string,
+    address: string, city: string, description: string, balance: number, isComplete: boolean
   ) {
     this.id = id
-    this.firstName = firstName
-    this.lastName = lastName
+    this.name = name
     this.email = email
     this.phone = phone
+    this.spouseName = spouseName
+    this.address = address
+    this.city = city
+    this.description = description
     this.balance = balance
-    this.projects = projects
-    this.spouseName = spouseName ? spouseName : null
+    this.isComplete = isComplete
   }
 
   @action async updateClient(prop: string, value: string) {
@@ -37,12 +42,16 @@ export class Client {
     console.log(prop, value)
   }
 
-  @action async addProject(project) {
-    if (!project.name) { project.name = null }
-    if (!project.description) { project.description = null }
+  @computed get formattedName() {
+    let formattedName = ''
+    const splitName = this.name.split(' ')
+    splitName.forEach((n, i) => {
+      formattedName += toProperCase(n)
+      if (i !== splitName.length - 1) {
+        formattedName += ' '
+      }
+    })
 
-    const { data } = await axios.post<Project>(`${SERVER_URL}/projects`, { ...project, clientId: this.id })
-    const newProject = new Project(data.id, this.id, data.name, data.address, data.city, data.description, data.isComplete)
-    this.projects.push(newProject)
+    return formattedName
   }
 }

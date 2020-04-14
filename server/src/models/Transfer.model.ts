@@ -16,7 +16,7 @@ export class Transfer extends Model<Transfer> {
 
   @Default(null)
   @Column({ type: DataType.FLOAT })
-  usdAmount: number
+  foreignAmount: number
 
   @Column
   transferMethod: string

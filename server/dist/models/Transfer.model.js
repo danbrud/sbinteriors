@@ -30,7 +30,7 @@ __decorate([
     sequelize_typescript_1.Default(null),
     sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),
     __metadata("design:type", Number)
-], Transfer.prototype, "usdAmount", void 0);
+], Transfer.prototype, "foreignAmount", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { observer } from 'mobx-react'
-import { useProjectsStore } from '../../../context/Projects.context'
+import { useProjectsStore } from '../../../not-used/Projects.context'
 import Loader from '../../Loader'
 import { Redirect, useHistory } from 'react-router-dom'
 import ProjectCard from './ProjectCard'

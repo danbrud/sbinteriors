@@ -2,7 +2,7 @@ import { observable, computed } from 'mobx'
 
 export class Task {
   @observable id: number
-  @observable projectId: number
+  @observable clientId: number
   @observable type: string
   @observable startTime: Date
   @observable endTime: Date
@@ -10,11 +10,11 @@ export class Task {
   @observable description: string
 
   constructor(
-    id: number, projectId: number, type: string, startTime: Date,
+    id: number, clientId: number, type: string, startTime: Date,
     endTime: Date, price: number, description: string
   ) {
     this.id = id
-    this.projectId = projectId
+    this.clientId = clientId
     this.type = type
     this.startTime = startTime
     this.endTime = endTime

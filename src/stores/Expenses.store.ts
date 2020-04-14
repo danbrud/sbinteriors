@@ -7,9 +7,9 @@ export class Expenses {
   @observable expenses: Expense[] = []
 
   @action async getProjectExpensesFromDB(projectId: string) {
-    const response = await axios.get<Expense[]>(`${SERVER_URL}/expenses/${projectId}`)
-    const expenses = response.data.map(e => (
-      new Expense(e.id, e.projectId, e.name, e.paymentMethod, e.date, e.isPaid, e.amount)
+    const {data} = await axios.get<Expense[]>(`${SERVER_URL}/expenses/${projectId}`)
+    const expenses = data.map(e => (
+      new Expense(e.id, e.clientId, e.name, e.date, e.amount)
     ))
     this.expenses = expenses
   }
