@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 import { useClientsStore } from '../../../context/Clients.context'
 import Loader from '../../Loader'
 import ClientDetails from './ClientDetails'
-import ClientDetailItems from '../ClientDetailsList'
+import ClientDetailItems from './ClientDetailsList'
 
 interface ClientInfoProps {
   match: { params: { clientId: string } }
@@ -15,11 +15,11 @@ const ClientInfo: React.FC<ClientInfoProps> = observer((props) => {
 
   const client = ClientsStore.getClient(clientId)
 
-  useEffect(() => {
-    if (!ClientsStore.isPopulated) {
-      ClientsStore.getClientsFromDB()
-    }
-  }, [])
+    useEffect(() => {
+      if (!ClientsStore.isPopulated) {
+        ClientsStore.getClientsFromDB()
+      }
+    }, [])
 
   return (
     ClientsStore.isPopulated

@@ -5,7 +5,7 @@ import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import { toProperCase } from '../../utils'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import CreditCardRoundedIcon from '@material-ui/icons/CreditCardRounded';
 import SyncAltRoundedIcon from '@material-ui/icons/SyncAltRounded';
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
@@ -51,11 +51,19 @@ const AddFab: React.FC = () => {
 
   const actions = [
     { icon: <PersonAddRoundedIcon className={classes.icon} />, name: 'client' },
-    { icon: <LocationCityRoundedIcon className={classes.icon} />, name: 'project' },
     { icon: <AssignmentRoundedIcon className={classes.icon} />, name: 'task' },
     { icon: <CreditCardRoundedIcon className={classes.icon} />, name: 'expense' },
     { icon: <SyncAltRoundedIcon className={classes.icon} />, name: 'transfer' },
   ]
+
+  const location = useLocation()
+  let clientId: number, projectId: number
+
+  // /admin/clients
+  // /admin/clients/1
+  // /admin/clients/1/projects
+  // /admin/clients/1/projects/1
+
 
   return (
     <div className={classes.root}>
@@ -74,7 +82,7 @@ const AddFab: React.FC = () => {
             <SpeedDialAction
               key={action.name}
               icon={
-                <Link to={{ pathname: `/admin/add/${action.name}`, state: {clientId: 1} }} >
+                <Link to={{ pathname: `/admin/add/${action.name}`, state: {clientId: 1, projectId: 1} }} >
                   {action.icon}
                 </Link>
               }

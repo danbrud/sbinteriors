@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import { Link } from 'react-router-dom'
-import { toProperCase } from '../../utils'
+import { toProperCase } from '../../../utils'
 
 const useStyles = makeStyles({
   row: {
@@ -23,7 +23,7 @@ interface ClientDetailItemsProps {
 
 const ClientDetailItems: React.FC<ClientDetailItemsProps> = (props) => {
   const classes = useStyles()
-  const detailItems = ['projects', 'transfers']
+  const detailItems = ['tasks', 'transfers', 'expenses']
 
   return (
     <TableContainer component={Paper}>

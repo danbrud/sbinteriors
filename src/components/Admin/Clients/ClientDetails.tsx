@@ -5,6 +5,7 @@ import LetterAvatar from '../../LetterAvatar'
 import '../../../styles/ClientDetails.css'
 import { Divider, Grid, Typography } from '@material-ui/core'
 import { toProperCase } from '../../../utils'
+import BalanceAvatar from '../../BalanceAvatar'
 
 interface ClientDetailsProps {
   client: Client
@@ -12,12 +13,14 @@ interface ClientDetailsProps {
 
 const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
   const { client } = props
+  const [project] = client.projects
 
   return (
     <div id='client-details-container'>
       <div id='client-name-container'>
         <div>
-          <LetterAvatar size='large' name={`${client.firstName} ${client.lastName}`} />
+          {/* <LetterAvatar size='large' name={`${client.firstName} ${client.lastName}`} /> */}
+          <BalanceAvatar size='large' balance={-2200} />
         </div>
         <div id='client-contact-details'>
           <h2>{toProperCase(client.firstName)} {toProperCase(client.lastName)}</h2>
@@ -27,12 +30,24 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
         </div>
       </div>
       <Divider />
-      <div id='client-balance-container'>
-          <p>BALANCE</p>
+      {/* <div id='client-balance-container'>
+        <p>BALANCE</p>
         <p id='balance'>&#x20aa; {client.balance}</p>
       </div>
+      <Divider /> */}
+      <div id='project-details'>
+        <Typography component="h5" variant="h5">
+          {project.name}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          <i className="fas fa-map-marker-alt"></i> {project.address}, {project.city}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          <i className="fas fa-sync-alt"></i> {project.isComplete ? "Completed" : "In progress"}
+        </Typography>
+      </div>
       <Divider />
-    </div>
+    </div >
   )
 })
 

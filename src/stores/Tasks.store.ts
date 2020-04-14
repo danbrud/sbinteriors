@@ -14,6 +14,12 @@ export class Tasks {
     this.tasks = tasks
   }
 
+  @action async createProjectTask(task) {
+    if (!task.description) { task.description = null }
+    
+    await axios.post(`${SERVER_URL}/tasks`, task)
+  }
+
   @action clearStore() {
     this.tasks = []
   }

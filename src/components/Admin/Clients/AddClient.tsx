@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: '10px',
     color: 'white'
+  },
+  input: {
+    margin: '2px'
   }
 }))
 
@@ -14,31 +17,30 @@ const AddClient: React.FC = () => {
   const classes = useStyles()
   const ClientsStore = useClientsStore()
 
-  const [inputs, setInputs] = useState(
+  const [clientInputs, setClientInputs] = useState(
     { firstName: '', lastName: '', phone: '', email: '', spouseName: '' }
   )
 
-  const handleChange = ({ target }) => {
-    setInputs({ ...inputs, [target.name]: target.value })
+  const [projectInputs, setProjectInputs] = useState(
+    { name: '', address: '', city: '', description: '' }
+  )
+
+  const handleClientsInputChange = ({ target }) => {
+    setClientInputs({ ...clientInputs, [target.name]: target.value })
+  }
+
+  const handleProjectsInputChange = ({ target }) => {
+    setProjectInputs({ ...projectInputs, [target.name]: target.value })
   }
 
   const clearInputs = () => {
-    const newInputs = { ...inputs }
-    for (let key in newInputs) {
-      newInputs[key] = ''
-    }
-    setInputs(newInputs)
+    setClientInputs({ firstName: '', lastName: '', phone: '', email: '', spouseName: '' })
+    setProjectInputs({ name: '', address: '', city: '', description: '' })
   }
 
   const handleSubmit = () => {
-    const client = { ...inputs }
-
-    if (!client.spouseName) { delete client.spouseName }
-    for (let key in client) {
-      if (!client[key]) { return }
-    }
-
-    ClientsStore.addClient(client)
+    //Validate inputs are full
+    ClientsStore.addClient(clientInputs, projectInputs)
     clearInputs()
   }
 
@@ -46,45 +48,89 @@ const AddClient: React.FC = () => {
     <div>
       <div id="input-form">
         <TextField
+          className={classes.input}
           fullWidth={true}
           required={true}
           label='First Name'
           name='firstName'
-          value={inputs.firstName}
-          onChange={handleChange}
+          value={clientInputs.firstName}
+          onChange={handleClientsInputChange}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           required={true}
           label='Last Name'
           name='lastName'
-          value={inputs.lastName}
-          onChange={handleChange}
+          value={clientInputs.lastName}
+          onChange={handleClientsInputChange}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           required={true}
           label='Phone Number'
           name='phone'
-          value={inputs.phone}
+          value={clientInputs.phone}
           type='tel'
-          onChange={handleChange}
+          onChange={handleClientsInputChange}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           required={true}
           label='Email Address'
           name='email'
-          value={inputs.email}
+          value={clientInputs.email}
           type='email'
-          onChange={handleChange}
+          onChange={handleClientsInputChange}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           label='Spouse Name'
           name='spouseName'
-          value={inputs.spouseName}
-          onChange={handleChange}
+          value={clientInputs.spouseName}
+          onChange={handleClientsInputChange}
+        />
+        <TextField
+          className={classes.input}
+          fullWidth={true}
+          label='Project Name'
+          name='name'
+          value={projectInputs.name}
+          type='text'
+          onChange={handleProjectsInputChange}
+        />
+        <TextField
+          className={classes.input}
+          fullWidth={true}
+          required={true}
+          label='Address'
+          name='address'
+          value={projectInputs.address}
+          type='text'
+          onChange={handleProjectsInputChange}
+        />
+        <TextField
+          className={classes.input}
+          fullWidth={true}
+          required={true}
+          label='City'
+          name='city'
+          value={projectInputs.city}
+          type='text'
+          onChange={handleProjectsInputChange}
+        />
+        <TextField
+          className={classes.input}
+          fullWidth={true}
+          multiline={true}
+          label='Description'
+          name='description'
+          value={projectInputs.description}
+          type='text'
+          onChange={handleProjectsInputChange}
         />
         <Button
           className={classes.button}

@@ -57,20 +57,22 @@ const App: React.FC = observer(() => {
         />
         <Route
           exact
+          path='/admin/clients/:clientId/projects/:projectId/tasks'
+          render={({ match }) => (
+            <TasksProvider value={TasksStore}>
+              <ProjectDetailsWrapper match={match} />
+            </TasksProvider>
+          )}
+        />
+        <Route
+          exact
           path='/admin/clients/:clientId/transfers'
           render={() => <AdminHome />}
         />
         <Route
           exact
           path='/admin/add/:item'
-          render={() => (
-            <ProjectsProvider value={ProjectStore}>
-              <TasksProvider value={TasksStore}>
-                <ExpensesProvider value={ExpensesStore}>
-                  <AddItem />
-                </ExpensesProvider>
-              </TasksProvider>
-            </ProjectsProvider>)}
+          render={() => <AddItem />}
         />
         <AddFab />
       </div>
