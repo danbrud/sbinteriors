@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { TextField, Button, makeStyles } from '@material-ui/core'
-import { useClientsStore } from '../../../context/Clients.context'
-import { useProjectsStore } from '../../../not-used/Projects.context'
+import { useClientsStore } from '../../context/Clients.context'
+import { useProjectsStore } from '../Projects.context'
 
 
 const useStyles = makeStyles((theme) => ({

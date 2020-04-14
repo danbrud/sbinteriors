@@ -4,7 +4,7 @@ import AddClient from './Clients/AddClient'
 import '../../styles/AddItem.css'
 import { ProjectsProvider } from '../../not-used/Projects.context'
 import { ProjectStore } from '../../not-used/Projects.store'
-import AddProject from './Projects/AddProject'
+import AddProject from '../../not-used/Projects/AddProject'
 import AddTask from './Tasks/AddTask'
 import { useClientsStore } from '../../context/Clients.context'
 import { TasksProvider } from '../../context/Tasks.context'
@@ -14,8 +14,7 @@ import { TasksStore } from '../../stores/Tasks.store'
 const AddItem: React.FC = () => {
   const ClientsStore = useClientsStore()
   const { item } = useParams()
-  const { clientId, projectId } = useLocation<{ clientId: number, projectId: number }>().state
-  // console.log(clientId, projectId)
+  // const { clientId } = useLocation<{ clientId: number }>().state
 
   useEffect(() => {
     if (!ClientsStore.isPopulated) {
@@ -26,19 +25,15 @@ const AddItem: React.FC = () => {
   return (
     item === 'client'
       ? <AddClient />
-      : item === 'project'
-        ? <ProjectsProvider value={ProjectStore}>
-          <AddProject clientId={clientId} />
-        </ProjectsProvider>
-        : item === 'task'
-          ? <TasksProvider value={TasksStore}>
-            <AddTask clientId={clientId} projectId={projectId} />
-          </TasksProvider>
-          : item === 'expense'
-            ? <div>Add expense</div>
-            : item === 'transfer'
-              ? <div>Add gtransfer</div>
-              : null
+      : item === 'task'
+        ? <TasksProvider value={TasksStore}>
+          <AddTask />
+        </TasksProvider>
+        : item === 'expense'
+          ? <div>Add expense</div>
+          : item === 'transfer'
+            ? <div>Add gtransfer</div>
+            : null
   )
 }
 

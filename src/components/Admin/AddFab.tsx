@@ -56,13 +56,11 @@ const AddFab: React.FC = () => {
     { icon: <SyncAltRoundedIcon className={classes.icon} />, name: 'transfer' },
   ]
 
-  const location = useLocation()
-  let clientId: number, projectId: number
-
+  // Try adding location state
+  // const location = useLocation()
+  // let clientId: number, projectId: number
   // /admin/clients
   // /admin/clients/1
-  // /admin/clients/1/projects
-  // /admin/clients/1/projects/1
 
 
   return (
@@ -82,7 +80,9 @@ const AddFab: React.FC = () => {
             <SpeedDialAction
               key={action.name}
               icon={
-                <Link to={{ pathname: `/admin/add/${action.name}`, state: {clientId: 1, projectId: 1} }} >
+                <Link to={{ pathname: `/admin/add/${action.name}`}} >
+                  {/* Add state to link to use location state */}
+                  {/* state: {clientId: 1, projectId: 1} */}
                   {action.icon}
                 </Link>
               }

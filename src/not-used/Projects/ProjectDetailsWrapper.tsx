@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { observer } from 'mobx-react'
-import { useProjectsStore } from '../../../not-used/Projects.context'
+import { useProjectsStore } from '../Projects.context'
 import { useHistory } from 'react-router-dom'
-import Loader from '../../Loader'
+import Loader from '../../components/Loader'
 import ProjectDetails from './ProjectDetails'
-import { useTasksStore } from '../../../context/Tasks.context'
-import { useExpensesStore } from '../../../context/Expenses.context'
+import { useTasksStore } from '../../context/Tasks.context'
+import { useExpensesStore } from '../../context/Expenses.context'
 
 
 interface ProjectDetailsWrapperProps {
