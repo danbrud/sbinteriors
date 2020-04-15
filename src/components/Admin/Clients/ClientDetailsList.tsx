@@ -7,9 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { toProperCase } from '../../../utils'
-import { useClientsStore } from '../../../context/Clients.context'
 
 const useStyles = makeStyles({
   row: {
@@ -18,19 +17,15 @@ const useStyles = makeStyles({
   }
 })
 
-interface ClientDetailItemsProps {
-  clientId: string
-}
+// interface ClientDetailItemsProps {
+//   clientId: string
+// }
 
-const ClientDetailItems: React.FC<ClientDetailItemsProps> = (props) => {
+const ClientDetailItems: React.FC = (props) => {
   const classes = useStyles()
-  const ClientsStore = useClientsStore()
-  const detailItems = ['tasks', 'transfers', 'expenses']
+  const { clientId } = useParams()
 
-  const addPath = () => {
-    const projectId = ClientsStore.getClient(props.clientId).projects[0].id
-    return `/projects/${projectId}`
-  }
+  const detailItems = ['tasks', 'transfers', 'expenses']
 
   return (
     <TableContainer component={Paper}>
@@ -38,12 +33,7 @@ const ClientDetailItems: React.FC<ClientDetailItemsProps> = (props) => {
         <TableBody>
           {detailItems.map(item => (
             <TableRow key={item} >
-              <Link to={
-                item === 'tranfers'
-                  ? `/admin/clients/${props.clientId}/${item}`
-                  : `/admin/clients/${props.clientId}${addPath()}/${item}`
-                }
-              >
+              <Link to={`/admin/clients/${clientId}/${item}`}>
                 <TableCell align="left" className={classes.row}>{toProperCase(item)}</TableCell>
                 <TableCell align="right">
                   <ArrowForwardIosIcon />

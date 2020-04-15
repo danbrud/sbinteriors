@@ -4,12 +4,12 @@ import { observer } from 'mobx-react'
 import { BrowserRouter as Router, Route, Redirect, useRouteMatch } from 'react-router-dom'
 import AdminHome from './components/Admin/AdminHome'
 import ClientInfo from './components/Admin/Clients/ClientInfo'
-import ProjectDetailsWrapper from './not-used/Projects/ProjectDetailsWrapper'
 import { TasksProvider } from './context/Tasks.context'
 import { TasksStore } from './stores/Tasks.store'
 import MenuBar from './components/MenuBar'
 import AddItem from './components/Admin/AddItem'
 import AddFab from './components/Admin/AddFab'
+import Tasks from './components/Admin/Tasks/Tasks'
 
 
 const App: React.FC = observer(() => {
@@ -27,14 +27,14 @@ const App: React.FC = observer(() => {
         <Route
           exact
           path='/admin/clients/:clientId'
-          render={({ match }) => <ClientInfo match={match} />}
+          render={() => <ClientInfo />}
         />
         <Route
           exact
           path='/admin/clients/:clientId/tasks'
-          render={({ match }) => (
+          render={() => (
             <TasksProvider value={TasksStore}>
-              <ProjectDetailsWrapper match={match} />
+              <Tasks />
             </TasksProvider>
           )}
         />

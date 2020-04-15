@@ -7,8 +7,6 @@ import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { observer } from 'mobx-react'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
-import { Button, ExpansionPanelActions } from '@material-ui/core'
 import { useExpensesStore } from '../../../context/Expenses.context'
 
 const useStyles = makeStyles((theme) => ({
@@ -27,11 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-interface ExpensePanelsProps {
-  projectId: string
-}
-
-const ExpensePanels: React.FC<ExpensePanelsProps> = observer((props) => {
+const ExpensePanels: React.FC = observer((props) => {
   const ExpensesStore = useExpensesStore()
   const classes = useStyles()
   const [expanded, setExpanded] = useState<number | boolean>(false)
@@ -54,7 +48,7 @@ const ExpensePanels: React.FC<ExpensePanelsProps> = observer((props) => {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
-              {moment(expense.date).format('MMM Do YY')}{expense.isPaid ? ` | Paid via: ${expense.paymentMethod}` : null}
+              {moment(expense.date).format('MMM Do YY')}
             </Typography>
           </ExpansionPanelDetails>
             {/* <ExpansionPanelActions>

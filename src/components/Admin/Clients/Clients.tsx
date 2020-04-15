@@ -20,7 +20,7 @@ const Clients: React.FC = observer(() => {
       <TextField fullWidth={true} label="Search Clients" onChange={e => setInput(e.target.value)} />
       {
         ClientsStore.clients
-          .filter(c => `${c.firstName.toLowerCase()} ${c.lastName.toLowerCase()}`.includes(input.toLowerCase()))
+          .filter(c => c.name.includes(input.toLowerCase()))
           .map(client => <ClientCard key={client.id} client={client} />)
       }
     </div>

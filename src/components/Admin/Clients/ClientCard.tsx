@@ -39,7 +39,7 @@ const ClientCard: React.FC<ClientCardProps> = observer((props) => {
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {`${toProperCase(client.firstName)} ${toProperCase(client.lastName)}`}
+            {client.formattedName}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
             <i className="fas fa-phone"></i> {client.phone}

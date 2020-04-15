@@ -1,5 +1,4 @@
 import { observable, action, computed } from 'mobx'
-import { Project } from '../not-used/Project.store'
 import axios from 'axios'
 import { toProperCase } from '../utils'
 const SERVER_URL = process.env.REACT_APP_SERVER_URL

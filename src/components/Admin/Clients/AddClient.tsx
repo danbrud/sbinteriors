@@ -17,30 +17,25 @@ const AddClient: React.FC = () => {
   const classes = useStyles()
   const ClientsStore = useClientsStore()
 
-  const [clientInputs, setClientInputs] = useState(
-    { firstName: '', lastName: '', phone: '', email: '', spouseName: '' }
-  )
+  const [inputs, setInputs] = useState({
+    name: '', phone: '', email: '', spouseName: '',
+    address: '', city: '', description: ''
+  })
 
-  const [projectInputs, setProjectInputs] = useState(
-    { name: '', address: '', city: '', description: '' }
-  )
-
-  const handleClientsInputChange = ({ target }) => {
-    setClientInputs({ ...clientInputs, [target.name]: target.value })
-  }
-
-  const handleProjectsInputChange = ({ target }) => {
-    setProjectInputs({ ...projectInputs, [target.name]: target.value })
+  const handleChange = ({ target }) => {
+    setInputs({ ...inputs, [target.name]: target.value })
   }
 
   const clearInputs = () => {
-    setClientInputs({ firstName: '', lastName: '', phone: '', email: '', spouseName: '' })
-    setProjectInputs({ name: '', address: '', city: '', description: '' })
+    setInputs({
+      name: '', phone: '', email: '', spouseName: '',
+      address: '', city: '', description: ''
+    })
   }
 
   const handleSubmit = () => {
     //Validate inputs are full
-    ClientsStore.addClient(clientInputs, projectInputs)
+    ClientsStore.addClient(inputs)
     clearInputs()
   }
 
@@ -51,19 +46,10 @@ const AddClient: React.FC = () => {
           className={classes.input}
           fullWidth={true}
           required={true}
-          label='First Name'
-          name='firstName'
-          value={clientInputs.firstName}
-          onChange={handleClientsInputChange}
-        />
-        <TextField
-          className={classes.input}
-          fullWidth={true}
-          required={true}
-          label='Last Name'
-          name='lastName'
-          value={clientInputs.lastName}
-          onChange={handleClientsInputChange}
+          label='Name'
+          name='name'
+          value={inputs.name}
+          onChange={handleChange}
         />
         <TextField
           className={classes.input}
@@ -71,9 +57,9 @@ const AddClient: React.FC = () => {
           required={true}
           label='Phone Number'
           name='phone'
-          value={clientInputs.phone}
+          value={inputs.phone}
           type='tel'
-          onChange={handleClientsInputChange}
+          onChange={handleChange}
         />
         <TextField
           className={classes.input}
@@ -81,26 +67,17 @@ const AddClient: React.FC = () => {
           required={true}
           label='Email Address'
           name='email'
-          value={clientInputs.email}
+          value={inputs.email}
           type='email'
-          onChange={handleClientsInputChange}
+          onChange={handleChange}
         />
         <TextField
           className={classes.input}
           fullWidth={true}
           label='Spouse Name'
           name='spouseName'
-          value={clientInputs.spouseName}
-          onChange={handleClientsInputChange}
-        />
-        <TextField
-          className={classes.input}
-          fullWidth={true}
-          label='Project Name'
-          name='name'
-          value={projectInputs.name}
-          type='text'
-          onChange={handleProjectsInputChange}
+          value={inputs.spouseName}
+          onChange={handleChange}
         />
         <TextField
           className={classes.input}
@@ -108,9 +85,9 @@ const AddClient: React.FC = () => {
           required={true}
           label='Address'
           name='address'
-          value={projectInputs.address}
+          value={inputs.address}
           type='text'
-          onChange={handleProjectsInputChange}
+          onChange={handleChange}
         />
         <TextField
           className={classes.input}
@@ -118,9 +95,9 @@ const AddClient: React.FC = () => {
           required={true}
           label='City'
           name='city'
-          value={projectInputs.city}
+          value={inputs.city}
           type='text'
-          onChange={handleProjectsInputChange}
+          onChange={handleChange}
         />
         <TextField
           className={classes.input}
@@ -128,9 +105,9 @@ const AddClient: React.FC = () => {
           multiline={true}
           label='Description'
           name='description'
-          value={projectInputs.description}
+          value={inputs.description}
           type='text'
-          onChange={handleProjectsInputChange}
+          onChange={handleChange}
         />
         <Button
           className={classes.button}

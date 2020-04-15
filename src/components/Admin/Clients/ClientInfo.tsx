@@ -4,28 +4,29 @@ import { useClientsStore } from '../../../context/Clients.context'
 import Loader from '../../Loader'
 import ClientDetails from './ClientDetails'
 import ClientDetailItems from './ClientDetailsList'
+import { useParams } from 'react-router-dom'
 
-interface ClientInfoProps {
-  match: { params: { clientId: string } }
-}
+// interface ClientInfoProps {
+//   match: { params: { clientId: string } }
+// }
 
-const ClientInfo: React.FC<ClientInfoProps> = observer((props) => {
+const ClientInfo: React.FC = observer((props) => {
   const ClientsStore = useClientsStore()
-  const clientId = props.match.params.clientId
+  const { clientId } = useParams()
 
   const client = ClientsStore.getClient(clientId)
 
-    useEffect(() => {
-      if (!ClientsStore.isPopulated) {
-        ClientsStore.getClientsFromDB()
-      }
-    }, [])
+  useEffect(() => {
+    if (!ClientsStore.isPopulated) {
+      ClientsStore.getClientsFromDB()
+    }
+  }, [])
 
   return (
     ClientsStore.isPopulated
       ? <div>
         <ClientDetails client={client} />
-        <ClientDetailItems clientId={clientId} />
+        <ClientDetailItems />
       </div>
       : <Loader />
   )

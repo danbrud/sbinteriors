@@ -13,7 +13,6 @@ interface ClientDetailsProps {
 
 const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
   const { client } = props
-  const [project] = client.projects
 
   return (
     <div id='client-details-container'>
@@ -23,10 +22,10 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
           <BalanceAvatar size='large' balance={-2200} />
         </div>
         <div id='client-contact-details'>
-          <h2>{toProperCase(client.firstName)} {toProperCase(client.lastName)}</h2>
+          <h2>{client.formattedName}</h2>
           <p><i className="fas fa-phone"></i> {client.phone}</p>
           <p><i className="far fa-envelope-open"></i> {client.email}</p>
-          {client.spouseName ? <p><i className="far fa-heart"></i> {toProperCase(client.spouseName)} {toProperCase(client.lastName)}</p> : null}
+          {client.spouseName ? <p><i className="far fa-heart"></i> {toProperCase(client.spouseName)}</p> : null}
         </div>
       </div>
       <Divider />
@@ -36,14 +35,11 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
       </div>
       <Divider /> */}
       <div id='project-details'>
-        <Typography component="h5" variant="h5">
-          {project.name}
+        <Typography variant="subtitle1" color="textSecondary">
+          <i className="fas fa-map-marker-alt"></i> {client.address}, {client.city}
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
-          <i className="fas fa-map-marker-alt"></i> {project.address}, {project.city}
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary">
-          <i className="fas fa-sync-alt"></i> {project.isComplete ? "Completed" : "In progress"}
+          <i className="fas fa-sync-alt"></i> {client.isComplete ? "Completed" : "In progress"}
         </Typography>
       </div>
       <Divider />
