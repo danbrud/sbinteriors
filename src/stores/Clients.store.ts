@@ -43,7 +43,7 @@ export class Clients {
   }
 
   getClientByName(name: string): Client {
-    const client = this.clients.find(c => c.name === name)
+    const client = this.clients.find(c => c.name.toLowerCase() === name.toLowerCase())
     return client
   }
 }

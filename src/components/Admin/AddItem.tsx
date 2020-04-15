@@ -13,14 +13,26 @@ import DataList from './DataList'
 
 
 const AddItem: React.FC = () => {
-  const ClientsStore = useClientsStore()
   const { item } = useParams()
-  // const { clientId } = useLocation<{ clientId: number }>().state
+  let { state } = useLocation<{ clientId: number } | null>()
+
+  const ClientsStore = useClientsStore()
   const [clientName, setClientName] = useState('')
 
   useEffect(() => {
+
+  }, [])
+
+  useEffect(() => {
     if (!ClientsStore.isPopulated) {
+      state = null
       ClientsStore.getClientsFromDB()
+    }
+
+    if (state) {
+      const { clientId } = state
+      const client = ClientsStore.getClient(clientId)
+      setClientName(client.formattedName)
     }
   }, [])
 

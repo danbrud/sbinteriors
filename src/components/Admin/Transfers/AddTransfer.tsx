@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
 import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup } from '@material-ui/core'
@@ -41,14 +41,6 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
   const ClientsStore = useClientsStore()
   const TransfersStore = useTransfersStore()
   const classes = useStyles()
-
-  //Prefill dropwdown if navigated from client page
-  // const { clientId } = props
-  // let name = ''
-  // if (clientId) {
-  //   const client = ClientsStore.getClient(clientId)
-  //   name = `${toProperCase(client.firstName)} ${toProperCase(client.lastName)}`
-  // }
 
   const { clientName, setClientName } = props
   const [date, setDate] = useState(new Date())

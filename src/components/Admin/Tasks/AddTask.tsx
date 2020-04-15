@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
 import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button } from '@material-ui/core'
@@ -32,13 +32,6 @@ const AddTask: React.FC<AddItemProps> = (props) => {
   const TasksStore = useTasksStore()
   const classes = useStyles()
 
-  //Prefill dropwdown if navigated from client page
-  // const { clientId } = props
-  // let name = ''
-  // if (clientId) {
-  //   const client = ClientsStore.getClient(clientId)
-  //   name = `${toProperCase(client.firstName)} ${toProperCase(client.lastName)}`
-  // }
   const { clientName, setClientName } = props
   const [taskType, setTaskType] = useState('')
   const [startTime, setStartTime] = useState(new Date())
@@ -76,7 +69,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
         value={taskType}
         onChange={(e) => setTaskType(e.target.value as string)}
       >
-        {availableTypes.map(t => <MenuItem value={t}>{t}</MenuItem>)}
+        {availableTypes.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
       </Select>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <DateTimePicker

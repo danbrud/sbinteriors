@@ -5,7 +5,7 @@ import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import { toProperCase } from '../../utils'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import CreditCardRoundedIcon from '@material-ui/icons/CreditCardRounded';
 import SyncAltRoundedIcon from '@material-ui/icons/SyncAltRounded';
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
@@ -49,19 +49,35 @@ const AddFab: React.FC = () => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
 
+  const location = useLocation()
+
+  // Try adding location state
+  // let clientId: number, projectId: number
+  // /admin/clients
+  // /admin/clients/1
+
+  const getLinkData = (slug: string) => {
+    const linkData: { pathname: string, state?: {} } = {
+      pathname: `/admin/add/${slug}`
+    }
+    if(slug === 'client') { return linkData }
+
+    const pathArr = location.pathname.split('/')
+    const clientsIndex = pathArr.indexOf('clients')
+    if (clientsIndex !== -1 && clientsIndex !== pathArr.length - 1) {
+      const clientId = pathArr[clientsIndex + 1]
+      linkData.state = { clientId }
+    }
+
+    return linkData
+  }
+
   const actions = [
     { icon: <PersonAddRoundedIcon className={classes.icon} />, name: 'client' },
     { icon: <AssignmentRoundedIcon className={classes.icon} />, name: 'task' },
     { icon: <CreditCardRoundedIcon className={classes.icon} />, name: 'expense' },
     { icon: <SyncAltRoundedIcon className={classes.icon} />, name: 'transfer' },
   ]
-
-  // Try adding location state
-  // const location = useLocation()
-  // let clientId: number, projectId: number
-  // /admin/clients
-  // /admin/clients/1
-
 
   return (
     <div className={classes.root}>
@@ -80,7 +96,7 @@ const AddFab: React.FC = () => {
             <SpeedDialAction
               key={action.name}
               icon={
-                <Link to={{ pathname: `/admin/add/${action.name}`}} >
+                <Link to={getLinkData(action.name)} >
                   {/* Add state to link to use location state */}
                   {/* state: {clientId: 1, projectId: 1} */}
                   {action.icon}
