@@ -14,6 +14,7 @@ export class ClientsController {
   private intializeRoutes() {
     this.router.get('/', this.getClients)
     this.router.post('/', this.createClient)
+    this.router.put('/:clientId', this.updateClient)
   }
 
   private getClients: express.RequestHandler = async (req, res) => {
@@ -23,6 +24,13 @@ export class ClientsController {
 
   private createClient: express.RequestHandler = async (req, res) => {
     const client = await this.clientsService.createClient(req.body)
+    res.send(client)
+  }
+
+  private updateClient: express.RequestHandler = async (req, res) => {
+    const { params, body } = req
+    
+    const client = await this.clientsService.updateClient(params.clientId, body)
     res.send(client)
   }
 }

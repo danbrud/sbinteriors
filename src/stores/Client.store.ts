@@ -11,13 +11,13 @@ export class Client {
   @observable spouseName: string | null
   @observable address: string
   @observable city: string
-  @observable description: string
+  @observable description: string | null
   @observable balance: number
   @observable isComplete: boolean
 
   constructor(
-    id: number, name: string, email: string, phone: string, spouseName: string,
-    address: string, city: string, description: string, balance: number, isComplete: boolean
+    id: number, name: string, email: string, phone: string, spouseName: string | null,
+    address: string, city: string, description: string | null, balance: number, isComplete: boolean
   ) {
     this.id = id
     this.name = name

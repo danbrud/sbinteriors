@@ -8,7 +8,7 @@ export class Tasks {
   @observable tasks: Task[] = []
 
   @action async getTasksFromDB(clientId: string) {
-    const {data} = await axios.get<Task[]>(`${SERVER_URL}/tasks/${clientId}`)
+    const { data } = await axios.get<Task[]>(`${SERVER_URL}/tasks/${clientId}`)
     const tasks = data.map(t => (
       new Task(t.id, t.clientId, t.type, t.startTime, t.endTime, t.price, t.description)
     ))

@@ -18,11 +18,17 @@ class ClientsController {
             const client = await this.clientsService.createClient(req.body);
             res.send(client);
         };
+        this.updateClient = async (req, res) => {
+            const { params, body } = req;
+            const client = await this.clientsService.updateClient(params.clientId, body);
+            res.send(client);
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
         this.router.get('/', this.getClients);
         this.router.post('/', this.createClient);
+        this.router.put('/:clientId', this.updateClient);
     }
 }
 exports.ClientsController = ClientsController;

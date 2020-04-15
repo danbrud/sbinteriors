@@ -22,7 +22,10 @@
     "strictPropertyInitialization": false,
     "inlineSourceMap": true
   },
+  "exclude": [
+    "./node_modules"
+  ],
   "include": [
-    "src", "not-used"
+    "src"
   ]
 }

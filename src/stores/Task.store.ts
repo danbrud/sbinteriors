@@ -7,11 +7,11 @@ export class Task {
   @observable startTime: Date
   @observable endTime: Date
   @observable price: number
-  @observable description: string
+  @observable description: string | null
 
   constructor(
     id: number, clientId: number, type: string, startTime: Date,
-    endTime: Date, price: number, description: string
+    endTime: Date, price: number, description: string | null
   ) {
     this.id = id
     this.clientId = clientId
