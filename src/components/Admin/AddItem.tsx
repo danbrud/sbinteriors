@@ -10,6 +10,9 @@ import AddTransfer from './Transfers/AddTransfer'
 import { TransfersStore } from '../../stores/Transfers.store'
 import { TransfersProvider } from '../../context/Transfers.context'
 import DataList from './DataList'
+import { ExpensesProvider } from '../../context/Expenses.context'
+import { ExpensesStore } from '../../stores/Expenses.store'
+import AddExpense from './Expenses/AddExpense'
 
 
 const AddItem: React.FC = () => {
@@ -52,7 +55,9 @@ const AddItem: React.FC = () => {
               <AddTask clientName={clientName} setClientName={setClientName} />
             </TasksProvider>
             : item === 'expense'
-              ? <div>Add expense</div>
+              ? <ExpensesProvider value={ExpensesStore}>
+                <AddExpense clientName={clientName} setClientName={setClientName} />
+              </ExpensesProvider>
               : item === 'transfer'
                 ? <TransfersProvider value={TransfersStore}>
                   <AddTransfer clientName={clientName} setClientName={setClientName} />

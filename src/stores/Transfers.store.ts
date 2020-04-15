@@ -18,7 +18,7 @@ export class Transfers {
     this.transfers = transfers
   }
 
-  @action async createTransfer(transfer) {
+  async createTransfer(transfer) {
     transfer = removeOptionalFields(['foreignAmount', 'foreignAmountCurrency', 'description'], { ...transfer })
     await axios.post(`${SERVER_URL}/transfers`, transfer)
   }

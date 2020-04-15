@@ -37,6 +37,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Expense.prototype, "amount", void 0);
 __decorate([
+    sequelize_typescript_1.Default(null),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Expense.prototype, "description", void 0);
+__decorate([
     sequelize_typescript_1.BelongsTo(() => Client_model_1.Client),
     __metadata("design:type", Client_model_1.Client)
 ], Expense.prototype, "client", void 0);

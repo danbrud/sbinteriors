@@ -6,12 +6,14 @@ export class Expense {
   @observable name: string
   @observable date: Date
   @observable amount: number
+  @observable description: string | null
 
-  constructor(id: number, clientId: number, name: string, date: Date, amount: number) {
+  constructor(id: number, clientId: number, name: string, date: Date, amount: number, description: string | null) {
     this.id = id
     this.clientId = clientId
     this.name = name
     this.date = date
     this.amount = amount
+    this.description = description
   }
 }

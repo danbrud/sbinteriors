@@ -1,15 +1,22 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
-import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button } from '@material-ui/core'
-import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
+import { FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup } from '@material-ui/core'
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
-import { useTasksStore } from '../../../context/Tasks.context'
-
+import { useExpensesStore } from '../../../context/Expenses.context'
 
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& > *': {
+      margin: theme.spacing(1),
+    }
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -24,79 +31,69 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: '10px',
     color: 'white'
+  },
+  buttonGroup: {
+    marginBottom: '3px'
   }
 }))
 
-const AddTask: React.FC<AddItemProps> = (props) => {
+const AddExpense: React.FC<AddItemProps> = (props) => {
   const ClientsStore = useClientsStore()
-  const TasksStore = useTasksStore()
+  const ExpensesStore = useExpensesStore()
   const classes = useStyles()
 
   const { clientName, setClientName } = props
-  const [taskType, setTaskType] = useState('')
-  const [startTime, setStartTime] = useState(new Date())
-  const [endTime, setEndTime] = useState(new Date())
-  const [price, setPrice] = useState('')
+  const [name, setName] = useState('')
+  const [date, setDate] = useState(new Date())
+  const [amount, setAmount] = useState('')
   const [description, setDescription] = useState('')
 
   const handleSubmit = () => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
-    const task = { clientId: client.id, type: taskType, startTime, endTime, price, description }
-    TasksStore.createTask(task)
+    const expense = { clientId: client.id, name, date, amount, description }
+    ExpensesStore.createExpense(expense)
+
+    const balance = client.balance - parseInt(amount)
+    client.updateClient('balance', balance)
     clearInputs()
   }
 
   const clearInputs = () => {
     setClientName('')
-    setTaskType('')
-    setStartTime(new Date())
-    setEndTime(new Date())
-    setPrice('')
+    setName('')
+    setDate(new Date())
+    setAmount('')
     setDescription('')
   }
 
-  const availableTypes = ['Home Styling', 'AutoCad', 'Site Visit', 'Shopping']
-
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel className={classes.input} id="task-type-label" required={true}>Task Type</InputLabel>
-      <Select
+      <TextField
         className={classes.input}
-        labelId="task-type-label"
-        id="task-type-select"
-        value={taskType}
-        onChange={(e) => setTaskType(e.target.value as string)}
-      >
-        {availableTypes.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
-      </Select>
+        required={true}
+        label='Expense Name'
+        value={name}
+        type='text'
+        onChange={(e) => setName(e.target.value)}
+      />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <DateTimePicker
-          required={true}
-          className={classes.input}
-          label="Start Time"
-          inputVariant="standard"
-          value={startTime}
-          onChange={(date) => setStartTime(date)}
-        />
-        <DateTimePicker
-          required={true}
-          className={classes.input}
-          label="End Time"
-          inputVariant="standard"
-          value={endTime}
-          onChange={(date) => setEndTime(date)}
+        <DatePicker
+          label="Transfer Date"
+          value={date}
+          onChange={setDate}
+          format='MMM do, yyyy'
         />
       </MuiPickersUtilsProvider>
       <TextField
         className={classes.input}
         required={true}
-        value={price}
-        placeholder='Price'
-        onChange={(e) => setPrice(e.target.value)}
-        label="Price"
+        value={amount}
         type='number'
+        placeholder='Amount ILS'
+        onChange={(e) => setAmount(e.target.value)}
+        label="Expense Amount"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -119,10 +116,10 @@ const AddTask: React.FC<AddItemProps> = (props) => {
         color="primary"
         onClick={handleSubmit}
       >
-        ADD TASK
-        </Button>
+        ADD EXPENSE
+      </Button>
     </FormControl>
   )
 }
 
-export default AddTask
+export default AddExpense

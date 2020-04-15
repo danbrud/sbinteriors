@@ -107,12 +107,12 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
         />
       </MuiPickersUtilsProvider>
       <FormControlLabel
+        // labelPlacement='start'
         control={
           <Switch
             checked={hasForeignAmount}
             onChange={checkForeignAmount}
             color="primary"
-          // inputProps={{ 'aria-label': 'primary checkbox' }}
           />
         }
         label='Foreign Currency Tranfer?'
@@ -124,6 +124,7 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
             value={foreignAmount}
             placeholder='Foreign Amount'
             label='Foreign Amount'
+            type='number'
             onChange={(e) => setForeignAmount(e.target.value)}
             InputProps={{
               endAdornment: (
@@ -154,12 +155,13 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
         required={true}
         value={ilsAmount}
         placeholder='Amount ILS'
+        type='number'
         onChange={(e) => setIlsAmount(e.target.value)}
         label="Amount ILS"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <i className="fas fa-shekel-sign"></i>
+              <i className="fas fa-shekel-sign" style={{ color: '#757575' }}></i>
             </InputAdornment>
           )
         }}

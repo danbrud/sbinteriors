@@ -24,6 +24,10 @@ export class Expense extends Model<Expense> {
   @Column({ type: DataType.FLOAT })
   amount: number
 
+  @Default(null)
+  @Column
+  description: string
+
   @BelongsTo(() => Client)
   client: Client
 }

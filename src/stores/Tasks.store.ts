@@ -15,7 +15,7 @@ export class Tasks {
     this.tasks = tasks
   }
 
-  @action async createTask(task) {
+  async createTask(task) {
     task = removeOptionalFields(['price', 'description'], { ...task })
     await axios.post(`${SERVER_URL}/tasks`, task)
   }
