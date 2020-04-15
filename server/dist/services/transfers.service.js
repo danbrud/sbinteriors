@@ -11,7 +11,6 @@ class TransfersService {
         return transfers;
     }
     async createTransfer(body) {
-        //Make sure to update client balance
         const transfer = new Transfer_model_1.Transfer(body);
         await transfer.save();
         return transfer;

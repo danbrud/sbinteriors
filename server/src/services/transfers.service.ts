@@ -1,4 +1,5 @@
 import { Transfer } from '../models/Transfer.model'
+import { Client } from '../models/Client.model'
 
 export class TransfersService {
 
@@ -13,10 +14,9 @@ export class TransfersService {
   }
 
   public async createTransfer(body): Promise<Transfer> {
-      //Make sure to update client balance
-      const transfer = new Transfer(body)
-      await transfer.save()
+    const transfer = new Transfer(body)
+    await transfer.save()
 
-      return transfer
+    return transfer
   }
 }

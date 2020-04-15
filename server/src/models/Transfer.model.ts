@@ -18,6 +18,10 @@ export class Transfer extends Model<Transfer> {
   @Column({ type: DataType.FLOAT })
   foreignAmount: number
 
+  @Default(null)
+  @Column
+  foreignAmountCurrency: string
+
   @Column
   transferMethod: string
 

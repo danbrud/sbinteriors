@@ -47,3 +47,5 @@ export class Clients {
     return client
   }
 }
+
+export const ClientsStore = new Clients()

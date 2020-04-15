@@ -31,12 +31,12 @@ export class Client {
     this.isComplete = isComplete
   }
 
-  @action async updateClient(prop: string, value: string) {
+  @action async updateClient(prop: string, value: string | boolean | number) {
     await this.updateClientInDB(prop, value)
     this[prop] = value
   }
 
-  async updateClientInDB(prop: string, value: string) {
+  async updateClientInDB(prop: string, value: string | boolean | number) {
     //Make http request to update client
     console.log(prop, value)
   }

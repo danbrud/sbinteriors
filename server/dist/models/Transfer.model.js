@@ -32,6 +32,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Transfer.prototype, "foreignAmount", void 0);
 __decorate([
+    sequelize_typescript_1.Default(null),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Transfer.prototype, "foreignAmountCurrency", void 0);
+__decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Transfer.prototype, "transferMethod", void 0);

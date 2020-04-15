@@ -6,6 +6,9 @@ import AddTask from './Tasks/AddTask'
 import { useClientsStore } from '../../context/Clients.context'
 import { TasksProvider } from '../../context/Tasks.context'
 import { TasksStore } from '../../stores/Tasks.store'
+import AddTransfer from './Transfers/AddTransfer'
+import { TransfersStore } from '../../stores/Transfers.store'
+import { TransfersProvider } from '../../context/Transfers.context'
 
 
 const AddItem: React.FC = () => {
@@ -29,7 +32,9 @@ const AddItem: React.FC = () => {
         : item === 'expense'
           ? <div>Add expense</div>
           : item === 'transfer'
-            ? <div>Add gtransfer</div>
+            ? <TransfersProvider value={TransfersStore}>
+              <AddTransfer />
+            </TransfersProvider>
             : null
   )
 }
