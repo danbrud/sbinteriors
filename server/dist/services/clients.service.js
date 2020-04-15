@@ -15,6 +15,7 @@ class ClientsService {
         const { prop, value } = body;
         const client = await Client_model_1.Client.findOne({ where: { id: clientId } });
         client[prop] = value;
+        client.save();
         return client;
     }
 }

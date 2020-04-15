@@ -16,9 +16,11 @@ export class ClientsService {
 
   public async updateClient(clientId, body): Promise<Client> {
     const { prop, value } = body
-    
+
     const client = await Client.findOne({ where: { id: clientId } })
     client[prop] = value
+    client.save()
+
     return client
   }
 }

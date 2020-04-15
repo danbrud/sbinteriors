@@ -32,13 +32,8 @@ export class Client {
   }
 
   @action async updateClient(prop: string, value: string | boolean | number) {
-    await this.updateClientInDB(prop, value)
+    await axios.put(`${SERVER_URL}/clients/${this.id}`, { prop, value })
     this[prop] = value
-  }
-
-  async updateClientInDB(prop: string, value: string | boolean | number) {
-    //Make http request to update client
-    console.log(prop, value)
   }
 
   @computed get formattedName() {
