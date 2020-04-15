@@ -80,6 +80,7 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
       />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <DatePicker
+          required={true}
           label="Transfer Date"
           value={date}
           onChange={setDate}

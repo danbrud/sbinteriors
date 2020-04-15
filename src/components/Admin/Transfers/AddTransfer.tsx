@@ -100,6 +100,7 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
       </Select>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <DatePicker
+          required={true}
           label="Transfer Date"
           value={date}
           onChange={setDate}
