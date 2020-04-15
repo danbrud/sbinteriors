@@ -58,7 +58,7 @@ const TaskPanels: React.FC = observer((props) => {
             </Typography>
           </ExpansionPanelDetails>
             <ExpansionPanelActions>
-              <Link to={``}>
+              <Link to={`/admin/clients/1/tasks/${task.id}`}>
                 <Button size="small" color="primary" variant="outlined">
                   Select
               </Button>

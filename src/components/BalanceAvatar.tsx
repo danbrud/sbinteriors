@@ -19,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
     height: '30vw',
     fontSize: '30px'
   },
+  medium: {
+    width: '20vw',
+    height: '20vw',
+    fontSize: '18px'
+  }
 }))
 
 interface BalanceAvatarProps {
@@ -30,12 +35,12 @@ const BalanceAvatar: React.FC<BalanceAvatarProps> = (props) => {
   const classes = useStyles()
   const { balance, size } = props
 
-  const backgroundColor = balance >= 0 ? '#27ae60' : '#c0392b'
+  const backgroundColor = balance >= 0 ? '#208f4e' : '#c0392b'
 
   return (
     <div className={classes.root}>
       <Avatar className={classes[size]} style={{ backgroundColor }}>
-        {/* &#x20aa; */}
+        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i>
         {Math.abs(balance)}
       </Avatar>
     </div>

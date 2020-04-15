@@ -38,6 +38,15 @@ const App: React.FC = observer(() => {
             </TasksProvider>
           )}
         />
+         <Route
+          exact
+          path='/admin/clients/:clientId/tasks/:taskId'
+          render={() => (
+            <TasksProvider value={TasksStore}>
+                
+            </TasksProvider>
+          )}
+        />
         <Route
           exact
           path='/admin/clients/:clientId/transfers'
