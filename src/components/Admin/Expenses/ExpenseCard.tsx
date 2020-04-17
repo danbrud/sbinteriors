@@ -61,9 +61,13 @@ const ExpenseCard: React.FC<ExpenseCardProps> = observer((props) => {
             </span>
           </Typography>
         </div>
-        <Typography className={classes.paragraph}>
-          {expense.description}
-        </Typography>
+        {
+          expense.description
+            ? <Typography className={classes.paragraph}>
+              {expense.description}
+            </Typography>
+            : null
+        }
       </CardContent>
       <CardActions >
         <Button color='primary' size="small">Edit Expense</Button>

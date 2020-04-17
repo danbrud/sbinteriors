@@ -74,9 +74,13 @@ const TaskCard: React.FC<TaskCardProps> = observer((props) => {
               : <span>Price: No charge (included)</span>
           }
         </Typography>
-        <Typography className={classes.paragraph}>
-          {task.description}
-        </Typography>
+        {
+          task.description
+            ? <Typography className={classes.paragraph}>
+              {task.description}
+            </Typography>
+            : null
+        }
       </CardContent>
       <CardActions >
         <Button color='primary' size="small">Edit Task</Button>
