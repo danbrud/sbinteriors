@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
-import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup } from '@material-ui/core'
+import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup, FormLabel, RadioGroup, Radio } from '@material-ui/core'
 import { MuiPickersUtilsProvider, DatePicker, KeyboardDatePicker } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useTransfersStore } from '../../../context/Transfers.context'
+import { Client } from '../../../stores/Client.store'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +35,19 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonGroup: {
     marginBottom: '3px'
+  },
+  radio: {
+    marginLeft: '4px'
+  },
+  radioLabel: {
+    margin: '4px 0 0 4px'
+  },
+  currencyInput: {
+    width: '33%',
+    marginLeft: '20px'
+  },
+  foreignAmountInput: {
+    width: '60%'
   }
 }))
 
@@ -43,13 +57,15 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
   const classes = useStyles()
 
   const { clientName, setClientName } = props
+
   const [date, setDate] = useState(new Date())
   const [foreignAmount, setForeignAmount] = useState('')
-  const [foreignAmountCurrency, setForeignAmountCurrency] = useState('')
+  const [foreignAmountCurrency, setForeignAmountCurrency] = useState('USD')
   const [ilsAmount, setIlsAmount] = useState('')
   const [transferMethod, setTransferMethod] = useState('')
   const [description, setDescription] = useState('')
   const [hasForeignAmount, setHasForeignAmount] = useState(false)
+  const [balanceType, setBalanceType] = useState('expenseBalance')
 
   const checkForeignAmount = ({ target }) => {
     const { checked } = target
@@ -66,10 +82,13 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
     const transfer = { clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount, transferMethod, description }
     TransfersStore.createTransfer(transfer)
 
-    //handle balance
-    // const balance =  + parseInt(ilsAmount)
-    // client.updateClient('balance', balance)
+    updateBalance(client)
     clearInputs()
+  }
+
+  const updateBalance = (client: Client) => {
+    const balance = client[balanceType] + parseInt(ilsAmount)
+    client.updateClient(balanceType, balance)
   }
 
   const clearInputs = () => {
@@ -99,6 +118,11 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
       >
         {availableTransferMethods.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
       </Select>
+      <FormLabel className={classes.radioLabel} component="legend">Transfer Type</FormLabel>
+      <RadioGroup className={classes.radio} row value={balanceType} onChange={(e) => setBalanceType(e.target.value)}>
+        <FormControlLabel value="expenseBalance" control={<Radio color='primary' />} label="Expenses" />
+        <FormControlLabel value="taskBalance" control={<Radio color='primary' />} label="Tasks" />
+      </RadioGroup>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           required={true}
@@ -120,36 +144,24 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
         label='Foreign Currency Tranfer?'
       />
       {
-        hasForeignAmount ? (
-          <TextField
-            className={classes.input}
-            value={foreignAmount}
-            placeholder='Foreign Amount'
-            label='Foreign Amount'
-            type='number'
-            onChange={(e) => setForeignAmount(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <ButtonGroup variant="text" color='primary' size="small" className={classes.buttonGroup}>
-                    <Button
-                      variant={foreignAmountCurrency === 'USD' ? 'outlined' : null}
-                      onClick={() => setForeignAmountCurrency('USD')}
-                    >
-                      USD
-                      </Button>
-                    <Button
-                      variant={foreignAmountCurrency === 'CAD' ? 'outlined' : null}
-                      onClick={() => setForeignAmountCurrency('CAD')}
-                    >
-                      CAD
-                      </Button>
-                  </ButtonGroup>
-                </InputAdornment>
-              )
-            }}
-          />
-        )
+        hasForeignAmount
+          ? <div className={classes.input}>
+            <TextField
+              value={foreignAmount}
+              placeholder='Foreign Amount'
+              label='Foreign Amount'
+              type='number'
+              onChange={(e) => setForeignAmount(e.target.value)}
+              className={classes.foreignAmountInput}
+            />
+            <TextField
+              value={foreignAmountCurrency}
+              placeholder='Currency'
+              label='Currency'
+              onChange={(e) => setForeignAmountCurrency(e.target.value)}
+              className={classes.currencyInput}
+            />
+          </div>
           : null
       }
       <TextField
