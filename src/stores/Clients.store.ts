@@ -9,7 +9,6 @@ export class Clients {
 
   @action async getClientsFromDB() {
     const { data } = await axios.get<Client[]>(`${SERVER_URL}/clients`)
-
     const clients = data.map(c => (
       new Client(
         c.id, c.name, c.email, c.phone, c.spouseName, c.address, c.city,

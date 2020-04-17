@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
 import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, FormLabel, FormControlLabel, Radio, RadioGroup } from '@material-ui/core'
-import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
+import { DateTimePicker, MuiPickersUtilsProvider, KeyboardDateTimePicker } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useTasksStore } from '../../../context/Tasks.context'
+import { Client } from '../../../stores/Client.store'
 
 
 
@@ -47,8 +48,15 @@ const AddTask: React.FC<AddItemProps> = (props) => {
     const task = { clientId: client.id, type: taskType, startTime, endTime, price, description }
     TasksStore.createTask(task)
 
-    //handle balance
+    if (billable === 'billable') {
+      updateBalance(client)
+    }
     clearInputs()
+  }
+
+  const updateBalance = (client: Client) => {
+    const balance = client.taskBalance - parseInt(price)
+    client.updateClient('taskBalance', balance)
   }
 
   const handleRadioChange = ({ target }) => {
@@ -81,7 +89,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
         {availableTypes.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
       </Select>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <DateTimePicker
+        <KeyboardDateTimePicker
           required={true}
           className={classes.input}
           label="Start Time"
@@ -89,7 +97,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
           value={startTime}
           onChange={(date) => setStartTime(date)}
         />
-        <DateTimePicker
+        <KeyboardDateTimePicker
           required={true}
           className={classes.input}
           label="End Time"

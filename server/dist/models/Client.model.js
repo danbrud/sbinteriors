@@ -49,7 +49,12 @@ __decorate([
     sequelize_typescript_1.Default(0),
     sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),
     __metadata("design:type", Number)
-], Client.prototype, "balance", void 0);
+], Client.prototype, "expenseBalance", void 0);
+__decorate([
+    sequelize_typescript_1.Default(0),
+    sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),
+    __metadata("design:type", Number)
+], Client.prototype, "taskBalance", void 0);
 __decorate([
     sequelize_typescript_1.Default(false),
     sequelize_typescript_1.Column,

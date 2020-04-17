@@ -9,11 +9,17 @@ import Paper from '@material-ui/core/Paper'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import { Link, useParams } from 'react-router-dom'
 import { toProperCase } from '../../../utils'
+import { useClientsStore } from '../../../context/Clients.context'
+import '../../../styles/ClientDetailsList.css'
+import { observer } from 'mobx-react'
 
 const useStyles = makeStyles({
   row: {
     width: '100%',
     fontSize: '16px'
+  },
+  arrow: {
+
   }
 })
 
@@ -21,9 +27,14 @@ const useStyles = makeStyles({
 //   clientId: string
 // }
 
-const ClientDetailItems: React.FC = (props) => {
+const ClientDetailItems: React.FC = observer(() => {
   const classes = useStyles()
+  const ClientsStore = useClientsStore()
   const { clientId } = useParams()
+
+  const client = ClientsStore.getClient(clientId)
+
+  const getBackgroundColor = (balance: number) => balance >= 0 ? '#208f4e' : '#c0392b'
 
   const detailItems = ['tasks', 'expenses', 'transfers']
 
@@ -35,7 +46,26 @@ const ClientDetailItems: React.FC = (props) => {
             <TableRow key={item} >
               <Link to={`/admin/clients/${clientId}/${item}`}>
                 <TableCell align="left" className={classes.row}>{toProperCase(item)}</TableCell>
-                <TableCell align="right">
+                <TableCell >
+                  {
+                    item === 'tasks'
+                      ? <span
+                        className='badge'
+                        style={{ backgroundColor: getBackgroundColor(client.taskBalance) }}
+                      >
+                        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i> {Math.abs(client.taskBalance)}
+                      </span>
+                      : item === 'expenses'
+                        ? <span
+                        className='badge'
+                        style={{ backgroundColor: getBackgroundColor(client.expenseBalance) }}
+                      >
+                        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i> {Math.abs(client.expenseBalance)}
+                      </span>
+                        : null
+                  }
+                </TableCell>
+                <TableCell align="right" className={classes.arrow}>
                   <ArrowForwardIosIcon />
                 </TableCell>
               </Link>
@@ -45,6 +75,6 @@ const ClientDetailItems: React.FC = (props) => {
       </Table>
     </TableContainer>
   )
-}
+})
 
 export default ClientDetailItems

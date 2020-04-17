@@ -14,7 +14,7 @@ const Expenses: React.FC = observer((props) => {
   return (
     <div>
       {ExpensesStore.expenses.map(expense => (
-        <ExpenseCard expense={expense} />
+        <ExpenseCard key={expense.id} expense={expense} />
       ))}
     </div>
   )

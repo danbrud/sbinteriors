@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
 import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup } from '@material-ui/core'
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers"
+import { MuiPickersUtilsProvider, DatePicker, KeyboardDatePicker } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useTransfersStore } from '../../../context/Transfers.context'
@@ -100,7 +100,7 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
         {availableTransferMethods.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
       </Select>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <DatePicker
+        <KeyboardDatePicker
           required={true}
           label="Transfer Date"
           value={date}
