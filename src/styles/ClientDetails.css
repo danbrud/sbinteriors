@@ -1,11 +1,14 @@
 #client-name-container {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 2fr 1fr;
   align-items: center;
   margin: 4px 0;
 }
 #client-contact-details {
-  padding: 0 10px;
+  padding: 0 0 0 10px;
+}
+#client-contact-details p {
+  white-space: nowrap;
 }
 #client-balance-container {
   margin: 10px 6px;
@@ -27,11 +30,11 @@
   padding: 10px;
 }
 #project-details-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  align-items: center;
   margin: 4px 0;
 }
 #description {
-  padding: 0 6px 6px 6px;
+  padding: 0 10px 10px 10px;
+}
+#balance-container {
+  justify-self: center;
 }

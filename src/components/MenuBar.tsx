@@ -37,14 +37,14 @@ const MenuBar: React.FC = () => {
     const path = location.pathname.split('/')
     let title: string
 
-    if (isNaN(parseInt(path[path.length - 1]))) {
+    if (isNaN(parseInt(path[path.length - 1])) && path[path.length - 1]) {
       title = toProperCase(path[path.length - 1])
-    } else {
+    } else if(path[path.length - 2]) {
       title = toProperCase(path[path.length - 2])
       title = title.slice(0, title.length - 1)
     }
 
-    setTitle(title)
+    setTitle(title || '')
   }
 
   useEffect(() => {
