@@ -16,14 +16,19 @@ export class Task {
     this.id = id
     this.clientId = clientId
     this.type = type
-    this.startTime = startTime
-    this.endTime = endTime
+    this.startTime = new Date(startTime)
+    this.endTime = new Date(endTime)
     this.price = price
     this. description = description
   }
 
   @computed get duration() {
-    // const duration = this.endTime - this.startTime
-    return 10
+    const { startTime, endTime } = this
+    const hours = endTime.getHours() - startTime.getHours()
+    const minutes = endTime.getMinutes() - startTime.getMinutes()
+
+    // const duration: string = (hours ? `${hours} hours ` : '') + (minutes ? `${minutes} minutes ` : '')
+    const duration = `${hours}:${minutes || '00'}`
+    return duration
   }
 }
