@@ -14,6 +14,9 @@ import SideMenu from './components/SideMenu'
 import Expenses from './components/Admin/Expenses/Expenses'
 import { ExpensesStore } from './stores/Expenses.store'
 import { ExpensesProvider } from './context/Expenses.context'
+import { TransfersProvider } from './context/Transfers.context'
+import { TransfersStore } from './stores/Transfers.store'
+import Transfers from './components/Admin/Transfers/Transfers'
 
 
 const App: React.FC = observer(() => {
@@ -45,19 +48,14 @@ const App: React.FC = observer(() => {
             </TasksProvider>
           )}
         />
-         <Route
-          exact
-          path='/admin/clients/:clientId/tasks/:taskId'
-          render={() => (
-            <TasksProvider value={TasksStore}>
-
-            </TasksProvider>
-          )}
-        />
         <Route
           exact
           path='/admin/clients/:clientId/transfers'
-          render={() => <AdminHome />}
+          render={() => (
+            <TransfersProvider value={TransfersStore}>
+              <Transfers />
+            </TransfersProvider>
+          )}
         />
         <Route
           exact

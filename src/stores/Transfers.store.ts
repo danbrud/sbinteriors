@@ -11,7 +11,7 @@ export class Transfers {
     const { data } = await axios.get<Transfer[]>(`${SERVER_URL}/transfers/${clientId}`)
     const transfers = data.map(t => (
       new Transfer(
-        t.id, t.clientId, t.ilsAmount, t.foreignAmount,
+        t.id, t.clientId, t.date, t.ilsAmount, t.foreignAmount,
         t.foreignAmountCurrency, t.transferMethod, t.description
       )
     ))
