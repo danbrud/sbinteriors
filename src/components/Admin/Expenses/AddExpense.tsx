@@ -6,6 +6,7 @@ import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useExpensesStore } from '../../../context/Expenses.context'
+import { Client } from '../../../stores/Client.store'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -55,9 +56,13 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
     const expense = { clientId: client.id, name, date, amount, description }
     ExpensesStore.createExpense(expense)
 
-    const balance = client.balance - parseInt(amount)
-    client.updateClient('balance', balance)
+    updateBalance(client)
     clearInputs()
+  }
+
+  const updateBalance = (client: Client) => {
+    const balance = client.expenseBalance - parseInt(amount)
+    client.updateClient('expenseBalance', balance)
   }
 
   const clearInputs = () => {

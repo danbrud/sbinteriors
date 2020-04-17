@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     '& > *': {
-      margin: theme.spacing(1),
+      // margin: theme.spacing(1),
     },
   },
   small: {
@@ -19,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
     height: '30vw',
     fontSize: '30px'
   },
+  medium: {
+    width: '20vw',
+    height: '20vw',
+    fontSize: '18px'
+  }
 }))
 
 interface LetterAvatarProps {

@@ -66,8 +66,9 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
     const transfer = { clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount, transferMethod, description }
     TransfersStore.createTransfer(transfer)
 
-    const balance = client.balance + parseInt(ilsAmount)
-    client.updateClient('balance', balance)
+    //handle balance
+    // const balance =  + parseInt(ilsAmount)
+    // client.updateClient('balance', balance)
     clearInputs()
   }
 

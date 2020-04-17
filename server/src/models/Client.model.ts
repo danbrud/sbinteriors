@@ -32,7 +32,11 @@ export class Client extends Model<Client> {
 
   @Default(0)
   @Column({ type: DataType.FLOAT })
-  balance: number
+  expenseBalance: number
+
+  @Default(0)
+  @Column({ type: DataType.FLOAT })
+  taskBalance: number
 
   @Default(false)
   @Column

@@ -46,6 +46,8 @@ const AddTask: React.FC<AddItemProps> = (props) => {
     const client = ClientsStore.getClientByName(clientName)
     const task = { clientId: client.id, type: taskType, startTime, endTime, price, description }
     TasksStore.createTask(task)
+
+    //handle balance
     clearInputs()
   }
 

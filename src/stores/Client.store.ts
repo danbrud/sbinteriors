@@ -12,12 +12,14 @@ export class Client {
   @observable address: string
   @observable city: string
   @observable description: string | null
-  @observable balance: number
+  @observable expenseBalance: number
+  @observable taskBalance: number
   @observable isComplete: boolean
 
   constructor(
     id: number, name: string, email: string, phone: string, spouseName: string | null,
-    address: string, city: string, description: string | null, balance: number, isComplete: boolean
+    address: string, city: string, description: string | null,
+    expenseBalance: number, taskBalance: number, isComplete: boolean
   ) {
     this.id = id
     this.name = name
@@ -27,7 +29,8 @@ export class Client {
     this.address = address
     this.city = city
     this.description = description
-    this.balance = balance
+    this.expenseBalance = expenseBalance
+    this.taskBalance = taskBalance
     this.isComplete = isComplete
   }
 

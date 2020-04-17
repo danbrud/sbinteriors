@@ -17,19 +17,26 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
   return (
     <div id='client-details-container'>
       <div id='client-name-container'>
-        <div id='client-contact-details'>
-          <h2>{client.formattedName}</h2>
-          {client.spouseName ? <p><i className="far fa-heart"></i> {toProperCase(client.spouseName)}</p> : null}
-          <p><i className="fas fa-phone"></i> {client.phone}</p>
-          <p><i className="far fa-envelope-open"></i> {client.email}</p>
-        </div>
         <div id='balance-container'>
-          <BalanceAvatar size='medium' balance={client.balance} />
+          <LetterAvatar size='medium' name={client.name} />
+        </div>
+        <div>
+          <h2>{client.formattedName}</h2>
+          {client.spouseName
+            ? <p>
+              <i className="far fa-heart"></i> {toProperCase(client.spouseName)}
+            </p>
+            : null}
         </div>
       </div>
       <Divider />
+      <div className='details'>
+        <p><i className="fas fa-phone"></i> {client.phone}</p>
+        <p><i className="far fa-envelope-open"></i> {client.email}</p>
+      </div>
+      <Divider />
       <div id='project-details-container'>
-        <div id='timeline-details'>
+        <div className='details'>
           <Typography variant="subtitle1" color="textSecondary">
             <i className="fas fa-map-marker-alt"></i> {client.address}, {client.city}
           </Typography>
