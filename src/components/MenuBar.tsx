@@ -28,7 +28,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const MenuBar: React.FC = () => {
+interface MenuBar {
+  setSideMenuOpen: (open: boolean) => void
+}
+
+const MenuBar: React.FC<MenuBar> = (props) => {
   const classes = useStyles()
   const location = useLocation()
   const [title, setTitle] = useState<string>('')
@@ -55,7 +59,7 @@ const MenuBar: React.FC = () => {
     <div className={classes.root}>
       <AppBar position="sticky">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton onClick={() => props.setSideMenuOpen(true)} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>

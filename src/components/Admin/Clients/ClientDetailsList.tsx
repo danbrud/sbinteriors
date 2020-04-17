@@ -25,7 +25,7 @@ const ClientDetailItems: React.FC = (props) => {
   const classes = useStyles()
   const { clientId } = useParams()
 
-  const detailItems = ['tasks', 'transfers', 'expenses']
+  const detailItems = ['tasks', 'expenses', 'transfers']
 
   return (
     <TableContainer component={Paper}>

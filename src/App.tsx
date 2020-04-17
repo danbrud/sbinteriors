@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import { observer } from 'mobx-react'
 import { BrowserRouter as Router, Route, Redirect, useRouteMatch } from 'react-router-dom'
@@ -10,13 +10,20 @@ import MenuBar from './components/MenuBar'
 import AddItem from './components/Admin/AddItem'
 import AddFab from './components/Admin/AddFab'
 import Tasks from './components/Admin/Tasks/Tasks'
+import SideMenu from './components/SideMenu'
+import Expenses from './components/Admin/Expenses/Expenses'
+import { ExpensesStore } from './stores/Expenses.store'
+import { ExpensesProvider } from './context/Expenses.context'
 
 
 const App: React.FC = observer(() => {
+  const [sideMenuOpen, setSideMenuOpen] = useState(false)
+
 
   return (
     <Router>
-      <MenuBar />
+      <MenuBar setSideMenuOpen={setSideMenuOpen}/>
+      {/* <SideMenu open={sideMenuOpen}/> */}
       {window.location.pathname === '/' ? <Redirect to='/admin/clients' /> : null}
       <div id='app-container'>
         <Route
@@ -43,7 +50,7 @@ const App: React.FC = observer(() => {
           path='/admin/clients/:clientId/tasks/:taskId'
           render={() => (
             <TasksProvider value={TasksStore}>
-                
+
             </TasksProvider>
           )}
         />
@@ -51,6 +58,15 @@ const App: React.FC = observer(() => {
           exact
           path='/admin/clients/:clientId/transfers'
           render={() => <AdminHome />}
+        />
+        <Route
+          exact
+          path='/admin/clients/:clientId/expenses'
+          render={() => (
+            <ExpensesProvider value={ExpensesStore}>
+              <Expenses />
+            </ExpensesProvider>
+          )}
         />
         <Route
           exact

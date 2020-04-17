@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
-import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button } from '@material-ui/core'
+import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, FormLabel, FormControlLabel, Radio, RadioGroup } from '@material-ui/core'
 import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
@@ -38,6 +38,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
   const [endTime, setEndTime] = useState(new Date())
   const [price, setPrice] = useState('')
   const [description, setDescription] = useState('')
+  const [billable, setBillable] = useState('no charge')
 
   const handleSubmit = () => {
     //handle error if there is no project
@@ -46,6 +47,12 @@ const AddTask: React.FC<AddItemProps> = (props) => {
     const task = { clientId: client.id, type: taskType, startTime, endTime, price, description }
     TasksStore.createTask(task)
     clearInputs()
+  }
+
+  const handleRadioChange = ({ target }) => {
+    const { value } = target
+    if (value === 'no charge') { setPrice('') }
+    setBillable(value)
   }
 
   const clearInputs = () => {
@@ -89,22 +96,29 @@ const AddTask: React.FC<AddItemProps> = (props) => {
           onChange={(date) => setEndTime(date)}
         />
       </MuiPickersUtilsProvider>
-      <TextField
-        className={classes.input}
-        required={true}
-        value={price}
-        placeholder='Price'
-        onChange={(e) => setPrice(e.target.value)}
-        label="Price"
-        type='number'
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <i className="fas fa-shekel-sign" style={{ color: '#757575' }}></i>
-            </InputAdornment>
-          )
-        }}
-      />
+      <RadioGroup row value={billable} onChange={handleRadioChange}>
+        <FormControlLabel value="no charge" control={<Radio color='primary' />} label="No Charge" />
+        <FormControlLabel value="billable" control={<Radio color='primary' />} label="Billable" />
+      </RadioGroup>
+      {billable === 'billable'
+        ? <TextField
+          className={classes.input}
+          required={true} //Maybe only required if the billable radio button is clicked
+          value={price}
+          placeholder='Price'
+          onChange={(e) => setPrice(e.target.value)}
+          label="Price"
+          type='number'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <i className="fas fa-shekel-sign" style={{ color: '#757575' }}></i>
+              </InputAdornment>
+            )
+          }}
+        />
+        : null
+      }
       <TextField
         className={classes.input}
         multiline={true}

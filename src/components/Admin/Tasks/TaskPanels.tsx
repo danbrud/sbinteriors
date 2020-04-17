@@ -48,9 +48,9 @@ const TaskPanels: React.FC = observer((props) => {
             expandIcon={<ExpandMoreIcon />}
           >
             <Typography className={classes.heading}>{task.type}</Typography>
-            {/* <Typography className={classes.secondaryHeading}>{task.duration} h</Typography>
-            <Typography className={classes.secondaryHeading}>s{task.price}</Typography> */}
-            <Typography className={classes.secondaryHeading}>{moment(task.startTime).format('MMM Do YY')}</Typography>
+            <Typography className={classes.secondaryHeading}>{task.duration} hours</Typography>
+            {/*<Typography className={classes.secondaryHeading}>s{task.price}</Typography> */}
+            {/* <Typography className={classes.secondaryHeading}>{moment(task.startTime).format('MMM Do YY')}</Typography> */}
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
