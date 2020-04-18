@@ -6,11 +6,7 @@ const Settings: React.FC = observer((props) => {
   const GeneralAdminStore = useGeneralAdminStore()
   const [serviceInput, setServiceInput] = useState('')
 
-  useEffect(() => {
-    GeneralAdminStore.getServicesFromDB()
-  }, [])
-
-  const handleSubmit = ({ target }) => {
+  const handleSubmit = () => {
     GeneralAdminStore.addService(serviceInput)
     setServiceInput('')
   }

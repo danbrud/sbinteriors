@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import HomeIcon from '@material-ui/icons/Home'
 import { Link, useLocation } from 'react-router-dom'
 import { toProperCase } from '../utils'
+import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,17 +26,33 @@ const useStyles = makeStyles((theme) => ({
   homeIcon: {
     color: 'white',
     userSelect: 'none'
+  },
+  bar: {
+    backgroundColor: '#34495e',
+  },
+  list: {
+    width: 250,
+    backgroundColor: '#EAF2EF',
+    height: '100vh'
+  },
+  fullList: {
+    width: 'auto',
+  },
+  link: {
+    textDecoration: 'none',
+    color: '#34495e'
+  },
+  listItem: {
+    margin: '20px 0'
   }
 }))
 
-interface MenuBar {
-  setSideMenuOpen: (open: boolean) => void
-}
 
-const MenuBar: React.FC<MenuBar> = (props) => {
+const MenuBar: React.FC = () => {
   const classes = useStyles()
   const location = useLocation()
   const [title, setTitle] = useState<string>('')
+  const [open, setOpen] = useState<boolean>(false)
 
   const getTitle = () => {
     const path = location.pathname.split('/')
@@ -43,13 +60,45 @@ const MenuBar: React.FC<MenuBar> = (props) => {
 
     if (isNaN(parseInt(path[path.length - 1])) && path[path.length - 1]) {
       title = toProperCase(path[path.length - 1])
-    } else if(path[path.length - 2]) {
+    } else if (path[path.length - 2]) {
       title = toProperCase(path[path.length - 2])
       title = title.slice(0, title.length - 1)
     }
 
     setTitle(title || '')
   }
+
+  const toggleDrawer = open => event => {
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return
+    }
+
+    setOpen(open)
+  }
+
+  const sideList = () => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <Typography variant="h6" className={classes.title} >
+        Menu
+      </Typography>
+      <Divider />
+      <List>
+        {['Home', 'Settings'].map((text, index) => (
+          <Link className={classes.link} key={text} to={text === 'Home' ? '/admin/clients' : '/admin/settings'}>
+            <ListItem button className={classes.listItem}>
+              {/* <ListItemIcon>{index === 0 ? 'home' : 'settings'}</ListItemIcon> */}
+              <ListItemText primary={text} />
+            </ListItem>
+          </Link>
+        ))}
+      </List>
+    </div>
+  )
 
   useEffect(() => {
     getTitle()
@@ -58,9 +107,15 @@ const MenuBar: React.FC<MenuBar> = (props) => {
   return (
     <div className={classes.root}>
       <AppBar position="sticky">
+        <Drawer
+          open={open}
+          onClose={toggleDrawer(false)}
+        >
+          {sideList()}
+        </Drawer>
         <Toolbar>
-          <IconButton onClick={() => props.setSideMenuOpen(true)} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon onClick={toggleDrawer(true)}/>
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             {title}

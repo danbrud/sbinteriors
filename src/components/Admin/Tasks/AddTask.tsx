@@ -7,6 +7,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useTasksStore } from '../../../context/Tasks.context'
 import { Client } from '../../../stores/Client.store'
+import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 
 
 
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const AddTask: React.FC<AddItemProps> = (props) => {
   const ClientsStore = useClientsStore()
   const TasksStore = useTasksStore()
+  const GeneralAdminStore = useGeneralAdminStore()
   const classes = useStyles()
 
   const { clientName, setClientName } = props
@@ -74,7 +76,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
     setDescription('')
   }
 
-  const availableTypes = ['Home Styling', 'AutoCad', 'Site Visit', 'Shopping']
+  const availableTypes = GeneralAdminStore.services
 
   return (
     <FormControl className={classes.formControl}>
@@ -86,7 +88,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
         value={taskType}
         onChange={(e) => setTaskType(e.target.value as string)}
       >
-        {availableTypes.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
+        {availableTypes.map(t => <MenuItem key={t.id} value={t.name}>{t.name}</MenuItem>)}
       </Select>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDateTimePicker

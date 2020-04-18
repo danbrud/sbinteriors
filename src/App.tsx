@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.css'
 import { observer } from 'mobx-react'
 import { BrowserRouter as Router, Route, Redirect, useRouteMatch } from 'react-router-dom'
@@ -10,26 +10,26 @@ import MenuBar from './components/MenuBar'
 import AddItem from './components/Admin/AddItem'
 import AddFab from './components/Admin/AddFab'
 import Tasks from './components/Admin/Tasks/Tasks'
-import SideMenu from './components/SideMenu'
 import Expenses from './components/Admin/Expenses/Expenses'
 import { ExpensesStore } from './stores/Expenses.store'
 import { ExpensesProvider } from './context/Expenses.context'
 import { TransfersProvider } from './context/Transfers.context'
 import { TransfersStore } from './stores/Transfers.store'
 import Transfers from './components/Admin/Transfers/Transfers'
-import { GeneralAdminProvider } from './context/GeneralAdmin.context'
-import { GeneralAdminStore } from './stores/GeneralAdmin'
+import { useGeneralAdminStore } from './context/GeneralAdmin.context'
 import Settings from './components/Admin/Settings'
 
 
 const App: React.FC = observer(() => {
-  const [sideMenuOpen, setSideMenuOpen] = useState(false)
+  const GeneralAdminStore = useGeneralAdminStore()
 
+  useEffect(() => {
+    GeneralAdminStore.getServicesFromDB()
+  }, [])
 
   return (
     <Router>
-      <MenuBar setSideMenuOpen={setSideMenuOpen}/>
-      {/* <SideMenu open={sideMenuOpen}/> */}
+      <MenuBar />
       {window.location.pathname === '/' ? <Redirect to='/admin/clients' /> : null}
       <div id='app-container'>
         <Route
@@ -77,11 +77,7 @@ const App: React.FC = observer(() => {
         <Route
           exact
           path='/admin/settings'
-          render={() => (
-            <GeneralAdminProvider value={GeneralAdminStore}>
-              <Settings />
-            </GeneralAdminProvider>
-          )}
+          render={() => <Settings />}
         />
         <AddFab />
         {/* <Route
