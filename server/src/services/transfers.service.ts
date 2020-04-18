@@ -1,5 +1,6 @@
 import { Transfer } from '../models/Transfer.model'
 import { Client } from '../models/Client.model'
+import { TransferMethod } from '../models/TransferMethod.model'
 
 export class TransfersService {
 
@@ -9,7 +10,7 @@ export class TransfersService {
   }
 
   public async getTransfersByClientId(clientId: string): Promise<Transfer[]> {
-    const transfers = await Transfer.findAll({ where: { clientId } })
+    const transfers = await Transfer.findAll({ where: { clientId }, include: [TransferMethod] })
     return transfers
   }
 

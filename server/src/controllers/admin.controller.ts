@@ -14,6 +14,8 @@ export class AdminController {
   private intializeRoutes() {
     this.router.get('/services', this.getServices)
     this.router.post('/services', this.createService)
+    this.router.get('/transfer-methods', this.getTransferMethods)
+    this.router.post('/transfer-methods', this.createTransferMethod)
   }
 
   private getServices: express.RequestHandler = async (req, res) => {
@@ -24,5 +26,15 @@ export class AdminController {
   private createService: express.RequestHandler = async (req, res) => {
     const service = await this.adminService.createService(req.body)
     res.send(service)
+  }
+
+  private createTransferMethod: express.RequestHandler = async (req, res) => {
+    const trasnferMethod = await this.adminService.createTransferMethod(req.body)
+    res.send(trasnferMethod)
+  }
+
+  private getTransferMethods: express.RequestHandler = async (req, res) => {
+    const transferMethods = await this.adminService.getTransferMethods()
+    res.send(transferMethods)
   }
 }

@@ -18,11 +18,21 @@ class AdminController {
             const service = await this.adminService.createService(req.body);
             res.send(service);
         };
+        this.createTransferMethod = async (req, res) => {
+            const trasnferMethod = await this.adminService.createTransferMethod(req.body);
+            res.send(trasnferMethod);
+        };
+        this.getTransferMethods = async (req, res) => {
+            const transferMethods = await this.adminService.getTransferMethods();
+            res.send(transferMethods);
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
         this.router.get('/services', this.getServices);
         this.router.post('/services', this.createService);
+        this.router.get('/transfer-methods', this.getTransferMethods);
+        this.router.post('/transfer-methods', this.createTransferMethod);
     }
 }
 exports.AdminController = AdminController;

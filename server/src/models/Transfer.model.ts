@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo, Default } from 'sequelize-typescript'
 import { Client } from './Client.model'
+import { TransferMethod } from './TransferMethod.model'
 
 @Table
 export class Transfer extends Model<Transfer> {
@@ -22,12 +23,16 @@ export class Transfer extends Model<Transfer> {
   @Column
   foreignAmountCurrency: string
 
-  @Column
-  transferMethod: string
-
   @Default(null)
   @Column
   description: string
+
+  @ForeignKey(() => TransferMethod)
+  @Column
+  transferMethodId: number
+
+  @BelongsTo(() => TransferMethod)
+  transferMethod: TransferMethod
 
   @BelongsTo(() => Client)
   client: Client

@@ -1,4 +1,5 @@
 import { Service } from '../models/Service.model'
+import { TransferMethod } from '../models/TransferMethod.model'
 
 export class AdminService {
 
@@ -12,5 +13,17 @@ export class AdminService {
     await service.save()
 
     return service
+  }
+
+  public async createTransferMethod(body): Promise<TransferMethod> {
+    const transferMethod = new TransferMethod(body)
+    await transferMethod.save()
+
+    return transferMethod
+  }
+
+  public async getTransferMethods(): Promise<TransferMethod[]> {
+    const transferMethods = await TransferMethod.findAll()
+    return transferMethods
   }
 }

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const Client_model_1 = require("./Client.model");
+const TransferMethod_model_1 = require("./TransferMethod.model");
 let Transfer = class Transfer extends sequelize_typescript_1.Model {
 };
 __decorate([
@@ -37,14 +38,19 @@ __decorate([
     __metadata("design:type", String)
 ], Transfer.prototype, "foreignAmountCurrency", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Transfer.prototype, "transferMethod", void 0);
-__decorate([
     sequelize_typescript_1.Default(null),
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Transfer.prototype, "description", void 0);
+__decorate([
+    sequelize_typescript_1.ForeignKey(() => TransferMethod_model_1.TransferMethod),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Transfer.prototype, "transferMethodId", void 0);
+__decorate([
+    sequelize_typescript_1.BelongsTo(() => TransferMethod_model_1.TransferMethod),
+    __metadata("design:type", TransferMethod_model_1.TransferMethod)
+], Transfer.prototype, "transferMethod", void 0);
 __decorate([
     sequelize_typescript_1.BelongsTo(() => Client_model_1.Client),
     __metadata("design:type", Client_model_1.Client)
