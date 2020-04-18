@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
+const Task_model_1 = require("./Task.model");
 // import { Client } from './Client.model'
 let Service = class Service extends sequelize_typescript_1.Model {
 };
@@ -17,6 +18,10 @@ __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Service.prototype, "name", void 0);
+__decorate([
+    sequelize_typescript_1.HasMany(() => Task_model_1.Task),
+    __metadata("design:type", Array)
+], Service.prototype, "tasks", void 0);
 Service = __decorate([
     sequelize_typescript_1.Table
 ], Service);

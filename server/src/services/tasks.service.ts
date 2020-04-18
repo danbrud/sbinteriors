@@ -1,4 +1,5 @@
 import { Task } from '../models/Task.model'
+import { Service } from '../models/Service.model'
 
 export class TasksService {
 
@@ -8,7 +9,7 @@ export class TasksService {
   }
 
   public async getTasksByClientId(clientId: string): Promise<Task[]> {
-    const tasks = await Task.findAll({ where: { clientId } })
+    const tasks = await Task.findAll({ where: { clientId }, include: [Service] })
     return tasks
   }
 

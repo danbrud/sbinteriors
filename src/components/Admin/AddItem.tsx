@@ -23,7 +23,7 @@ const AddItem: React.FC = () => {
   const [clientName, setClientName] = useState('')
 
   useEffect(() => {
-
+    
   }, [])
 
   useEffect(() => {

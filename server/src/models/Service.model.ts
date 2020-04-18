@@ -1,18 +1,13 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import { Table, Column, Model, HasMany } from 'sequelize-typescript'
+import { Task } from './Task.model'
 // import { Client } from './Client.model'
 
 @Table
 export class Service extends Model<Service> {
 
-  // @ForeignKey(() => Client)
-  // @Column
-  // clientId: number
-
   @Column
   name: string
 
-
-
-  // @BelongsTo(() => Client)
-  // project: Client
+  @HasMany(() => Task)
+  tasks: Task[]
 }

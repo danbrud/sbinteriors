@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { observer } from 'mobx-react'
-import TaskPanels from './TaskPanels'
 import { useParams } from 'react-router-dom'
 import { useTasksStore } from '../../../context/Tasks.context'
 import TaskCard from './TaskCard'

@@ -1,21 +1,22 @@
 import { observable, computed } from 'mobx'
+import { adminType } from '../adminTypes'
 
 export class Task {
   @observable id: number
   @observable clientId: number
-  @observable type: string
+  @observable serviceType: adminType
   @observable startTime: Date
   @observable endTime: Date
   @observable price: number
   @observable description: string | null
 
   constructor(
-    id: number, clientId: number, type: string, startTime: Date,
+    id: number, clientId: number, serviceType: adminType, startTime: Date,
     endTime: Date, price: number, description: string | null
   ) {
     this.id = id
     this.clientId = clientId
-    this.type = type
+    this.serviceType = serviceType
     this.startTime = new Date(startTime)
     this.endTime = new Date(endTime)
     this.price = price

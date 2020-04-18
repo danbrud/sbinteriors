@@ -52,7 +52,7 @@ const TaskCard: React.FC<TaskCardProps> = observer((props) => {
       <CardContent className={classes.contentContainer}>
         <div id='task-card-details'>
           <Typography className={classes.heading}>
-            {task.type}
+            {task.serviceType.name}
           </Typography>
           <Typography className={classes.secondaryHeading}>
             {moment(task.startTime).format('MMM Do YY')}

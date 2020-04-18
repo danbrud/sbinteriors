@@ -8,6 +8,7 @@ import { AddItemProps } from '../AddItemProps.interface'
 import { useTasksStore } from '../../../context/Tasks.context'
 import { Client } from '../../../stores/Client.store'
 import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
+import { observer } from 'mobx-react'
 
 
 
@@ -29,14 +30,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const AddTask: React.FC<AddItemProps> = (props) => {
+const AddTask: React.FC<AddItemProps> = observer((props) => {
   const ClientsStore = useClientsStore()
   const TasksStore = useTasksStore()
   const GeneralAdminStore = useGeneralAdminStore()
   const classes = useStyles()
 
   const { clientName, setClientName } = props
-  const [taskType, setTaskType] = useState('')
+  const [taskType, setTaskType] = useState<null | number>(null)
   const [startTime, setStartTime] = useState(new Date())
   const [endTime, setEndTime] = useState(new Date())
   const [price, setPrice] = useState('')
@@ -47,7 +48,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
-    const task = { clientId: client.id, type: taskType, startTime, endTime, price, description }
+    const task = { clientId: client.id, serviceTypeId: taskType, startTime, endTime, price, description }
     TasksStore.createTask(task)
 
     if (billable === 'billable') {
@@ -69,7 +70,7 @@ const AddTask: React.FC<AddItemProps> = (props) => {
 
   const clearInputs = () => {
     setClientName('')
-    setTaskType('')
+    setTaskType(null)
     setStartTime(new Date())
     setEndTime(new Date())
     setPrice('')
@@ -86,9 +87,9 @@ const AddTask: React.FC<AddItemProps> = (props) => {
         labelId="task-type-label"
         id="task-type-select"
         value={taskType}
-        onChange={(e) => setTaskType(e.target.value as string)}
+        onChange={(e) => setTaskType(e.target.value as number)}
       >
-        {availableTypes.map(t => <MenuItem key={t.id} value={t.name}>{t.name}</MenuItem>)}
+        {availableTypes.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
       </Select>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDateTimePicker
@@ -149,6 +150,6 @@ const AddTask: React.FC<AddItemProps> = (props) => {
         </Button>
     </FormControl>
   )
-}
+})
 
 export default AddTask
