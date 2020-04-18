@@ -5,7 +5,7 @@ import { ClientsController } from './controllers/clients.controller'
 import { TasksController } from './controllers/tasks.controller'
 import { ExpensesController } from './controllers/expenses.controller'
 import { TransfersController } from './controllers/transfers.controller'
-import { ServicesController } from './controllers/services.controller'
+import { AdminController } from './controllers/admin.controller'
 
 const config = dotenv.config({ path: path.join(__dirname, '../..', '.env') })
 
@@ -15,7 +15,7 @@ const app = new App(
     new TasksController(),
     new ExpensesController(),
     new TransfersController(),
-    new ServicesController()
+    new AdminController()
   ],
   config.parsed.PORT
 )

@@ -17,13 +17,13 @@ const Settings: React.FC = observer((props) => {
 
   return (
     <div>
+      <input type="text" value={serviceInput} onChange={(e) => setServiceInput(e.target.value)} />
+      <button onClick={handleSubmit}>Submit</button>
       {GeneralAdminStore.services.map(service => (
         <div key={service.id}>
           {service.name}
         </div>
       ))}
-      <input type="text" value={serviceInput} onChange={(e) => setServiceInput(e.target.value)} />
-      <button onClick={handleSubmit}>Submit</button>
     </div>
   )
 })

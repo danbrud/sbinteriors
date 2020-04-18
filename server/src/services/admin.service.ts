@@ -1,6 +1,6 @@
 import { Service } from '../models/Service.model'
 
-export class ServicesService {
+export class AdminService {
 
   public async getServices(): Promise<Service[]> {
     const services = await Service.findAll()

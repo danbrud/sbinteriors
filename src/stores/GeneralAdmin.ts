@@ -8,12 +8,12 @@ export class GeneralAdmin {
   @observable availableTransferMethods = []
 
   @action async getServicesFromDB() {
-    const { data } = await axios.get<{ id: number, name: string }[]>(`${SERVER_URL}/services`)
+    const { data } = await axios.get<{ id: number, name: string }[]>(`${SERVER_URL}/admin/services`)
     this.services = data
   }
 
   @action async addService(name: string) {
-    const { data } = await axios.post<{ id: number, name: string }>(`${SERVER_URL}/services`, { name })
+    const { data } = await axios.post<{ id: number, name: string }>(`${SERVER_URL}/admin/services`, { name })
     this.services.push(data)
   }
 }
