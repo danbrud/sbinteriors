@@ -6,6 +6,7 @@ import { Client } from './models/Client.model'
 import { Transfer } from './models/Transfer.model'
 import { Task } from './models/Task.model'
 import { Expense } from './models/Expense.model'
+import { Service } from './models/Service.model'
 
 class App {
   public app: express.Application
@@ -36,7 +37,7 @@ class App {
       dialect: 'mysql',
       username: 'root',
       host: 'localhost',
-      models: [Client, Task, Expense, Transfer]
+      models: [Client, Task, Expense, Transfer, Service]
     })
 
     sequelize.sync()

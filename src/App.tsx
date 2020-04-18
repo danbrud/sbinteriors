@@ -71,6 +71,11 @@ const App: React.FC = observer(() => {
           path='/admin/add/:item'
           render={() => <AddItem />}
         />
+        <Route
+          exact
+          path='/admin/settings'
+          render={() => <AddItem />}
+        />
         <AddFab />
         {/* <Route
             exact

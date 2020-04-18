@@ -18,6 +18,7 @@ const Client_model_1 = require("./models/Client.model");
 const Transfer_model_1 = require("./models/Transfer.model");
 const Task_model_1 = require("./models/Task.model");
 const Expense_model_1 = require("./models/Expense.model");
+const Service_model_1 = require("./models/Service.model");
 class App {
     constructor(controllers, port) {
         this.app = express_1.default();
@@ -39,7 +40,7 @@ class App {
             dialect: 'mysql',
             username: 'root',
             host: 'localhost',
-            models: [Client_model_1.Client, Task_model_1.Task, Expense_model_1.Expense, Transfer_model_1.Transfer]
+            models: [Client_model_1.Client, Task_model_1.Task, Expense_model_1.Expense, Transfer_model_1.Transfer, Service_model_1.Service]
         });
         sequelize.sync();
     }
