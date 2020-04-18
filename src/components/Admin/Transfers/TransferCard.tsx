@@ -55,7 +55,7 @@ const TransferCard: React.FC<TransferCardProps> = observer((props) => {
             {moment(transfer.date).format('MMM Do YY')}
           </Typography>
           <Typography className={classes.secondaryHeading}>
-            {transfer.transferMethod}
+            {transfer.transferMethod.name}
           </Typography>
         </div>
         {

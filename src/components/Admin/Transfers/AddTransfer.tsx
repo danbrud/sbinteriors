@@ -7,6 +7,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useTransfersStore } from '../../../context/Transfers.context'
 import { Client } from '../../../stores/Client.store'
+import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
+import { observer } from 'mobx-react'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,9 +53,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const AddTransfer: React.FC<AddItemProps> = (props) => {
+const AddTransfer: React.FC<AddItemProps> = observer((props) => {
   const ClientsStore = useClientsStore()
   const TransfersStore = useTransfersStore()
+  const GeneralAdminStore = useGeneralAdminStore()
   const classes = useStyles()
 
   const { clientName, setClientName } = props
@@ -62,7 +65,7 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
   const [foreignAmount, setForeignAmount] = useState('')
   const [foreignAmountCurrency, setForeignAmountCurrency] = useState('USD')
   const [ilsAmount, setIlsAmount] = useState('')
-  const [transferMethod, setTransferMethod] = useState('')
+  const [transferMethod, setTransferMethod] = useState<null | number>(null)
   const [description, setDescription] = useState('')
   const [hasForeignAmount, setHasForeignAmount] = useState(false)
   const [balanceType, setBalanceType] = useState('expenseBalance')
@@ -79,7 +82,7 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
-    const transfer = { clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount, transferMethod, description }
+    const transfer = { clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount, transferMethodId: transferMethod, description }
     TransfersStore.createTransfer(transfer)
 
     updateBalance(client)
@@ -97,14 +100,12 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
     setForeignAmount('')
     setForeignAmountCurrency('')
     setIlsAmount('')
-    setTransferMethod('')
+    setTransferMethod(null)
     setDescription('')
     setHasForeignAmount(false)
   }
 
-  const availableTransferMethods = [
-    'Paypal', 'Bank Hapoalim', 'Bank Mizrachi', 'CAD Account'
-  ]
+  const availableTransferMethods = GeneralAdminStore.transferMethods
 
   return (
     <FormControl className={classes.formControl}>
@@ -114,9 +115,9 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
         labelId="transfer-method-label"
         id="tranfer-method-select"
         value={transferMethod}
-        onChange={(e) => setTransferMethod(e.target.value as string)}
+        onChange={(e) => setTransferMethod(e.target.value as number)}
       >
-        {availableTransferMethods.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
+        {availableTransferMethods.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
       </Select>
       <FormLabel className={classes.radioLabel} component="legend">Transfer Type</FormLabel>
       <RadioGroup className={classes.radio} row value={balanceType} onChange={(e) => setBalanceType(e.target.value)}>
@@ -198,6 +199,6 @@ const AddTransfer: React.FC<AddItemProps> = (props) => {
         </Button>
     </FormControl>
   )
-}
+})
 
 export default AddTransfer

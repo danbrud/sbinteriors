@@ -25,6 +25,7 @@ const App: React.FC = observer(() => {
 
   useEffect(() => {
     GeneralAdminStore.getServicesFromDB()
+    GeneralAdminStore.getTransferMethodsFromDB()
   }, [])
 
   return (

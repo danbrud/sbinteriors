@@ -1,4 +1,5 @@
 import { observable } from 'mobx'
+import { adminType } from '../adminTypes'
 
 export class Transfer {
   @observable id: number
@@ -7,12 +8,12 @@ export class Transfer {
   @observable ilsAmount: number
   @observable foreignAmount: number | null
   @observable foreignAmountCurrency: string | null
-  @observable transferMethod: string
+  @observable transferMethod: adminType
   @observable description: string | null
 
   constructor(
     id: number, clientId: number, date: Date, ilsAmount: number, foreignAmount: number | null,
-    foreignAmountCurrency: string | null, transferMethod: string, description: string | null
+    foreignAmountCurrency: string | null, transferMethod: adminType, description: string | null
   ) {
     this.id = id
     this.clientId = clientId
