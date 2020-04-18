@@ -17,6 +17,9 @@ import { ExpensesProvider } from './context/Expenses.context'
 import { TransfersProvider } from './context/Transfers.context'
 import { TransfersStore } from './stores/Transfers.store'
 import Transfers from './components/Admin/Transfers/Transfers'
+import { GeneralAdminProvider } from './context/GeneralAdmin.context'
+import { GeneralAdminStore } from './stores/GeneralAdmin'
+import Settings from './components/Admin/Settings'
 
 
 const App: React.FC = observer(() => {
@@ -74,7 +77,11 @@ const App: React.FC = observer(() => {
         <Route
           exact
           path='/admin/settings'
-          render={() => <AddItem />}
+          render={() => (
+            <GeneralAdminProvider value={GeneralAdminStore}>
+              <Settings />
+            </GeneralAdminProvider>
+          )}
         />
         <AddFab />
         {/* <Route
