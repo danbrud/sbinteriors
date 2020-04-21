@@ -1,8 +1,10 @@
-import { Table, Column, Model, HasMany, DataType, Default } from 'sequelize-typescript'
+import { Table, Column, Model, HasMany, DataType, Default, BelongsToMany } from 'sequelize-typescript'
 import { Transfer } from './Transfer.model'
 import { Project } from '../not-used/Project.model'
 import { Task } from './Task.model'
 import { Expense } from './Expense.model'
+import { Service } from './Service.model'
+import { Contract } from './Contract.model'
 
 @Table
 export class Client extends Model<Client> {
@@ -30,13 +32,9 @@ export class Client extends Model<Client> {
   @Column
   description: string
 
-  @Default(0)
+  @Default(null)
   @Column({ type: DataType.FLOAT })
-  expenseBalance: number
-
-  @Default(0)
-  @Column({ type: DataType.FLOAT })
-  taskBalance: number
+  pricePerHour: number
 
   @Default(false)
   @Column
@@ -51,4 +49,6 @@ export class Client extends Model<Client> {
   @HasMany(() => Expense)
   expenses: Expense[]
 
+  @BelongsToMany(() => Service, () => Contract)
+  services: Service[]
 }
