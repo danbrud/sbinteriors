@@ -11,8 +11,8 @@ export class Clients {
     const { data } = await axios.get<Client[]>(`${SERVER_URL}/clients`)
     const clients = data.map(c => (
       new Client(
-        c.id, c.name, c.email, c.phone, c.spouseName, c.address, c.city,
-        c.description, c.expenseBalance, c.taskBalance, c.isComplete
+        c.id, c.name, c.email, c.phone, c.spouseName,
+        c.address, c.city, c.description, c.isComplete
       )
     ))
     this.clients = clients

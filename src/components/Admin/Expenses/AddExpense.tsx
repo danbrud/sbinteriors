@@ -61,8 +61,8 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
   }
 
   const updateBalance = (client: Client) => {
-    const balance = client.expenseBalance - parseInt(amount)
-    client.updateClient('expenseBalance', balance)
+    const balance = client.expensesBalance - parseInt(amount)
+    client.updateClient('expensesBalance', balance)
   }
 
   const clearInputs = () => {

@@ -30,6 +30,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+type taskInputs = {
+  taskType: null | number
+  startTime: Date
+  endTime: Date
+  description: string
+}
+
 const AddTask: React.FC<AddItemProps> = observer((props) => {
   const ClientsStore = useClientsStore()
   const TasksStore = useTasksStore()
@@ -37,44 +44,50 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
   const classes = useStyles()
 
   const { clientName, setClientName } = props
-  const [taskType, setTaskType] = useState<null | number>(null)
-  const [startTime, setStartTime] = useState(new Date())
-  const [endTime, setEndTime] = useState(new Date())
-  const [price, setPrice] = useState('')
-  const [description, setDescription] = useState('')
-  const [billable, setBillable] = useState('no charge')
+  const [inputs, setInputs] = useState<taskInputs>({
+    taskType: null, startTime: new Date(), endTime: new Date(), description: ''
+  })
+  // const [taskType, setTaskType] = useState<null | number>(null)
+  // const [startTime, setStartTime] = useState(new Date())
+  // const [endTime, setEndTime] = useState(new Date())
+  // const [price, setPrice] = useState('')
+  // const [description, setDescription] = useState('')
+  // const [billable, setBillable] = useState('no charge')
+
+  const handleChange = ({ target }) => {
+    setInputs({ ...inputs, [target.name]: target.value })
+  }
 
   const handleSubmit = () => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
-    const task = { clientId: client.id, serviceTypeId: taskType, startTime, endTime, price, description }
+    const { taskType, startTime, endTime, description } = inputs
+    const task = { clientId: client.id, serviceTypeId: taskType, startTime, endTime, description }
     TasksStore.createTask(task)
 
-    if (billable === 'billable') {
-      updateBalance(client)
-    }
+    // if (billable === 'billable') {
+    //   updateBalance(client)
+    // }
     clearInputs()
   }
 
-  const updateBalance = (client: Client) => {
-    const balance = client.taskBalance - parseInt(price)
-    client.updateClient('taskBalance', balance)
-  }
+  //delete (happens automatically)
+  // const updateBalance = (client: Client) => {
+  //   const balance = client.tasksBalance - parseInt(inputs.price)
+  //   client.updateClient('tasksBalance', balance)
+  // }
 
-  const handleRadioChange = ({ target }) => {
-    const { value } = target
-    if (value === 'no charge') { setPrice('') }
-    setBillable(value)
-  }
+  // const handleRadioChange = ({ target }) => {
+  //   const { value } = target
+  //   if (value === 'no charge') { setPrice('') }
+  //   setBillable(value)
+  // }
 
   const clearInputs = () => {
-    setClientName('')
-    setTaskType(null)
-    setStartTime(new Date())
-    setEndTime(new Date())
-    setPrice('')
-    setDescription('')
+    setInputs({
+      taskType: null, startTime: new Date(), endTime: new Date(), description: ''
+    })
   }
 
   const availableTypes = GeneralAdminStore.services
@@ -86,8 +99,9 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
         className={classes.input}
         labelId="task-type-label"
         id="task-type-select"
-        value={taskType}
-        onChange={(e) => setTaskType(e.target.value as number)}
+        value={inputs.taskType}
+        onChange={handleChange}
+        name='taskType'
       >
         {availableTypes.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
       </Select>
@@ -97,23 +111,23 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
           className={classes.input}
           label="Start Time"
           inputVariant="standard"
-          value={startTime}
-          onChange={(date) => setStartTime(date)}
+          value={inputs.startTime}
+          onChange={(date) => setInputs({ ...inputs, startTime: date })}
         />
         <KeyboardDateTimePicker
           required={true}
           className={classes.input}
           label="End Time"
           inputVariant="standard"
-          value={endTime}
-          onChange={(date) => setEndTime(date)}
+          value={inputs.endTime}
+          onChange={(date) => setInputs({ ...inputs, endTime: date })}
         />
       </MuiPickersUtilsProvider>
-      <RadioGroup row value={billable} onChange={handleRadioChange}>
+      {/* <RadioGroup row value={billable} onChange={handleRadioChange}>
         <FormControlLabel value="no charge" control={<Radio color='primary' />} label="No Charge" />
         <FormControlLabel value="billable" control={<Radio color='primary' />} label="Billable" />
-      </RadioGroup>
-      {billable === 'billable'
+      </RadioGroup> */}
+      {/* billable === 'billable'
         ? <TextField
           className={classes.input}
           required={true} //Maybe only required if the billable radio button is clicked
@@ -131,14 +145,15 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
           }}
         />
         : null
-      }
+        */}
       <TextField
         className={classes.input}
         multiline={true}
         label='Description'
-        value={description}
+        value={inputs.description}
+        name='description'
         type='text'
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={handleChange}
       />
       <Button
         className={classes.button}
