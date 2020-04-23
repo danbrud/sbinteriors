@@ -58,17 +58,18 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
     setInputs({ ...inputs, [target.name]: target.value })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
     const { taskType, startTime, endTime, description } = inputs
     const task = { clientId: client.id, serviceTypeId: taskType, startTime, endTime, description }
-    TasksStore.createTask(task)
+    await TasksStore.createTask(task)
 
     // if (billable === 'billable') {
     //   updateBalance(client)
     // }
+    await client.getBalance('tasks')
     clearInputs()
   }
 

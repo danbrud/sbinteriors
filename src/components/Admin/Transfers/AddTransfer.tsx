@@ -98,7 +98,7 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
     setInputs({ ...inputs, [target.name]: target.value })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
@@ -111,9 +111,10 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
       clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount,
       transferMethodId: transferMethod, description, account
     }
-    TransfersStore.createTransfer(transfer)
+    await TransfersStore.createTransfer(transfer)
 
-    // updateBalance(client)
+    debugger
+    account === 'expenses' ? await client.getBalance('expenses') : await client.getBalance('tasks')
     clearInputs()
   }
 

@@ -56,15 +56,15 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
     setInputs({ ...inputs, [target.name]: target.value })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
     const { name, date, amount, description } = inputs
     const expense = { clientId: client.id, name, date, amount, description }
-    ExpensesStore.createExpense(expense)
+    await ExpensesStore.createExpense(expense)
 
-    // updateBalance(client)
+    await client.getBalance('expenses')
     clearInputs()
   }
 
