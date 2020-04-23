@@ -68,7 +68,7 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
   const [transferMethod, setTransferMethod] = useState<null | number>(null)
   const [description, setDescription] = useState('')
   const [hasForeignAmount, setHasForeignAmount] = useState(false)
-  const [balanceType, setBalanceType] = useState('expenseBalance')
+  const [balanceType, setBalanceType] = useState('expenses')
 
   const checkForeignAmount = ({ target }) => {
     const { checked } = target
@@ -121,8 +121,8 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
       </Select>
       <FormLabel className={classes.radioLabel} component="legend">Transfer Type</FormLabel>
       <RadioGroup className={classes.radio} row value={balanceType} onChange={(e) => setBalanceType(e.target.value)}>
-        <FormControlLabel value="expenseBalance" control={<Radio color='primary' />} label="Expenses" />
-        <FormControlLabel value="taskBalance" control={<Radio color='primary' />} label="Tasks" />
+        <FormControlLabel value="expenses" control={<Radio color='primary' />} label="Expenses" />
+        <FormControlLabel value="tasks" control={<Radio color='primary' />} label="Tasks" />
       </RadioGroup>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker

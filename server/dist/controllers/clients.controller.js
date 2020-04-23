@@ -23,12 +23,20 @@ class ClientsController {
             const client = await this.clientsService.updateClient(params.clientId, body);
             res.send(client);
         };
+        this.getBalance = async (req, res) => {
+            const { clientId, type } = req.params;
+            const balance = type === 'expenses'
+                ? await this.clientsService.getExpenseBalance(clientId)
+                : await this.clientsService.getTaskBalance(clientId);
+            res.send(balance);
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
         this.router.get('/', this.getClients);
         this.router.post('/', this.createClient);
         this.router.put('/:clientId', this.updateClient);
+        this.router.get('/:clientId/balance/:type', this.getBalance);
     }
 }
 exports.ClientsController = ClientsController;

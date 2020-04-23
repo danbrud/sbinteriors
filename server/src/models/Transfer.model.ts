@@ -27,6 +27,9 @@ export class Transfer extends Model<Transfer> {
   @Column
   description: string
 
+  @Column
+  account: string
+
   @ForeignKey(() => TransferMethod)
   @Column
   transferMethodId: number
