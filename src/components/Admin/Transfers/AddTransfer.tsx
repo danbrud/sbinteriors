@@ -53,6 +53,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+type transferInputs = {
+  date: Date
+  foreignAmount: string
+  foreignAmountCurrency: string,
+  ilsAmount: string
+  transferMethod: null | number
+  description: string
+  account: 'expenses' | 'tasks'
+}
+
 const AddTransfer: React.FC<AddItemProps> = observer((props) => {
   const ClientsStore = useClientsStore()
   const TransfersStore = useTransfersStore()
@@ -60,49 +70,63 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
   const classes = useStyles()
 
   const { clientName, setClientName } = props
+  const [inputs, setInputs] = useState({
+    date: new Date(), foreignAmount: '', foreignAmountCurrency: 'USD',
+    ilsAmount: '', transferMethod: null, description: '', account: 'expenses'
+  })
 
-  const [date, setDate] = useState(new Date())
-  const [foreignAmount, setForeignAmount] = useState('')
-  const [foreignAmountCurrency, setForeignAmountCurrency] = useState('USD')
-  const [ilsAmount, setIlsAmount] = useState('')
-  const [transferMethod, setTransferMethod] = useState<null | number>(null)
-  const [description, setDescription] = useState('')
   const [hasForeignAmount, setHasForeignAmount] = useState(false)
-  const [balanceType, setBalanceType] = useState('expenses')
+  // const [date, setDate] = useState(new Date())
+  // const [foreignAmount, setForeignAmount] = useState('')
+  // const [foreignAmountCurrency, setForeignAmountCurrency] = useState('USD')
+  // const [ilsAmount, setIlsAmount] = useState('')
+  // const [transferMethod, setTransferMethod] = useState<null | number>(null)
+  // const [description, setDescription] = useState('')
+  // const [balanceType, setBalanceType] = useState('expenses')
 
   const checkForeignAmount = ({ target }) => {
     const { checked } = target
     setHasForeignAmount(checked)
-    if (!checked) {
-      setForeignAmountCurrency('')
+    if (checked) {
+      setInputs({ ...inputs, foreignAmountCurrency: 'USD' })
+    } else {
+      setInputs({ ...inputs, foreignAmountCurrency: '' })
     }
+  }
+
+  const handleChange = ({ target }) => {
+    setInputs({ ...inputs, [target.name]: target.value })
   }
 
   const handleSubmit = () => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
-    const transfer = { clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount, transferMethodId: transferMethod, description }
+    const {
+      date, foreignAmount, foreignAmountCurrency, ilsAmount,
+      transferMethod, description, account
+    } = inputs
+
+    const transfer = {
+      clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount,
+      transferMethodId: transferMethod, description, account
+    }
     TransfersStore.createTransfer(transfer)
 
-    updateBalance(client)
+    // updateBalance(client)
     clearInputs()
   }
 
-  const updateBalance = (client: Client) => {
-    const balance = client[balanceType] + parseInt(ilsAmount)
-    client.updateClient(balanceType, balance)
-  }
+  // const updateBalance = (client: Client) => {
+  //   const balance = client[balanceType] + parseInt(ilsAmount)
+  //   client.updateClient(balanceType, balance)
+  // }
 
   const clearInputs = () => {
-    setClientName('')
-    setDate(new Date())
-    setForeignAmount('')
-    setForeignAmountCurrency('')
-    setIlsAmount('')
-    setTransferMethod(null)
-    setDescription('')
-    setHasForeignAmount(false)
+    setInputs({
+      date: new Date(), foreignAmount: '', foreignAmountCurrency: 'USD',
+      ilsAmount: '', transferMethod: null, description: '', account: 'expenses'
+    })
   }
 
   const availableTransferMethods = GeneralAdminStore.transferMethods
@@ -114,22 +138,38 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
         className={classes.input}
         labelId="transfer-method-label"
         id="tranfer-method-select"
-        value={transferMethod}
-        onChange={(e) => setTransferMethod(e.target.value as number)}
+        value={inputs.transferMethod}
+        name='transferMethod'
+        onChange={handleChange}
       >
         {availableTransferMethods.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
       </Select>
-      <FormLabel className={classes.radioLabel} component="legend">Transfer Type</FormLabel>
-      <RadioGroup className={classes.radio} row value={balanceType} onChange={(e) => setBalanceType(e.target.value)}>
-        <FormControlLabel value="expenses" control={<Radio color='primary' />} label="Expenses" />
-        <FormControlLabel value="tasks" control={<Radio color='primary' />} label="Tasks" />
+      <FormLabel
+        className={classes.radioLabel}
+        component="legend"
+      >
+        Transfer Type
+      </FormLabel>
+      <RadioGroup
+        className={classes.radio}
+        row
+        value={inputs.account}
+        onChange={handleChange}
+        name='account'
+      >
+        <FormControlLabel
+          value="expenses" control={<Radio color='primary' />} label="Expenses"
+        />
+        <FormControlLabel
+          value="tasks" control={<Radio color='primary' />} label="Tasks"
+        />
       </RadioGroup>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           required={true}
           label="Transfer Date"
-          value={date}
-          onChange={setDate}
+          value={inputs.date}
+          onChange={(date) => setInputs({ ...inputs, date })}
           format='MMM do, yyyy'
         />
       </MuiPickersUtilsProvider>
@@ -148,18 +188,20 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
         hasForeignAmount
           ? <div className={classes.input}>
             <TextField
-              value={foreignAmount}
+              value={inputs.foreignAmount}
+              name='foreignAmount'
               placeholder='Foreign Amount'
               label='Foreign Amount'
               type='number'
-              onChange={(e) => setForeignAmount(e.target.value)}
+              onChange={handleChange}
               className={classes.foreignAmountInput}
             />
             <TextField
-              value={foreignAmountCurrency}
+              value={inputs.foreignAmountCurrency}
+              name='foreignAmountCurrency'
               placeholder='Currency'
               label='Currency'
-              onChange={(e) => setForeignAmountCurrency(e.target.value)}
+              onChange={handleChange}
               className={classes.currencyInput}
             />
           </div>
@@ -168,10 +210,11 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
       <TextField
         className={classes.input}
         required={true}
-        value={ilsAmount}
+        value={inputs.ilsAmount}
+        name='ilsAmount'
         placeholder='Amount ILS'
         type='number'
-        onChange={(e) => setIlsAmount(e.target.value)}
+        onChange={handleChange}
         label="Amount ILS"
         InputProps={{
           startAdornment: (
@@ -185,9 +228,10 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
         className={classes.input}
         multiline={true}
         label='Description'
-        value={description}
+        value={inputs.description}
+        name='description'
         type='text'
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={handleChange}
       />
       <Button
         className={classes.button}
