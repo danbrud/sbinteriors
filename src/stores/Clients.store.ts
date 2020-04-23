@@ -23,8 +23,8 @@ export class Clients {
 
     const { data } = await axios.post<Client>(`${SERVER_URL}/clients`, client)
     const newClient = new Client(
-      data.id, data.name, data.email, data.phone, data.spouseName, data.address,
-      data.city, data.description, data.expenseBalance, data.taskBalance, data.isComplete
+      data.id, data.name, data.email, data.phone, data.spouseName,
+      data.address, data.city, data.description, data.isComplete
     )
     this.clients.push(newClient)
   }
