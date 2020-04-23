@@ -10,10 +10,12 @@ export class Transfer {
   @observable foreignAmountCurrency: string | null
   @observable transferMethod: adminType
   @observable description: string | null
+  @observable account: 'expenses' | 'tasks'
 
   constructor(
-    id: number, clientId: number, date: Date, ilsAmount: number, foreignAmount: number | null,
-    foreignAmountCurrency: string | null, transferMethod: adminType, description: string | null
+    id: number, clientId: number, date: Date, ilsAmount: number,
+    foreignAmount: number | null, foreignAmountCurrency: string | null,
+    transferMethod: adminType, description: string | null, account: 'expenses' | 'tasks'
   ) {
     this.id = id
     this.clientId = clientId
@@ -23,5 +25,6 @@ export class Transfer {
     this.foreignAmountCurrency = foreignAmountCurrency
     this.transferMethod = transferMethod
     this.description = description
+    this.account = account
   }
 }
