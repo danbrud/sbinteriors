@@ -44,33 +44,39 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
   const classes = useStyles()
 
   const { clientName, setClientName } = props
-  const [name, setName] = useState('')
-  const [date, setDate] = useState(new Date())
-  const [amount, setAmount] = useState('')
-  const [description, setDescription] = useState('')
+  const [inputs, setInputs] = useState({
+    name: '', date: new Date(), amount: '', description: ''
+  })
+  // const [name, setName] = useState('')
+  // const [date, setDate] = useState(new Date())
+  // const [amount, setAmount] = useState('')
+  // const [description, setDescription] = useState('')
+
+  const handleChange = ({ target }) => {
+    setInputs({ ...inputs, [target.name]: target.value })
+  }
 
   const handleSubmit = () => {
     //handle error if there is no project
     //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
+    const { name, date, amount, description } = inputs
     const expense = { clientId: client.id, name, date, amount, description }
     ExpensesStore.createExpense(expense)
 
-    updateBalance(client)
+    // updateBalance(client)
     clearInputs()
   }
 
-  const updateBalance = (client: Client) => {
-    const balance = client.expensesBalance - parseInt(amount)
-    client.updateClient('expensesBalance', balance)
-  }
+  // const updateBalance = (client: Client) => {
+  //   const balance = client.expensesBalance - parseInt(amount)
+  //   client.updateClient('expensesBalance', balance)
+  // }
 
   const clearInputs = () => {
-    setClientName('')
-    setName('')
-    setDate(new Date())
-    setAmount('')
-    setDescription('')
+    setInputs({
+      name: '', date: new Date(), amount: '', description: ''
+    })
   }
 
   return (
@@ -79,26 +85,28 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
         className={classes.input}
         required={true}
         label='Expense Name'
-        value={name}
+        value={inputs.name}
         type='text'
-        onChange={(e) => setName(e.target.value)}
+        name='name'
+        onChange={handleChange}
       />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           required={true}
           label="Transfer Date"
-          value={date}
-          onChange={setDate}
+          value={inputs.date}
+          onChange={(date) => setInputs({ ...inputs, date })}
           format='MMM do, yyyy'
         />
       </MuiPickersUtilsProvider>
       <TextField
         className={classes.input}
         required={true}
-        value={amount}
+        value={inputs.amount}
         type='number'
+        name='amount'
         placeholder='Amount ILS'
-        onChange={(e) => setAmount(e.target.value)}
+        onChange={handleChange}
         label="Expense Amount"
         InputProps={{
           startAdornment: (
@@ -112,9 +120,10 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
         className={classes.input}
         multiline={true}
         label='Description'
-        value={description}
+        value={inputs.description}
         type='text'
-        onChange={(e) => setDescription(e.target.value)}
+        name='description'
+        onChange={handleChange}
       />
       <Button
         className={classes.button}
