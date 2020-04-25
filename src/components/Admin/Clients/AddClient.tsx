@@ -3,6 +3,7 @@ import { TextField, Button, makeStyles } from '@material-ui/core'
 import { useClientsStore } from '../../../context/Clients.context'
 import AddContract from '../AddContract'
 import { AddItemProps } from '../AddItemProps.interface'
+import { checkRequiredFields } from '../../../utils'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,12 +36,21 @@ const AddClient: React.FC<AddItemProps> = (props) => {
     })
   }
 
-  const handleSubmit = () => {
-    //Validate inputs are full
-    ClientsStore.addClient(inputs)
+  const handleSubmit = async () => {
+    const requiredFields = ['name', 'phone', 'email', 'address', 'city']
+    if (!checkRequiredFields(requiredFields, inputs)) {
+      props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
+      return
+    }
+
+    try {
+      await ClientsStore.addClient(inputs)
+    } catch (e) {
+      props.openSnackbar('error', 'Error! Something went wrong, try again!')
+      return
+    }
 
     props.openSnackbar('success', 'Added client successfully!')
-    // props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
     clearInputs()
   }
 

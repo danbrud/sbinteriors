@@ -59,7 +59,20 @@ const AddItem: React.FC = () => {
   }
 
   if (item === 'client') {
-    return <AddClient openSnackbar={openSnackbar} />
+    return (
+      <div>
+        <AddClient openSnackbar={openSnackbar} />
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={snackbar.severity}>
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </div>
+    )
   } else {
     return (
       <div>

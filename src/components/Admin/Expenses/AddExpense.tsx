@@ -7,6 +7,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useExpensesStore } from '../../../context/Expenses.context'
 import { Client } from '../../../stores/Client.store'
+import { checkRequiredFields } from '../../../utils'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,30 +44,39 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
   const ExpensesStore = useExpensesStore()
   const classes = useStyles()
 
-  const { clientName, setClientName } = props
+  const { clientName } = props
   const [inputs, setInputs] = useState({
     name: '', date: new Date(), amount: '', description: ''
   })
-  // const [name, setName] = useState('')
-  // const [date, setDate] = useState(new Date())
-  // const [amount, setAmount] = useState('')
-  // const [description, setDescription] = useState('')
 
   const handleChange = ({ target }) => {
     setInputs({ ...inputs, [target.name]: target.value })
   }
 
   const handleSubmit = async () => {
-    //handle error if there is no project
-    //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
-    const { name, date, amount, description } = inputs
-    const expense = { clientId: client.id, name, date, amount, description }
-    await ExpensesStore.createExpense(expense)
-    await client.getBalance('expenses')
+    if (!client) {
+      props.openSnackbar('error', 'Invalid! Make sure to select a client.')
+      return
+    }
+
+    const requiredFields = ['name', 'date', 'amount']
+    if (!checkRequiredFields(requiredFields, inputs)) {
+      props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
+      return
+    }
+
+    try {
+      const { name, date, amount, description } = inputs
+      const expense = { clientId: client.id, name, date, amount, description }
+      await ExpensesStore.createExpense(expense)
+      await client.getBalance('expenses')
+    } catch (e) {
+      props.openSnackbar('error', 'Error! Something went wrong, try again!')
+      return
+    }
 
     props.openSnackbar('success', 'Added expense successfully!')
-    // props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
     clearInputs()
   }
 

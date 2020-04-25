@@ -15,6 +15,7 @@ const AddContract: React.FC = observer(() => {
   }
 
   const handleSubmit = () => {
+    //add snackbar
     for (let c in contract) {
       contract[c] = parseInt(contract[c])
     }

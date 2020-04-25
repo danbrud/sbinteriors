@@ -9,6 +9,7 @@ import { useTasksStore } from '../../../context/Tasks.context'
 import { Client } from '../../../stores/Client.store'
 import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 import { observer } from 'mobx-react'
+import { checkRequiredFields } from '../../../utils'
 
 
 
@@ -43,32 +44,39 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
   const GeneralAdminStore = useGeneralAdminStore()
   const classes = useStyles()
 
-  const { clientName, setClientName } = props
+  const { clientName } = props
   const [inputs, setInputs] = useState<taskInputs>({
     taskType: null, startTime: new Date(), endTime: new Date(), description: ''
   })
-  // const [taskType, setTaskType] = useState<null | number>(null)
-  // const [startTime, setStartTime] = useState(new Date())
-  // const [endTime, setEndTime] = useState(new Date())
-  // const [price, setPrice] = useState('')
-  // const [description, setDescription] = useState('')
-  // const [billable, setBillable] = useState('no charge')
 
   const handleChange = ({ target }) => {
     setInputs({ ...inputs, [target.name]: target.value })
   }
 
   const handleSubmit = async () => {
-    //handle error if there is no project
-    //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
-    const { taskType, startTime, endTime, description } = inputs
-    const task = { clientId: client.id, serviceTypeId: taskType, startTime, endTime, description }
-    await TasksStore.createTask(task)
-    await client.getBalance('tasks')
+    if (!client) {
+      props.openSnackbar('error', 'Invalid! Make sure to select a client.')
+      return
+    }
+
+    const requiredFields = ['taskType', 'startTime', 'endTime']
+    if (!checkRequiredFields(requiredFields, inputs)) {
+      props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
+      return
+    }
+
+    try {
+      const { taskType, startTime, endTime, description } = inputs
+      const task = { clientId: client.id, serviceTypeId: taskType, startTime, endTime, description }
+      await TasksStore.createTask(task)
+      await client.getBalance('tasks')
+    } catch (e) {
+      props.openSnackbar('error', 'Error! Something went wrong, try again!')
+      return
+    }
 
     props.openSnackbar('success', 'Added task successfully!')
-    // props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
     clearInputs()
   }
 

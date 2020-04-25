@@ -9,6 +9,7 @@ import { useTransfersStore } from '../../../context/Transfers.context'
 import { Client } from '../../../stores/Client.store'
 import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 import { observer } from 'mobx-react'
+import { checkRequiredFields } from '../../../utils'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -69,20 +70,12 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
   const GeneralAdminStore = useGeneralAdminStore()
   const classes = useStyles()
 
-  const { clientName, setClientName } = props
+  const { clientName } = props
   const [inputs, setInputs] = useState<transferInputs>({
     date: new Date(), foreignAmount: '', foreignAmountCurrency: 'USD',
     ilsAmount: '', transferMethod: null, description: '', account: 'expenses'
   })
-
   const [hasForeignAmount, setHasForeignAmount] = useState(false)
-  // const [date, setDate] = useState(new Date())
-  // const [foreignAmount, setForeignAmount] = useState('')
-  // const [foreignAmountCurrency, setForeignAmountCurrency] = useState('USD')
-  // const [ilsAmount, setIlsAmount] = useState('')
-  // const [transferMethod, setTransferMethod] = useState<null | number>(null)
-  // const [description, setDescription] = useState('')
-  // const [balanceType, setBalanceType] = useState('expenses')
 
   const checkForeignAmount = ({ target }) => {
     const { checked } = target
@@ -99,23 +92,40 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
   }
 
   const handleSubmit = async () => {
-    //handle error if there is no project
-    //Validate to make sure all required fields are filled
     const client = ClientsStore.getClientByName(clientName)
-    const {
-      date, foreignAmount, foreignAmountCurrency, ilsAmount,
-      transferMethod, description, account
-    } = inputs
-
-    const transfer = {
-      clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount,
-      transferMethodId: transferMethod, description, account
+    if (!client) {
+      props.openSnackbar('error', 'Invalid! Make sure to select a client.')
+      return
     }
-    await TransfersStore.createTransfer(transfer)
-    account === 'expenses' ? await client.getBalance('expenses') : await client.getBalance('tasks')
+
+    const requiredFields = ['transferMethod', 'date', 'ilsAmount', 'account']
+    if (hasForeignAmount) {
+      requiredFields.push('foreignAmount', 'foreignAmountCurrency')
+    }
+
+    if (!checkRequiredFields(requiredFields, inputs)) {
+      props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
+      return
+    }
+
+    try {
+      const {
+        date, foreignAmount, foreignAmountCurrency, ilsAmount,
+        transferMethod, description, account
+      } = inputs
+
+      const transfer = {
+        clientId: client.id, date, foreignAmount, foreignAmountCurrency, ilsAmount,
+        transferMethodId: transferMethod, description, account
+      }
+      await TransfersStore.createTransfer(transfer)
+      account === 'expenses' ? await client.getBalance('expenses') : await client.getBalance('tasks')
+    } catch (e) {
+      props.openSnackbar('error', 'Error! Something went wrong, try again!')
+      return
+    }
 
     props.openSnackbar('success', 'Added transfer successfully!')
-    // props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
     clearInputs()
   }
 
