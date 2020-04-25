@@ -9,6 +9,7 @@ import HomeIcon from '@material-ui/icons/Home'
 import { Link, useLocation } from 'react-router-dom'
 import { toProperCase } from '../utils'
 import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,12 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
     color: 'white'
+  },
+  menuTitle: {
+    margin: '15px 8px',
+    color: '#424242',
+    flexGrow: 1,
+
   },
   title: {
     color: 'white',
@@ -43,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#34495e'
   },
   listItem: {
-    margin: '20px 0'
+    margin: '5px 0'
   }
 }))
 
@@ -83,7 +90,7 @@ const MenuBar: React.FC = () => {
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      <Typography variant="h6" className={classes.title} >
+      <Typography variant="h6" className={classes.menuTitle} >
         Menu
       </Typography>
       <Divider />
@@ -91,7 +98,7 @@ const MenuBar: React.FC = () => {
         {['Home', 'Settings'].map((text, index) => (
           <Link className={classes.link} key={text} to={text === 'Home' ? '/admin/clients' : '/admin/settings'}>
             <ListItem button className={classes.listItem}>
-              {/* <ListItemIcon>{index === 0 ? 'home' : 'settings'}</ListItemIcon> */}
+              <ListItemIcon>{index === 0 ? <HomeIcon /> : <SettingsIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           </Link>

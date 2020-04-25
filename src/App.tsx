@@ -1,35 +1,54 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import { observer } from 'mobx-react'
-import { BrowserRouter as Router, Route, Redirect, useRouteMatch } from 'react-router-dom'
+import { Route, Redirect, useLocation } from 'react-router-dom'
 import AdminHome from './components/Admin/AdminHome'
 import ClientInfo from './components/Admin/Clients/ClientInfo'
-import { TasksProvider } from './context/Tasks.context'
-import { TasksStore } from './stores/Tasks.store'
 import MenuBar from './components/MenuBar'
 import AddItem from './components/Admin/AddItem'
 import AddFab from './components/Admin/AddFab'
 import Tasks from './components/Admin/Tasks/Tasks'
 import Expenses from './components/Admin/Expenses/Expenses'
-import { ExpensesStore } from './stores/Expenses.store'
-import { ExpensesProvider } from './context/Expenses.context'
-import { TransfersProvider } from './context/Transfers.context'
-import { TransfersStore } from './stores/Transfers.store'
 import Transfers from './components/Admin/Transfers/Transfers'
 import { useGeneralAdminStore } from './context/GeneralAdmin.context'
 import Settings from './components/Admin/Settings'
+import { useTransfersStore } from './context/Transfers.context'
+import { TasksStore } from './stores/Tasks.store'
+import { useTasksStore } from './context/Tasks.context'
+import { useExpensesStore } from './context/Expenses.context'
 
 
 const App: React.FC = observer(() => {
   const GeneralAdminStore = useGeneralAdminStore()
+  const TransfersStore = useTransfersStore()
+  const TasksStore = useTasksStore()
+  const ExpensesStore = useExpensesStore()
 
   useEffect(() => {
     GeneralAdminStore.getServicesFromDB()
     GeneralAdminStore.getTransferMethodsFromDB()
   }, [])
 
+  const location = useLocation()
+  useEffect(() => {
+    const path = location.pathname.split('/')
+    const i = path.indexOf('clients')
+
+    if ((i === path.length - 1) || i === -1) {
+      if (TransfersStore.isPopulated) {
+        TransfersStore.clearStore()
+      }
+      if (TasksStore.isPopulated) {
+        TasksStore.clearStore()
+      }
+      if (ExpensesStore.isPopulated) {
+        ExpensesStore.clearStore()
+      }
+    }
+  }, [location])
+
   return (
-    <Router>
+    <div>
       <MenuBar />
       {window.location.pathname === '/' ? <Redirect to='/admin/clients' /> : null}
       <div id='app-container'>
@@ -46,29 +65,17 @@ const App: React.FC = observer(() => {
         <Route
           exact
           path='/admin/clients/:clientId/tasks'
-          render={() => (
-            <TasksProvider value={TasksStore}>
-              <Tasks />
-            </TasksProvider>
-          )}
+          render={() => <Tasks />}
         />
         <Route
           exact
           path='/admin/clients/:clientId/transfers'
-          render={() => (
-            <TransfersProvider value={TransfersStore}>
-              <Transfers />
-            </TransfersProvider>
-          )}
+          render={() => <Transfers />}
         />
         <Route
           exact
           path='/admin/clients/:clientId/expenses'
-          render={() => (
-            <ExpensesProvider value={ExpensesStore}>
-              <Expenses />
-            </ExpensesProvider>
-          )}
+          render={() => <Expenses />}
         />
         <Route
           exact
@@ -102,7 +109,7 @@ const App: React.FC = observer(() => {
               </ProjectsProvider>)}
           /> */}
       </div>
-    </Router>
+    </div>
   )
 })
 

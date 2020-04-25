@@ -40,7 +40,7 @@ const AddContract: React.FC = observer(() => {
         onChange={(e) => setPrice(e.target.value)}
       />
       {GeneralAdminStore.services.map(s => (
-        <div>
+        <div key={s.id}>
           <p>{s.name}</p>
           <input
             name={`${s.id}`}
