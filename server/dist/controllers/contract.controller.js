@@ -4,16 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const contract_service_1 = require("../services/contract.service");
+const contracts_service_1 = require("../services/contracts.service");
 class ContractController {
     constructor() {
-        this.contractService = new contract_service_1.ContractService;
-        this.path = 'admin';
+        this.contractsService = new contracts_service_1.ContractsService();
+        this.path = 'contracts';
         this.router = express_1.default.Router();
+        this.addContract = async (req, res) => {
+            const contract = await this.contractsService.addContract(req.params.clientId, req.body);
+            res.send({ contract });
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
-        // this.router.get('/balance/:type', this.getBalance)
+        this.router.post('/:clientId', this.addContract);
     }
 }
 exports.ContractController = ContractController;

@@ -5,6 +5,7 @@ const Transfer_model_1 = require("../models/Transfer.model");
 const Task_model_1 = require("../models/Task.model");
 const Expense_model_1 = require("../models/Expense.model");
 const sequelize_1 = require("sequelize");
+const Contract_model_1 = require("../models/Contract.model");
 class ClientsService {
     async getClients() {
         const clients = await Client_model_1.Client.findAll();
@@ -62,6 +63,27 @@ class ClientsService {
             },
             attributes
         });
+    }
+    async addContract(clientId, body) {
+        const contract = [];
+        for (let key in body) {
+            const contractItem = new Contract_model_1.Contract({
+                clientId: parseInt(clientId),
+                serviceId: parseInt(key),
+                includedHours: body[key]
+            });
+            await contractItem.save();
+            contract.push(contractItem);
+        }
+        return contract;
+    }
+    async getContract(clientId) {
+        const contract = Contract_model_1.Contract.findAll({
+            where: {
+                clientId: parseInt(clientId)
+            }
+        });
+        return contract;
     }
 }
 exports.ClientsService = ClientsService;

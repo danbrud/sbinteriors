@@ -52,8 +52,12 @@ export class Client {
   }
 
   @action async getBalance(type: 'expenses' | 'tasks') {
-    const { data } = await axios.get < { balance: number }>(`${SERVER_URL}/clients/${this.id}/balance/${type}`)
+    const { data } = await axios.get<{ balance: number }>(`${SERVER_URL}/clients/${this.id}/balance/${type}`)
     type += 'Balance'
     this[type] = data.balance
+  }
+
+  async addContract(contract) {
+    await axios.post(`${SERVER_URL}/clients/${this.id}/contracts`, contract)
   }
 }

@@ -1,10 +1,10 @@
 import express from 'express'
-import { ContractService } from '../services/contract.service'
+import { ContractsService } from '../services/contracts.service'
 
 
 export class ContractController {
-  private contractService = new ContractService
-  public path = 'admin'
+  private contractsService = new ContractsService()
+  public path = 'contracts'
   public router = express.Router()
 
   constructor() {
@@ -12,15 +12,11 @@ export class ContractController {
   }
 
   private intializeRoutes() {
-    // this.router.get('/balance/:type', this.getBalance)
+    this.router.post('/:clientId', this.addContract)
   }
 
-  // private getBalance: express.RequestHandler = async (req, res) => {
-  //   const { type } = req.params
-  //   const balance = type === 'expense'
-  //     ? await this.contractService.getExpenseBalance()
-  //     : await this.contractService.getTaskBalance()
-
-  //   res.send(balance)
-  // }
+  private addContract: express.RequestHandler = async (req, res) => {
+    const contract = await this.contractsService.addContract(req.params.clientId, req.body)
+    res.send({ contract })
+  }
 }

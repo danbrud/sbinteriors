@@ -30,6 +30,14 @@ class ClientsController {
                 : await this.clientsService.getTaskBalance(clientId);
             res.send(balance);
         };
+        this.addContract = async (req, res) => {
+            const contract = await this.clientsService.addContract(req.params.clientId, req.body);
+            res.send({ contract });
+        };
+        this.getContract = async (req, res) => {
+            const contract = await this.clientsService.getContract(req.params.clientId);
+            res.send({ contract });
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
@@ -37,6 +45,8 @@ class ClientsController {
         this.router.post('/', this.createClient);
         this.router.put('/:clientId', this.updateClient);
         this.router.get('/:clientId/balance/:type', this.getBalance);
+        this.router.post('/:clientId/contracts', this.addContract);
+        this.router.get('/:clientId/contracts', this.getContract);
     }
 }
 exports.ClientsController = ClientsController;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { TextField, Button, makeStyles } from '@material-ui/core'
 import { useClientsStore } from '../../../context/Clients.context'
+import AddContract from '../AddContract'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -118,6 +119,7 @@ const AddClient: React.FC = () => {
         >
           ADD CLIENT
         </Button>
+        <AddContract />
       </div>
     </div>
   )
