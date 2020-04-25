@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { TextField, Button, makeStyles } from '@material-ui/core'
 import { useClientsStore } from '../../../context/Clients.context'
 import AddContract from '../AddContract'
+import { AddItemProps } from '../AddItemProps.interface'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const AddClient: React.FC = () => {
+const AddClient: React.FC<AddItemProps> = (props) => {
   const classes = useStyles()
   const ClientsStore = useClientsStore()
 
@@ -37,6 +38,9 @@ const AddClient: React.FC = () => {
   const handleSubmit = () => {
     //Validate inputs are full
     ClientsStore.addClient(inputs)
+
+    props.openSnackbar('success', 'Added client successfully!')
+    // props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
     clearInputs()
   }
 

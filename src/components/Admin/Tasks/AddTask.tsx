@@ -65,11 +65,10 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
     const { taskType, startTime, endTime, description } = inputs
     const task = { clientId: client.id, serviceTypeId: taskType, startTime, endTime, description }
     await TasksStore.createTask(task)
-
-    // if (billable === 'billable') {
-    //   updateBalance(client)
-    // }
     await client.getBalance('tasks')
+
+    props.openSnackbar('success', 'Added task successfully!')
+    // props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
     clearInputs()
   }
 

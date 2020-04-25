@@ -63,8 +63,10 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
     const { name, date, amount, description } = inputs
     const expense = { clientId: client.id, name, date, amount, description }
     await ExpensesStore.createExpense(expense)
-
     await client.getBalance('expenses')
+
+    props.openSnackbar('success', 'Added expense successfully!')
+    // props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
     clearInputs()
   }
 

@@ -13,6 +13,8 @@ import DataList from './DataList'
 import { ExpensesProvider } from '../../context/Expenses.context'
 import { ExpensesStore } from '../../stores/Expenses.store'
 import AddExpense from './Expenses/AddExpense'
+import { Snackbar } from '@material-ui/core'
+import MuiAlert from '@material-ui/lab/Alert'
 
 
 const AddItem: React.FC = () => {
@@ -21,9 +23,14 @@ const AddItem: React.FC = () => {
 
   const ClientsStore = useClientsStore()
   const [clientName, setClientName] = useState('')
+  const [snackbar, setSnackbar] = useState({
+    message: '',
+    open: false,
+    severity: ''
+  })
 
   useEffect(() => {
-    
+
   }, [])
 
   useEffect(() => {
@@ -39,8 +46,20 @@ const AddItem: React.FC = () => {
     }
   }, [])
 
+  const openSnackbar = (severity, message) => {
+    setSnackbar({ message, severity, open: true })
+  }
+
+  const handleClose = () => {
+    setSnackbar({
+      message: '',
+      open: false,
+      severity: ''
+    })
+  }
+
   if (item === 'client') {
-    return <AddClient />
+    return <AddClient openSnackbar={openSnackbar} />
   } else {
     return (
       <div>
@@ -52,21 +71,34 @@ const AddItem: React.FC = () => {
         {
           item === 'task'
             ? <TasksProvider value={TasksStore}>
-              <AddTask clientName={clientName} setClientName={setClientName} />
+              <AddTask openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName} />
             </TasksProvider>
             : item === 'expense'
               ? <ExpensesProvider value={ExpensesStore}>
-                <AddExpense clientName={clientName} setClientName={setClientName} />
+                <AddExpense openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName} />
               </ExpensesProvider>
               : item === 'transfer'
                 ? <TransfersProvider value={TransfersStore}>
-                  <AddTransfer clientName={clientName} setClientName={setClientName} />
+                  <AddTransfer openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName} />
                 </TransfersProvider>
                 : null
         }
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={snackbar.severity}>
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </div>
     )
   }
+}
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default AddItem

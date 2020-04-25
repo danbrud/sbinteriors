@@ -113,7 +113,7 @@ const MenuBar: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="sticky">
+      <AppBar position="fixed">
         <Drawer
           open={open}
           onClose={toggleDrawer(false)}

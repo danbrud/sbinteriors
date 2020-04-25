@@ -60,7 +60,7 @@ type transferInputs = {
   ilsAmount: string
   transferMethod: null | number
   description: string
-  account: 'expenses' | 'tasks'
+  account: 'expenses' | 'tasks',
 }
 
 const AddTransfer: React.FC<AddItemProps> = observer((props) => {
@@ -70,7 +70,7 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
   const classes = useStyles()
 
   const { clientName, setClientName } = props
-  const [inputs, setInputs] = useState({
+  const [inputs, setInputs] = useState<transferInputs>({
     date: new Date(), foreignAmount: '', foreignAmountCurrency: 'USD',
     ilsAmount: '', transferMethod: null, description: '', account: 'expenses'
   })
@@ -112,9 +112,10 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
       transferMethodId: transferMethod, description, account
     }
     await TransfersStore.createTransfer(transfer)
-
-    debugger
     account === 'expenses' ? await client.getBalance('expenses') : await client.getBalance('tasks')
+
+    props.openSnackbar('success', 'Added transfer successfully!')
+    // props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
     clearInputs()
   }
 
