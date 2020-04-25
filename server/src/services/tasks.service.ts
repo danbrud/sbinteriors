@@ -1,7 +1,7 @@
 import { Task } from '../models/Task.model'
 import { Service } from '../models/Service.model'
 import { Contract } from '../models/Contract.model'
-import sequelize, { Op } from "sequelize"
+import { Op } from "sequelize"
 import { Client } from '../models/Client.model'
 
 
@@ -12,13 +12,16 @@ export class TasksService {
     return tasks
   }
 
-  public async getTasksByClientId(clientId: string): Promise<Task[]> {
-    const tasks = await Task.findAll({ where: { clientId }, include: [Service] })
+  public async getTasksByClientId(clientId: string, attributes?: string[]): Promise<Task[]> {
+    const options = attributes
+      ? { where: { clientId }, attributes }
+      : { where: { clientId }, include: [Service] }
+
+    const tasks = await Task.findAll(options)
     return tasks
   }
 
   public async createTask(body): Promise<Task> {
-    //Update the client's balance
     const { serviceTypeId, clientId } = body
     const { includedHours } = await Contract.findOne({
       where: {

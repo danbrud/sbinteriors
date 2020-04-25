@@ -10,12 +10,14 @@ class TasksService {
         const tasks = await Task_model_1.Task.findAll();
         return tasks;
     }
-    async getTasksByClientId(clientId) {
-        const tasks = await Task_model_1.Task.findAll({ where: { clientId }, include: [Service_model_1.Service] });
+    async getTasksByClientId(clientId, attributes) {
+        const options = attributes
+            ? { where: { clientId }, attributes }
+            : { where: { clientId }, include: [Service_model_1.Service] };
+        const tasks = await Task_model_1.Task.findAll(options);
         return tasks;
     }
     async createTask(body) {
-        //Update the client's balance
         const { serviceTypeId, clientId } = body;
         const { includedHours } = await Contract_model_1.Contract.findOne({
             where: {

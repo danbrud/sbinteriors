@@ -6,13 +6,14 @@ class ExpensesService {
         const expenses = await Expense_model_1.Expense.findAll();
         return expenses;
     }
-    async getExpensesByClientId(clientId) {
-        const expenses = await Expense_model_1.Expense.findAll({ where: { clientId } });
+    async getExpensesByClientId(clientId, attributes) {
+        const options = attributes
+            ? { where: { clientId }, attributes }
+            : { where: { clientId } };
+        const expenses = await Expense_model_1.Expense.findAll(options);
         return expenses;
     }
     async createExpense(body) {
-        //Update the client's balance
-        //Possibly update the task current balance or isPaid
         const expense = new Expense_model_1.Expense(body);
         await expense.save();
         return expense;

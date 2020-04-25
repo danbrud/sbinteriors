@@ -1,11 +1,16 @@
 import { Client } from "../models/Client.model"
-import { Transfer } from '../models/Transfer.model'
 import { Task } from '../models/Task.model'
 import { Expense } from '../models/Expense.model'
-import sequelize, { Op } from "sequelize"
 import { Contract } from "../models/Contract.model"
+import { ExpensesService } from './expenses.service'
+import { TasksService } from './tasks.service'
+import { TransfersService } from './transfers.service'
+import { getTotal } from '../utils'
 
 export class ClientsService {
+  private expensesService = new ExpensesService()
+  private transfersService = new TransfersService()
+  private tasksService = new TasksService()
 
   public async getClients(): Promise<Client[]> {
     const clients = await Client.findAll()
@@ -29,67 +34,29 @@ export class ClientsService {
     return client
   }
 
-  public async getExpenseBalance(clientId: string): Promise<{ balance: number }> {
-    const transfers = await this.getTransfersByAccount(clientId, 'expenses', ['ilsAmount'])
+  public async getBalanceByAccount(clientId: string, account: 'expenses' | 'tasks'): Promise<{ balance: number }> {
+    const transfers = await this.transfersService.getTransfersByClientId(clientId, ['ilsAmount'], [{ account }])
 
-    const expenses = await Expense.findAll({
-      where: {
-        [Op.and]: [
-          { clientId: parseInt(clientId) }
-        ]
-      },
-      attributes: ['amount']
-    })
+    let items: Expense[] | Task[]
+    if (account === 'expenses') {
+      items = await this.expensesService.getExpensesByClientId(clientId, ['amount'])
+    } else {
+      items = await this.tasksService.getTasksByClientId(clientId, ['price'])
+    }
 
-    const expenseSum = expenses.reduce((acc: number, e: Expense) => acc + e.amount, 0)
-    const transferSum = transfers.reduce((acc: number, t: Transfer) => acc + t.ilsAmount, 0)
-    const balance = transferSum - expenseSum
+    const itemTotal = getTotal(items)
+    const transferTotal = getTotal(transfers)
+    const balance = transferTotal - itemTotal
 
     return { balance }
-  }
-
-  public async getTaskBalance(clientId: string): Promise<{ balance: number }> {
-    const transfers = await this.getTransfersByAccount(clientId, 'tasks', ['ilsAmount'])
-
-    const tasks = await Task.findAll({
-      where: {
-        [Op.and]: [
-          { clientId: parseInt(clientId) }
-        ]
-      },
-      attributes: ['price']
-    })
-
-    const taskSum = tasks.reduce((acc: number, t: Task) => acc + t.price, 0)
-    const transferSum = transfers.reduce((acc: number, t: Transfer) => acc + t.ilsAmount, 0)
-    const balance = transferSum - taskSum
-
-    return { balance }
-  }
-
-  private async getTransfersByAccount(
-    clientId: string, account: string, attributes: string[]
-  ): Promise<Transfer[]> {
-    return await Transfer.findAll({
-      where: {
-        [Op.and]: [
-          { clientId: parseInt(clientId) },
-          { account }
-        ]
-      },
-      attributes
-    })
   }
 
   public async addContract(clientId: string, body): Promise<Contract[]> {
     const contract = []
     for (let key in body) {
       const contractItem = new Contract({
-        clientId: parseInt(clientId),
-        serviceId: parseInt(key),
-        includedHours: body[key]
+        clientId, serviceId: key, includedHours: body[key]
       })
-
       await contractItem.save()
       contract.push(contractItem)
     }
@@ -98,12 +65,7 @@ export class ClientsService {
   }
 
   public async getContract(clientId: string): Promise<Contract[]> {
-    const contract = Contract.findAll({
-      where: {
-        clientId: parseInt(clientId)
-      }
-    })
-
+    const contract = Contract.findAll({ where: { clientId } })
     return contract
   }
 }

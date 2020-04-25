@@ -15,7 +15,7 @@ export class ClientsController {
     this.router.get('/', this.getClients)
     this.router.post('/', this.createClient)
     this.router.put('/:clientId', this.updateClient)
-    this.router.get('/:clientId/balance/:type', this.getBalance)
+    this.router.get('/:clientId/balance/:account', this.getBalance)
     this.router.post('/:clientId/contracts', this.addContract)
     this.router.get('/:clientId/contracts', this.getContract)
   }
@@ -38,11 +38,8 @@ export class ClientsController {
   }
 
   private getBalance: express.RequestHandler = async (req, res) => {
-    const { clientId, type } = req.params
-
-    const balance = type === 'expenses'
-      ? await this.clientsService.getExpenseBalance(clientId)
-      : await this.clientsService.getTaskBalance(clientId)
+    const { clientId, account } = req.params
+    const balance = await this.clientsService.getBalanceByAccount(clientId, account as 'expenses' | 'tasks')
 
     res.send(balance)
   }

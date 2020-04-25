@@ -1,6 +1,6 @@
 import { Transfer } from '../models/Transfer.model'
-import { Client } from '../models/Client.model'
 import { TransferMethod } from '../models/TransferMethod.model'
+import { Op } from "sequelize"
 
 export class TransfersService {
 
@@ -9,8 +9,19 @@ export class TransfersService {
     return transfers
   }
 
-  public async getTransfersByClientId(clientId: string): Promise<Transfer[]> {
-    const transfers = await Transfer.findAll({ where: { clientId }, include: [TransferMethod] })
+  public async getTransfersByClientId(clientId: string, attributes?: string[], where?): Promise<Transfer[]> {
+    const options = attributes
+      ? { where: {
+          [Op.and]: [
+            { clientId },
+            ...where
+          ]
+        },
+        attributes
+      }
+      : { where: { clientId }, include: [TransferMethod] }
+
+    const transfers = await Transfer.findAll(options)
     return transfers
   }
 

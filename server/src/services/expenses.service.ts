@@ -1,4 +1,5 @@
 import { Expense } from '../models/Expense.model'
+import { Op } from "sequelize"
 
 export class ExpensesService {
 
@@ -7,14 +8,16 @@ export class ExpensesService {
     return expenses
   }
 
-  public async getExpensesByClientId(clientId: string): Promise<Expense[]> {
-    const expenses = await Expense.findAll({ where: { clientId } })
+  public async getExpensesByClientId(clientId: string, attributes?: string[]): Promise<Expense[]> {
+    const options = attributes
+      ? { where: { clientId }, attributes }
+      : { where: { clientId } }
+
+    const expenses = await Expense.findAll(options)
     return expenses
   }
 
   public async createExpense(body): Promise<Expense> {
-    //Update the client's balance
-    //Possibly update the task current balance or isPaid
     const expense = new Expense(body)
     await expense.save()
 
