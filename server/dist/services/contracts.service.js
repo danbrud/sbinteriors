@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Contract_model_1 = require("../models/Contract.model");
+const sequelize_1 = require("sequelize");
 class ContractsService {
-    async addContract(clientId, body) {
-        const contract = [];
-        for (let key in body) {
-            const contractItem = new Contract_model_1.Contract({
-                clientId: parseInt(clientId),
-                serviceId: parseInt(key),
-                includedHours: body[key]
-            });
-            await contractItem.save();
-            contract.push(contractItem);
-        }
+    async getContractByClientId(clientId, where) {
+        where = where ? where : [];
+        const contract = await Contract_model_1.Contract.findOne({
+            where: {
+                [sequelize_1.Op.and]: [
+                    { clientId },
+                    ...where
+                ]
+            }
+        });
         return contract;
     }
 }

@@ -7,14 +7,13 @@ const tasks_service_1 = require("./tasks.service");
 const transfers_service_1 = require("./transfers.service");
 const utils_1 = require("../utils");
 class ClientsService {
-    constructor() {
-        this.expensesService = new expenses_service_1.ExpensesService();
-        this.transfersService = new transfers_service_1.TransfersService();
-        this.tasksService = new tasks_service_1.TasksService();
-    }
     async getClients() {
         const clients = await Client_model_1.Client.findAll();
         return clients;
+    }
+    async getClientById(id, attributes) {
+        const client = await Client_model_1.Client.findOne({ where: { id }, attributes });
+        return client;
     }
     async createClient(body) {
         const client = new Client_model_1.Client(body);
@@ -29,13 +28,16 @@ class ClientsService {
         return client;
     }
     async getBalanceByAccount(clientId, account) {
-        const transfers = await this.transfersService.getTransfersByClientId(clientId, ['ilsAmount'], [{ account }]);
+        const expensesService = new expenses_service_1.ExpensesService();
+        const transfersService = new transfers_service_1.TransfersService();
+        const tasksService = new tasks_service_1.TasksService();
+        const transfers = await transfersService.getTransfersByClientId(clientId, ['ilsAmount'], [{ account }]);
         let items;
         if (account === 'expenses') {
-            items = await this.expensesService.getExpensesByClientId(clientId, ['amount']);
+            items = await expensesService.getExpensesByClientId(clientId, ['amount']);
         }
         else {
-            items = await this.tasksService.getTasksByClientId(clientId, ['price']);
+            items = await tasksService.getTasksByClientId(clientId, null, ['price']);
         }
         const itemTotal = utils_1.getTotal(items);
         const transferTotal = utils_1.getTotal(transfers);

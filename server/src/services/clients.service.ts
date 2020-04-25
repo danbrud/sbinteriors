@@ -8,13 +8,15 @@ import { TransfersService } from './transfers.service'
 import { getTotal } from '../utils'
 
 export class ClientsService {
-  private expensesService = new ExpensesService()
-  private transfersService = new TransfersService()
-  private tasksService = new TasksService()
 
   public async getClients(): Promise<Client[]> {
     const clients = await Client.findAll()
     return clients
+  }
+
+  public async getClientById(id: number, attributes?: string[]): Promise<Client> {
+    const client = await Client.findOne({ where: { id }, attributes })
+    return client
   }
 
   public async createClient(body): Promise<Client> {
@@ -35,13 +37,17 @@ export class ClientsService {
   }
 
   public async getBalanceByAccount(clientId: string, account: 'expenses' | 'tasks'): Promise<{ balance: number }> {
-    const transfers = await this.transfersService.getTransfersByClientId(clientId, ['ilsAmount'], [{ account }])
+    const expensesService = new ExpensesService()
+    const transfersService = new TransfersService()
+    const tasksService = new TasksService()
+
+    const transfers = await transfersService.getTransfersByClientId(clientId, ['ilsAmount'], [{ account }])
 
     let items: Expense[] | Task[]
     if (account === 'expenses') {
-      items = await this.expensesService.getExpensesByClientId(clientId, ['amount'])
+      items = await expensesService.getExpensesByClientId(clientId, ['amount'])
     } else {
-      items = await this.tasksService.getTasksByClientId(clientId, ['price'])
+      items = await tasksService.getTasksByClientId(clientId, null, ['price'])
     }
 
     const itemTotal = getTotal(items)

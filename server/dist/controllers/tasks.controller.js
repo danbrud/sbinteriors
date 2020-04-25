@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const tasks_service_1 = require("../services/tasks.service");
+const Service_model_1 = require("../models/Service.model");
 class TasksController {
     constructor() {
         this.tasksService = new tasks_service_1.TasksService();
@@ -16,7 +17,7 @@ class TasksController {
         };
         this.getTasksByClientId = async (req, res) => {
             const { clientId } = req.params;
-            const tasks = await this.tasksService.getTasksByClientId(clientId);
+            const tasks = await this.tasksService.getTasksByClientId(clientId, [Service_model_1.Service]);
             res.send(tasks);
         };
         this.createExpense = async (req, res) => {

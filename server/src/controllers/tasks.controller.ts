@@ -1,5 +1,6 @@
 import express from 'express'
 import { TasksService } from '../services/tasks.service'
+import { Service } from '../models/Service.model'
 
 
 export class TasksController {
@@ -25,7 +26,7 @@ export class TasksController {
   private getTasksByClientId: express.RequestHandler = async (req, res) => {
     const { clientId } = req.params
 
-    const tasks = await this.tasksService.getTasksByClientId(clientId)
+    const tasks = await this.tasksService.getTasksByClientId(clientId, [Service])
     res.send(tasks)
   }
 
