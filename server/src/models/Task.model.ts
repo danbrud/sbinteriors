@@ -15,7 +15,7 @@ export class Task extends Model<Task> {
   @Column
   endTime: Date
 
-  @Default(null)
+  @Default(0)
   @Column({ type: DataType.FLOAT })
   price: number
 
@@ -31,5 +31,5 @@ export class Task extends Model<Task> {
   serviceType: Service
 
   @BelongsTo(() => Client)
-  project: Client
+  client: Client
 }

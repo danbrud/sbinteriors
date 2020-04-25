@@ -12,7 +12,7 @@ export class Transfers {
     const transfers = data.map(t => (
       new Transfer(
         t.id, t.clientId, t.date, t.ilsAmount, t.foreignAmount,
-        t.foreignAmountCurrency, t.transferMethod, t.description
+        t.foreignAmountCurrency, t.transferMethod, t.description, t.account
       )
     ))
     this.transfers = transfers

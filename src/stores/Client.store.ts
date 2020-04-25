@@ -12,14 +12,13 @@ export class Client {
   @observable address: string
   @observable city: string
   @observable description: string | null
-  @observable expenseBalance: number
-  @observable taskBalance: number
+  @observable expensesBalance: number
+  @observable tasksBalance: number
   @observable isComplete: boolean
 
   constructor(
     id: number, name: string, email: string, phone: string, spouseName: string | null,
-    address: string, city: string, description: string | null,
-    expenseBalance: number, taskBalance: number, isComplete: boolean
+    address: string, city: string, description: string | null, isComplete: boolean
   ) {
     this.id = id
     this.name = name
@@ -29,9 +28,9 @@ export class Client {
     this.address = address
     this.city = city
     this.description = description
-    this.expenseBalance = expenseBalance
-    this.taskBalance = taskBalance
     this.isComplete = isComplete
+    this.getBalance('expenses')
+    this.getBalance('tasks')
   }
 
   @action async updateClient(prop: string, value: string | boolean | number) {
@@ -50,5 +49,15 @@ export class Client {
     })
 
     return formattedName
+  }
+
+  @action async getBalance(type: 'expenses' | 'tasks') {
+    const { data } = await axios.get<{ balance: number }>(`${SERVER_URL}/clients/${this.id}/balance/${type}`)
+    type += 'Balance'
+    this[type] = data.balance
+  }
+
+  async addContract(contract) {
+    await axios.post(`${SERVER_URL}/clients/${this.id}/contracts`, contract)
   }
 }

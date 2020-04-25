@@ -28,7 +28,6 @@ export class GeneralAdmin {
   }
 
   getTransferMethod(id: number | string) {
-    debugger
     const transferMethod = this.transferMethods.find(m => m.id == id)
     return transferMethod
   }

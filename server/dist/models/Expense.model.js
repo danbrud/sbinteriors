@@ -24,13 +24,7 @@ __decorate([
 ], Expense.prototype, "name", void 0);
 __decorate([
     sequelize_typescript_1.Column,
-    __metadata("design:type", Date
-    // @Default(false)
-    // @Column
-    // isPaid: boolean
-    // @Column({ type: DataType.FLOAT })
-    // currentBalance: number
-    )
+    __metadata("design:type", Date)
 ], Expense.prototype, "date", void 0);
 __decorate([
     sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),

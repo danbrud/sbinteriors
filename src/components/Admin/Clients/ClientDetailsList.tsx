@@ -51,16 +51,16 @@ const ClientDetailItems: React.FC = observer(() => {
                     item === 'tasks'
                       ? <span
                         className='badge'
-                        style={{ backgroundColor: getBackgroundColor(client.taskBalance) }}
+                        style={{ backgroundColor: getBackgroundColor(client.tasksBalance) }}
                       >
-                        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i> {Math.abs(client.taskBalance)}
+                        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i> {Math.abs(client.tasksBalance)}
                       </span>
                       : item === 'expenses'
                         ? <span
                         className='badge'
-                        style={{ backgroundColor: getBackgroundColor(client.expenseBalance) }}
+                        style={{ backgroundColor: getBackgroundColor(client.expensesBalance) }}
                       >
-                        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i> {Math.abs(client.expenseBalance)}
+                        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i> {Math.abs(client.expensesBalance)}
                       </span>
                         : null
                   }

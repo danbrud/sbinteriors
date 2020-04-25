@@ -14,13 +14,6 @@ export class Expense extends Model<Expense> {
   @Column
   date: Date
 
-  // @Default(false)
-  // @Column
-  // isPaid: boolean
-
-  // @Column({ type: DataType.FLOAT })
-  // currentBalance: number
-
   @Column({ type: DataType.FLOAT })
   amount: number
 

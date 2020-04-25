@@ -43,6 +43,10 @@ __decorate([
     __metadata("design:type", String)
 ], Transfer.prototype, "description", void 0);
 __decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Transfer.prototype, "account", void 0);
+__decorate([
     sequelize_typescript_1.ForeignKey(() => TransferMethod_model_1.TransferMethod),
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)

@@ -33,6 +33,7 @@ class AdminController {
         this.router.post('/services', this.createService);
         this.router.get('/transfer-methods', this.getTransferMethods);
         this.router.post('/transfer-methods', this.createTransferMethod);
+        this.router.get('/transfer-methods', this.getTransferMethods);
     }
 }
 exports.AdminController = AdminController;
