@@ -6,10 +6,11 @@ import { observer } from 'mobx-react'
 const AddContract: React.FC = observer(() => {
   const GeneralAdminStore = useGeneralAdminStore()
   const ClientsStore = useClientsStore()
+
   const [contract, setContract] = useState({})
+  const [price, setPrice] = useState('')
 
   const handleChange = ({ target }) => {
-    debugger
     setContract({ ...contract, [target.name]: target.value })
   }
 
@@ -19,8 +20,9 @@ const AddContract: React.FC = observer(() => {
     }
 
     const client = ClientsStore.clients[ClientsStore.clients.length - 1]
+    client.updateClient('pricePerHour', parseInt(price))
     client.addContract(contract)
-    clearInputs()
+    // clearInputs()
   }
 
   const clearInputs = () => {
@@ -30,6 +32,13 @@ const AddContract: React.FC = observer(() => {
 
   return (
     <div>
+      <p>Price per hour</p>
+      <input
+        type="number"
+        placeholder='Enter price per hour'
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
       {GeneralAdminStore.services.map(s => (
         <div>
           <p>{s.name}</p>

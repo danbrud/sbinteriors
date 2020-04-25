@@ -41,13 +41,26 @@ class TasksService {
         body.endTime = new Date(body.endTime);
         body.startTime = new Date(body.startTime);
         const taskTime = Math.floor(((+body.endTime - +body.startTime) / 1000) / 60);
+        //put in function and call inside if
+        let client;
+        if (tasks.length) {
+            client = tasks[0].client;
+        }
+        else {
+            client = await Client_model_1.Client.findOne({
+                where: {
+                    id: clientId
+                },
+                attributes: ['pricePerHour']
+            });
+        }
         if (totalMinutes >= includedMinutes) {
-            body.price = tasks[0].client.pricePerHour * (taskTime / 60);
+            body.price = client.pricePerHour * (taskTime / 60);
         }
         else if (totalMinutes + taskTime > includedMinutes) {
             const leftOverTime = includedMinutes - totalMinutes;
             const billableMinutes = taskTime - leftOverTime;
-            body.price = tasks[0].client.pricePerHour * (billableMinutes / 60);
+            body.price = client.pricePerHour * (billableMinutes / 60);
         }
         const task = new Task_model_1.Task(body);
         await task.save();
