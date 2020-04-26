@@ -12,6 +12,7 @@ import { observer } from 'mobx-react'
 import { checkRequiredFields } from '../../../utils'
 import { datePickerTheme } from '../../../themes/datePicker.theme'
 import '../../../styles/CalendarButton.css'
+import { AddPopup } from '../AddPopup'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +54,13 @@ const useStyles = makeStyles((theme) => ({
   },
   foreignAmountInput: {
     width: '60%'
-  }
+  },
+  select: {
+    display: 'grid',
+    margin: '4px',
+    gridTemplateColumns: '4fr 1fr',
+    alignItems: 'end'
+  },
 }))
 
 type transferInputs = {
@@ -142,17 +149,19 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
 
   return (
     <FormControl className={classes.formControl}>
+      <div className={classes.select}>
       <InputLabel className={classes.input} id="transfer-method-label" required={true}>Transfer Method</InputLabel>
-      <Select
-        className={classes.input}
-        labelId="transfer-method-label"
-        id="tranfer-method-select"
-        value={inputs.transferMethod}
-        name='transferMethod'
-        onChange={handleChange}
-      >
-        {availableTransferMethods.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
-      </Select>
+        <Select
+          labelId="transfer-method-label"
+          id="tranfer-method-select"
+          value={inputs.transferMethod}
+          name='transferMethod'
+          onChange={handleChange}
+        >
+          {availableTransferMethods.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
+        </Select>
+        <AddPopup name='Transfer Method' openSnackbar={props.openSnackbar}/>
+      </div>
       <FormLabel
         className={classes.radioLabel}
         component="legend"

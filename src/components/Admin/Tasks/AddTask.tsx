@@ -11,6 +11,7 @@ import { observer } from 'mobx-react'
 import { checkRequiredFields } from '../../../utils'
 import { datePickerTheme } from '../../../themes/datePicker.theme'
 import '../../../styles/CalendarButton.css'
+import { AddPopup } from '../AddPopup'
 
 
 
@@ -29,7 +30,12 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: '10px',
     color: 'white'
-  }
+  },
+  select: {
+    display: 'grid',
+    gridTemplateColumns: '4fr 1fr',
+    alignItems: 'end'
+  },
 }))
 
 type taskInputs = {
@@ -81,18 +87,6 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
     clearInputs()
   }
 
-  //delete (happens automatically)
-  // const updateBalance = (client: Client) => {
-  //   const balance = client.tasksBalance - parseInt(inputs.price)
-  //   client.updateClient('tasksBalance', balance)
-  // }
-
-  // const handleRadioChange = ({ target }) => {
-  //   const { value } = target
-  //   if (value === 'no charge') { setPrice('') }
-  //   setBillable(value)
-  // }
-
   const clearInputs = () => {
     setInputs({
       taskType: null, startTime: new Date(), endTime: new Date(), description: ''
@@ -103,17 +97,20 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
 
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel className={classes.input} id="task-type-label" required={true}>Task Type</InputLabel>
-      <Select
-        className={classes.input}
-        labelId="task-type-label"
-        id="task-type-select"
-        value={inputs.taskType}
-        onChange={handleChange}
-        name='taskType'
-      >
-        {availableTypes.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
-      </Select>
+      <div className={classes.select}>
+        <InputLabel className={classes.input} id="task-type-label" required={true}>Task Type</InputLabel>
+        <Select
+          className={classes.input}
+          labelId="task-type-label"
+          id="task-type-select"
+          value={inputs.taskType}
+          onChange={handleChange}
+          name='taskType'
+        >
+          {availableTypes.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
+        </Select>
+        <AddPopup name='Service' openSnackbar={props.openSnackbar}/>
+      </div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <ThemeProvider theme={datePickerTheme}>
           <KeyboardDateTimePicker
