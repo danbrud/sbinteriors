@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
-import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, FormLabel, FormControlLabel, Radio, RadioGroup } from '@material-ui/core'
+import { InputLabel, Select, MenuItem, FormControl, makeStyles, Button, ThemeProvider } from '@material-ui/core'
 import { DateTimePicker, MuiPickersUtilsProvider, KeyboardDateTimePicker } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useTasksStore } from '../../../context/Tasks.context'
-import { Client } from '../../../stores/Client.store'
 import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 import { observer } from 'mobx-react'
 import { checkRequiredFields } from '../../../utils'
+import { datePickerTheme } from '../../../themes/datePicker.theme'
+import '../../../styles/CalendarButton.css'
 
 
 
@@ -114,22 +115,24 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
         {availableTypes.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
       </Select>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDateTimePicker
-          required={true}
-          className={classes.input}
-          label="Start Time"
-          inputVariant="standard"
-          value={inputs.startTime}
-          onChange={(date) => setInputs({ ...inputs, startTime: date })}
-        />
-        <KeyboardDateTimePicker
-          required={true}
-          className={classes.input}
-          label="End Time"
-          inputVariant="standard"
-          value={inputs.endTime}
-          onChange={(date) => setInputs({ ...inputs, endTime: date })}
-        />
+        <ThemeProvider theme={datePickerTheme}>
+          <KeyboardDateTimePicker
+            required={true}
+            className={classes.input}
+            label="Start Time"
+            inputVariant="standard"
+            value={inputs.startTime}
+            onChange={(date) => setInputs({ ...inputs, startTime: date })}
+          />
+          <KeyboardDateTimePicker
+            required={true}
+            className={classes.input}
+            label="End Time"
+            inputVariant="standard"
+            value={inputs.endTime}
+            onChange={(date) => setInputs({ ...inputs, endTime: date })}
+          />
+        </ThemeProvider>
       </MuiPickersUtilsProvider>
       {/* <RadioGroup row value={billable} onChange={handleRadioChange}>
         <FormControlLabel value="no charge" control={<Radio color='primary' />} label="No Charge" />

@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
-import { FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup } from '@material-ui/core'
+import { FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup, ThemeProvider } from '@material-ui/core'
 import { MuiPickersUtilsProvider, DatePicker, KeyboardDatePicker } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useExpensesStore } from '../../../context/Expenses.context'
-import { Client } from '../../../stores/Client.store'
 import { checkRequiredFields } from '../../../utils'
+import { datePickerTheme } from '../../../themes/datePicker.theme'
+import '../../../styles/CalendarButton.css'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -80,11 +81,6 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
     clearInputs()
   }
 
-  // const updateBalance = (client: Client) => {
-  //   const balance = client.expensesBalance - parseInt(amount)
-  //   client.updateClient('expensesBalance', balance)
-  // }
-
   const clearInputs = () => {
     setInputs({
       name: '', date: new Date(), amount: '', description: ''
@@ -103,13 +99,15 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
         onChange={handleChange}
       />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          required={true}
-          label="Transfer Date"
-          value={inputs.date}
-          onChange={(date) => setInputs({ ...inputs, date })}
-          format='MMM do, yyyy'
-        />
+        <ThemeProvider theme={datePickerTheme}>
+          <KeyboardDatePicker
+            required={true}
+            label="Transfer Date"
+            value={inputs.date}
+            onChange={(date) => setInputs({ ...inputs, date })}
+            format='MMM do, yyyy'
+          />
+        </ThemeProvider>
       </MuiPickersUtilsProvider>
       <TextField
         className={classes.input}

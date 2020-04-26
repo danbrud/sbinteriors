@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { useClientsStore } from '../../../context/Clients.context'
-import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup, FormLabel, RadioGroup, Radio } from '@material-ui/core'
+import { InputLabel, Select, MenuItem, FormControl, makeStyles, InputAdornment, Button, Switch, FormControlLabel, ButtonGroup, FormLabel, RadioGroup, Radio, ThemeProvider } from '@material-ui/core'
 import { MuiPickersUtilsProvider, DatePicker, KeyboardDatePicker } from "@material-ui/pickers"
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
@@ -10,6 +10,8 @@ import { Client } from '../../../stores/Client.store'
 import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 import { observer } from 'mobx-react'
 import { checkRequiredFields } from '../../../utils'
+import { datePickerTheme } from '../../../themes/datePicker.theme'
+import '../../../styles/CalendarButton.css'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -129,11 +131,6 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
     clearInputs()
   }
 
-  // const updateBalance = (client: Client) => {
-  //   const balance = client[balanceType] + parseInt(ilsAmount)
-  //   client.updateClient(balanceType, balance)
-  // }
-
   const clearInputs = () => {
     setInputs({
       date: new Date(), foreignAmount: '', foreignAmountCurrency: 'USD',
@@ -177,13 +174,15 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
         />
       </RadioGroup>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          required={true}
-          label="Transfer Date"
-          value={inputs.date}
-          onChange={(date) => setInputs({ ...inputs, date })}
-          format='MMM do, yyyy'
-        />
+        <ThemeProvider theme={datePickerTheme}>
+          <KeyboardDatePicker
+            required={true}
+            label="Transfer Date"
+            value={inputs.date}
+            onChange={(date) => setInputs({ ...inputs, date })}
+            format='MMM do, yyyy'
+          />
+        </ThemeProvider>
       </MuiPickersUtilsProvider>
       <FormControlLabel
         // labelPlacement='start'
