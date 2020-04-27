@@ -35,8 +35,10 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
       </div>
       <Divider />
       <div className='details'>
-        <p><i className="fas fa-phone"></i> {client.phone}</p>
-        <p><i className="far fa-envelope-open"></i> {client.email}</p>
+        <div>
+          <p><i className="fas fa-phone"></i> {client.phone}</p>
+          <p><i className="far fa-envelope-open"></i> {client.email}</p>
+        </div>
       </div>
       <Divider />
       <div id='project-details-container'>

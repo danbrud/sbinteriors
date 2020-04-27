@@ -15,6 +15,7 @@ import { ExpensesStore } from '../../stores/Expenses.store'
 import AddExpense from './Expenses/AddExpense'
 import { Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
+import AddContract from './Clients/AddContract'
 
 
 const AddItem: React.FC = () => {
@@ -94,7 +95,9 @@ const AddItem: React.FC = () => {
                 ? <TransfersProvider value={TransfersStore}>
                   <AddTransfer openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName} />
                 </TransfersProvider>
-                : null
+                : item === 'contract'
+                  ? <AddContract openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName}/>
+                  : null
         }
         <Snackbar
           open={snackbar.open}

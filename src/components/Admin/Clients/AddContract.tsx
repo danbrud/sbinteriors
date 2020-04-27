@@ -42,7 +42,7 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
     const filledInputs = Object.keys(contract)
     const inputs = removeOptionalFields(filledInputs, contract)
     if (!filledInputs.length || !price) {
-      openSnackbar('error', 'Invalid! Make sure to fill all contract inputs.')
+      openSnackbar('error', 'Invalid! Make sure to fill at least one contract inputs.')
       return
     }
 
@@ -90,7 +90,7 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
   }
 
   return (
-    <div>
+    <div id={!clientPage ? 'input-form' : null}>
       <TextField
         className={classes.input}
         fullWidth={true}
@@ -107,6 +107,7 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
           fullWidth={true}
           label={`Included Hours for ${s.name}`}
           type='number'
+          name={`${s.id}`}
           value={contract[s.id]}
           onChange={handleChange}
         />
@@ -120,15 +121,19 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
       >
         ADD {clientPage ? 'CLIENT &' : null} CONTRACT
       </Button>
-      < Button
-        className={classes.buttonOutlined}
-        variant="outlined"
-        color="primary"
-        fullWidth={true}
-        onClick={handleHide}
-      >
-        HIDE CONTRACT
-      </Button>
+      {
+        clientPage
+          ? < Button
+            className={classes.buttonOutlined}
+            variant="outlined"
+            color="primary"
+            fullWidth={true}
+            onClick={handleHide}
+          >
+            HIDE CONTRACT
+          </Button>
+          : null
+      }
     </div>
   )
 })

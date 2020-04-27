@@ -3,13 +3,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import SpeedDial from '@material-ui/lab/SpeedDial'
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
-import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
+import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded'
 import { toProperCase } from '../../utils'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import CreditCardRoundedIcon from '@material-ui/icons/CreditCardRounded';
-import SyncAltRoundedIcon from '@material-ui/icons/SyncAltRounded';
-import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
-import LocationCityRoundedIcon from '@material-ui/icons/LocationCityRounded';
+import CreditCardRoundedIcon from '@material-ui/icons/CreditCardRounded'
+import SyncAltRoundedIcon from '@material-ui/icons/SyncAltRounded'
+import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded'
+import LocationCityRoundedIcon from '@material-ui/icons/LocationCityRounded'
+import DescriptionIcon from '@material-ui/icons/Description'
 import '../../App.css'
 
 
@@ -77,6 +78,7 @@ const AddFab: React.FC = () => {
     { icon: <AssignmentRoundedIcon className={classes.icon} />, name: 'task' },
     { icon: <CreditCardRoundedIcon className={classes.icon} />, name: 'expense' },
     { icon: <SyncAltRoundedIcon className={classes.icon} />, name: 'transfer' },
+    { icon: <DescriptionIcon className={classes.icon} />, name: 'contract' },
   ]
 
   return (
