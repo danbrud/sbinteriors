@@ -36,7 +36,7 @@ const ClientDetailItems: React.FC = observer(() => {
 
   const getBackgroundColor = (balance: number) => balance >= 0 ? '#208f4e' : '#c0392b'
 
-  const detailItems = ['tasks', 'expenses', 'transfers']
+  const detailItems = ['tasks', 'expenses', 'transfers', 'contract']
 
   return (
     <TableContainer component={Paper}>

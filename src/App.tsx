@@ -79,6 +79,11 @@ const App: React.FC = observer(() => {
         />
         <Route
           exact
+          path='/admin/clients/:clientId/contract'
+          render={() => <Expenses />}
+        />
+        <Route
+          exact
           path='/admin/add/:item'
           render={() => <AddItem />}
         />

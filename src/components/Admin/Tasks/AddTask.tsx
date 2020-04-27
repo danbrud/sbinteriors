@@ -73,6 +73,11 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
       return
     }
 
+    if (inputs.startTime > inputs.endTime) {
+      props.openSnackbar('error', 'Invalid! End time must be after start time.')
+      return
+    }
+
     try {
       const { taskType, startTime, endTime, description } = inputs
       const task = { clientId: client.id, serviceTypeId: taskType, startTime, endTime, description }
@@ -131,29 +136,6 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
           />
         </ThemeProvider>
       </MuiPickersUtilsProvider>
-      {/* <RadioGroup row value={billable} onChange={handleRadioChange}>
-        <FormControlLabel value="no charge" control={<Radio color='primary' />} label="No Charge" />
-        <FormControlLabel value="billable" control={<Radio color='primary' />} label="Billable" />
-      </RadioGroup> */}
-      {/* billable === 'billable'
-        ? <TextField
-          className={classes.input}
-          required={true} //Maybe only required if the billable radio button is clicked
-          value={price}
-          placeholder='Price'
-          onChange={(e) => setPrice(e.target.value)}
-          label="Price"
-          type='number'
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <i className="fas fa-shekel-sign" style={{ color: '#757575' }}></i>
-              </InputAdornment>
-            )
-          }}
-        />
-        : null
-        */}
       <TextField
         className={classes.input}
         multiline={true}
