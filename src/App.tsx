@@ -16,6 +16,7 @@ import { useTransfersStore } from './context/Transfers.context'
 import { TasksStore } from './stores/Tasks.store'
 import { useTasksStore } from './context/Tasks.context'
 import { useExpensesStore } from './context/Expenses.context'
+import Contract from './components/Admin/Clients/Contract'
 
 
 const App: React.FC = observer(() => {
@@ -80,7 +81,7 @@ const App: React.FC = observer(() => {
         <Route
           exact
           path='/admin/clients/:clientId/contract'
-          render={() => <Expenses />}
+          render={() => <Contract />}
         />
         <Route
           exact

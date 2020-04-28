@@ -17,6 +17,11 @@ export class GeneralAdmin {
     this.services.push(data)
   }
 
+  getService(id: number | string) {
+    const service = this.services.find(s => s.id == id)
+    return service
+  }
+
   @action async getTransferMethodsFromDB() {
     const { data } = await axios.get<adminType[]>(`${SERVER_URL}/admin/transfer-methods`)
     this.transferMethods = data

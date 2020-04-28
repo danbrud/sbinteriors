@@ -24,6 +24,16 @@ const useStyles = makeStyles(theme => ({
   },
   cover: {
     width: 151,
+  },
+  iconSection: {
+    width: 100,
+    position: 'relative'
+  },
+  icon: {
+    color: '#757575',
+    position: 'absolute',
+    bottom: '10px',
+    right: '0'
   }
 }))
 interface ClientCardProps {
@@ -56,6 +66,9 @@ const ClientCard: React.FC<ClientCardProps> = observer((props) => {
           </Link>
         </CardActions>
       </div>
+      {/* <div className={classes.iconSection}>
+        <i className={`fas fa-sync-alt ${classes.icon}`}></i>
+      </div> */}
     </Card>
   )
 })

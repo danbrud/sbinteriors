@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 interface NoDataProps {
-  type: 'clients' | 'expenses' | 'transfers' | 'tasks' | 'data'
+  type: 'clients' | 'expenses' | 'transfers' | 'tasks' | 'data' | 'contract'
 }
 
 const NoData: React.FC<NoDataProps> = observer((props) => {
