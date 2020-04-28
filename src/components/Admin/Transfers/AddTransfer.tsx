@@ -136,6 +136,7 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
 
     props.openSnackbar('success', 'Added transfer successfully!')
     clearInputs()
+    props.redirect()
   }
 
   const clearInputs = () => {

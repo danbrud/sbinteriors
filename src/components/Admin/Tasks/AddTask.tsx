@@ -90,6 +90,7 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
 
     props.openSnackbar('success', 'Added task successfully!')
     clearInputs()
+    props.redirect()
   }
 
   const clearInputs = () => {

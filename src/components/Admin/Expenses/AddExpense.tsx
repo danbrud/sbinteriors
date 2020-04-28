@@ -79,6 +79,7 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
 
     props.openSnackbar('success', 'Added expense successfully!')
     clearInputs()
+    props.redirect()
   }
 
   const clearInputs = () => {

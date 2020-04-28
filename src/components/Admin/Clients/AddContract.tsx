@@ -58,8 +58,14 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
       inputs[c] = parseInt(inputs[c])
     }
 
+    const client = ClientsStore.getClientByName(clientName)
+    if (await client.hasContract) {
+      openSnackbar('error', 'Client already has a contract!')
+      return
+    }
+
+
     try {
-      const client = ClientsStore.getClientByName(clientName)
       await client.updateClient('pricePerHour', parseInt(price))
       await client.addContract(inputs)
     } catch (e) {
@@ -72,6 +78,7 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
       : 'Added contract successfully!'
     openSnackbar('success', message)
     clearInputs()
+    props.redirect(client.name)
   }
 
   const handleHide = () => {

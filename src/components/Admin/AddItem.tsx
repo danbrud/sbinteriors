@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation, Redirect } from 'react-router-dom'
 import AddClient from './Clients/AddClient'
 import '../../styles/AddItem.css'
 import AddTask from './Tasks/AddTask'
@@ -24,15 +24,12 @@ const AddItem: React.FC = () => {
 
   const ClientsStore = useClientsStore()
   const [clientName, setClientName] = useState('')
+  const [shouldRedirect, setShouldRedirect] = useState(false)
   const [snackbar, setSnackbar] = useState({
     message: '',
     open: false,
     severity: ''
   })
-
-  useEffect(() => {
-
-  }, [])
 
   useEffect(() => {
     if (!ClientsStore.isPopulated) {
@@ -59,10 +56,21 @@ const AddItem: React.FC = () => {
     })
   }
 
-  if (item === 'client') {
+  const redirect = (clientName?: string) => {
+    if (clientName) {
+      setClientName(clientName)
+    }
+
+    setTimeout(() => { setShouldRedirect(true) }, 500)
+  }
+
+  if (shouldRedirect) {
+    const client = ClientsStore.getClientByName(clientName)
+    return <Redirect to={`/admin/clients/${client.id}`} />
+  } else if (item === 'client') {
     return (
       <div>
-        <AddClient openSnackbar={openSnackbar} />
+        <AddClient openSnackbar={openSnackbar} redirect={redirect} />
         <Snackbar
           open={snackbar.open}
           autoHideDuration={4000}
@@ -85,18 +93,38 @@ const AddItem: React.FC = () => {
         {
           item === 'task'
             ? <TasksProvider value={TasksStore}>
-              <AddTask openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName} />
+              <AddTask
+                openSnackbar={openSnackbar}
+                clientName={clientName}
+                setClientName={setClientName}
+                redirect={redirect}
+              />
             </TasksProvider>
             : item === 'expense'
               ? <ExpensesProvider value={ExpensesStore}>
-                <AddExpense openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName} />
+                <AddExpense
+                  openSnackbar={openSnackbar}
+                  clientName={clientName}
+                  setClientName={setClientName}
+                  redirect={redirect}
+                />
               </ExpensesProvider>
               : item === 'transfer'
                 ? <TransfersProvider value={TransfersStore}>
-                  <AddTransfer openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName} />
+                  <AddTransfer
+                    openSnackbar={openSnackbar}
+                    clientName={clientName}
+                    setClientName={setClientName}
+                    redirect={redirect}
+                  />
                 </TransfersProvider>
                 : item === 'contract'
-                  ? <AddContract openSnackbar={openSnackbar} clientName={clientName} setClientName={setClientName}/>
+                  ? <AddContract
+                    openSnackbar={openSnackbar}
+                    clientName={clientName}
+                    setClientName={setClientName}
+                    redirect={redirect}
+                  />
                   : null
         }
         <Snackbar

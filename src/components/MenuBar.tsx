@@ -113,7 +113,7 @@ const MenuBar: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed">
+      {/* <AppBar position="fixed">
         <Drawer
           open={open}
           onClose={toggleDrawer(false)}
@@ -124,6 +124,21 @@ const MenuBar: React.FC = () => {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon onClick={toggleDrawer(true)}/>
           </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            {title}
+          </Typography>
+          <Link to='/admin/clients'>
+            <IconButton edge="end" className={classes.homeIcon} color='inherit'>
+              <HomeIcon />
+            </IconButton>
+          </Link>
+        </Toolbar>
+      </AppBar> */}
+      <AppBar position="fixed">
+        <Toolbar>
+          {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            SB
+          </IconButton> */}
           <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>

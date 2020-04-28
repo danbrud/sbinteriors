@@ -15,6 +15,7 @@ export class Client {
   @observable expensesBalance: number
   @observable tasksBalance: number
   @observable isComplete: boolean
+  @observable contract
 
   constructor(
     id: number, name: string, email: string, phone: string, spouseName: string | null,
@@ -57,7 +58,21 @@ export class Client {
     this[type] = data.balance
   }
 
-  async addContract(contract) {
-    await axios.post(`${SERVER_URL}/clients/${this.id}/contracts`, contract)
+  @action async addContract(contract) {
+    this.contract = await axios.post(`${SERVER_URL}/clients/${this.id}/contracts`, contract)
+  }
+
+  @action async getContract() {
+    const { data } = await axios.get(`${SERVER_URL}/clients/${this.id}/contracts`)
+    if (data.contract.length) {
+      this.contract = data.contract
+    }
+  }
+
+  @computed get hasContract() {
+    if (this.contract) { return true }
+
+    return this.getContract()
+      .then(() => this.contract ? true : false)
   }
 }

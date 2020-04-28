@@ -55,6 +55,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
     }
 
     props.openSnackbar('success', 'Added client successfully!')
+    if(!hasContract) { props.redirect(inputs.name) }
     clearInputs()
 
     return true
@@ -160,6 +161,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
               clientPage={true}
               submitClient={handleSubmit}
               setHasContract={setHasContract}
+              redirect={props.redirect}
             />
         }
 
