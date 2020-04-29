@@ -52,6 +52,7 @@ class App {
         sequelize.sync();
     }
     serveClient() {
+        this.app.use(express_1.default.static(path_1.default.join(__dirname, '..', '..', 'build')));
         this.app.get('*', function (req, res) {
             res.sendFile(path_1.default.join(__dirname, '..', '..', 'build', 'index.html'));
         });

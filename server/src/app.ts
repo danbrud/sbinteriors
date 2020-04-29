@@ -52,6 +52,8 @@ class App {
   }
 
   private serveClient() {
+    this.app.use(express.static(path.join(__dirname, '..', '..', 'build')))
+    
     this.app.get('*', function (req, res) {
       res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'))
     })
