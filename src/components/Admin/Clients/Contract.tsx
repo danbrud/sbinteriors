@@ -78,8 +78,8 @@ const Contract: React.FC = observer((props) => {
                 <TableHead>
                   <TableRow className={classes.header}>
                     <TableCell >Service</TableCell>
-                    <TableCell align="right">Hours Included</TableCell>
-                    <TableCell align="right">Hours Completed</TableCell>
+                    <TableCell align="right">Hrs Inc.</TableCell>
+                    <TableCell align="right">Hrs Used</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

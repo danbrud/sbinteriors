@@ -12,6 +12,7 @@ import { toProperCase } from '../../../utils'
 import { useClientsStore } from '../../../context/Clients.context'
 import '../../../styles/ClientDetailsList.css'
 import { observer } from 'mobx-react'
+import BalanceTag from '../BalanceTag'
 
 const useStyles = makeStyles({
   row: {
@@ -34,8 +35,6 @@ const ClientDetailItems: React.FC = observer(() => {
 
   const client = ClientsStore.getClient(clientId)
 
-  const getBackgroundColor = (balance: number) => balance >= 0 ? '#208f4e' : '#c0392b'
-
   const detailItems = ['tasks', 'expenses', 'transfers', 'contract']
 
   return (
@@ -49,19 +48,9 @@ const ClientDetailItems: React.FC = observer(() => {
                 <TableCell >
                   {
                     item === 'tasks'
-                      ? <span
-                        className='badge'
-                        style={{ backgroundColor: getBackgroundColor(client.tasksBalance) }}
-                      >
-                        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i> {Math.abs(client.tasksBalance)}
-                      </span>
+                      ? <BalanceTag balance={client.tasksBalance} />
                       : item === 'expenses'
-                        ? <span
-                        className='badge'
-                        style={{ backgroundColor: getBackgroundColor(client.expensesBalance) }}
-                      >
-                        <i className="fas fa-shekel-sign" style={{ fontSize: '10px' }}></i> {Math.abs(client.expensesBalance)}
-                      </span>
+                        ? <BalanceTag balance={client.expensesBalance} />
                         : null
                   }
                 </TableCell>

@@ -1,11 +1,20 @@
 {
   "short_name": "SBInteriors",
-  "name": "SBInteriors Management App",
+  "name": "SBInteriors",
   "icons": [
-    
+    {
+      "src": "./assets/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./assets/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#8EBDC3",
   "background_color": "#ffffff"
 }

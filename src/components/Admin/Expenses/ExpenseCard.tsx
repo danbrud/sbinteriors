@@ -9,6 +9,7 @@ import { observer } from 'mobx-react'
 import { Expense } from '../../../stores/Expense.store'
 import moment from 'moment'
 import '../../../styles/Expenses.css'
+import { FormattedNumber } from 'react-intl'
 
 
 
@@ -57,7 +58,7 @@ const ExpenseCard: React.FC<ExpenseCardProps> = observer((props) => {
               <i
                 className="fas fa-shekel-sign"
                 style={{ fontSize: '12px', color: '#757575' }}>
-              </i> {expense.amount}
+              </i> <FormattedNumber value={expense.amount} />
             </span>
           </Typography>
         </div>

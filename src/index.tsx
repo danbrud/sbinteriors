@@ -15,25 +15,28 @@ import { TransfersProvider } from './context/Transfers.context'
 import { TransfersStore } from './stores/Transfers.store'
 import { ExpensesProvider } from './context/Expenses.context'
 import { ExpensesStore } from './stores/Expenses.store'
+import { IntlProvider } from 'react-intl'
 
 
 ReactDOM.render(
   <Router>
-    <ThemeProvider theme={mainTheme}>
-      <ClientsProvider value={ClientsStore}>
-        <GeneralAdminProvider value={GeneralAdminStore}>
-          <TasksProvider value={TasksStore}>
-            <TransfersProvider value={TransfersStore}>
-              <ExpensesProvider value={ExpensesStore}>
-                <App />
-              </ExpensesProvider>
-            </TransfersProvider>
-          </TasksProvider>
-        </GeneralAdminProvider>
-      </ClientsProvider>
-    </ThemeProvider>
+    <IntlProvider locale={'heb'} >
+      <ThemeProvider theme={mainTheme}>
+        <ClientsProvider value={ClientsStore}>
+          <GeneralAdminProvider value={GeneralAdminStore}>
+            <TasksProvider value={TasksStore}>
+              <TransfersProvider value={TransfersStore}>
+                <ExpensesProvider value={ExpensesStore}>
+                  <App />
+                </ExpensesProvider>
+              </TransfersProvider>
+            </TasksProvider>
+          </GeneralAdminProvider>
+        </ClientsProvider>
+      </ThemeProvider>
+    </IntlProvider>
   </Router>,
   document.getElementById('root')
 )
 
-serviceWorker.unregister()
+serviceWorker.register()

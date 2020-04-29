@@ -9,7 +9,7 @@ import { observer } from 'mobx-react'
 import moment from 'moment'
 import '../../../styles/Transfers.css'
 import { Transfer } from '../../../stores/Transfer.store'
-import { Task } from '../../../stores/Task.store'
+import { FormattedNumber } from 'react-intl'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +48,10 @@ const TransferCard: React.FC<TransferCardProps> = observer((props) => {
         <div id='transfer-card-details'>
           <Typography className={classes.heading}>
             <span>
-              <i className="fas fa-shekel-sign" style={{ fontSize: '12px', color: '#757575' }}></i> {transfer.ilsAmount}
+              <i
+                className="fas fa-shekel-sign"
+                style={{ fontSize: '12px', color: '#757575' }}>
+              </i> <FormattedNumber value={transfer.ilsAmount} />
             </span>
           </Typography>
           <Typography className={classes.secondaryHeading}>
@@ -61,7 +64,7 @@ const TransferCard: React.FC<TransferCardProps> = observer((props) => {
         {
           transfer.foreignAmount
             ? <Typography className={classes.paragraph}>
-              {transfer.foreignAmount} {transfer.foreignAmountCurrency}
+              <FormattedNumber value={transfer.foreignAmount} /> {transfer.foreignAmountCurrency}
             </Typography>
             : null
         }

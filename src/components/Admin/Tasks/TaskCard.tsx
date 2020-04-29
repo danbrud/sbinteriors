@@ -6,12 +6,11 @@ import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { observer } from 'mobx-react'
-import { Expense } from '../../../stores/Expense.store'
 import moment from 'moment'
 import '../../../styles/Tasks.css'
 import { Task } from '../../../stores/Task.store'
-import AccessTimeRoundedIcon from '@material-ui/icons/AccessTimeRounded'
 import { convertDurationToString } from '../../../utils'
+import { FormattedNumber } from 'react-intl'
 
 
 
@@ -69,7 +68,7 @@ const TaskCard: React.FC<TaskCardProps> = observer((props) => {
                 Price: <i
                   className="fas fa-shekel-sign"
                   style={{ fontSize: '12px', color: '#757575' }}>
-                </i> {task.price}
+                </i> <FormattedNumber value={task.price} />
               </span>
               : <span>Price: No charge (included)</span>
           }
