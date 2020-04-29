@@ -51,6 +51,7 @@ class App {
     }
     serveClient() {
         this.app.get('*', function (req, res) {
+            console.log(path_1.default.join(__dirname, '..', '..', 'build', 'index.html'));
             res.sendFile(path_1.default.join(__dirname, '..', '..', 'build', 'index.html'));
         });
     }
