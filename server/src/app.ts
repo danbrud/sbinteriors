@@ -31,6 +31,11 @@ class App {
       this.app.use(cors())
     }
 
+    if (process.env.NODE_ENV === 'production') {
+      console.log(path.join(__dirname, '..', '..', 'build'))
+      this.app.use(express.static(path.join(__dirname, '..', '..', 'build')))
+    }
+
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({ extended: false }))
   }
@@ -49,8 +54,8 @@ class App {
   }
 
   private serveClient() {
+    console.log(path.join(__dirname, '..', '..', 'build', 'index.html'))
     this.app.get('*', function (req, res) {
-      console.log(path.join(__dirname, '..', '..', 'build', 'index.html'))
       res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'))
     })
   }
