@@ -5,6 +5,7 @@ import { observer } from 'mobx-react'
 import { AddItemProps } from '../AddItemProps.interface'
 import { removeOptionalFields } from '../../../utils'
 import { Button, makeStyles, TextField } from '@material-ui/core'
+import { AddPopup } from '../AddPopup'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -16,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     margin: '2px'
+  },
+  select: {
+    display: 'grid',
+    gridTemplateColumns: '4fr 1fr',
+    alignItems: 'end'
   }
 }))
 
@@ -98,15 +104,18 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
 
   return (
     <div id={!clientPage ? 'input-form' : null}>
-      <TextField
-        className={classes.input}
-        fullWidth={true}
-        required={true}
-        label='Price Per Hour'
-        type='number'
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
+      <div className={classes.select}>
+        <TextField
+          className={classes.input}
+          fullWidth={true}
+          required={true}
+          label='Price Per Hour'
+          type='number'
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+        <AddPopup name='Service' openSnackbar={props.openSnackbar} />
+      </div>
       {GeneralAdminStore.services.map(s => (
         <TextField
           key={s.id}
