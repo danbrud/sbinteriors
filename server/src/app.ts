@@ -1,5 +1,6 @@
 import express from 'express'
 import * as bodyParser from 'body-parser'
+import path from 'path'
 import cors from 'cors'
 import { Sequelize } from 'sequelize-typescript'
 import { Client } from './models/Client.model'
@@ -22,6 +23,7 @@ class App {
     this.initializeDB()
 
     this.initializeControllers(controllers)
+    this.serveClient()
   }
 
   private initializeMiddlewares() {
@@ -35,14 +37,21 @@ class App {
 
   private initializeDB() {
     const sequelize = new Sequelize({
-      database: 'sbinteriors',
+      database: process.env.DB_NAME,
       dialect: 'mysql',
-      username: 'root',
-      host: 'localhost',
+      username: process.env.DB_USERNAME,
+      host: process.env.DB_HOST,
+      password: process.env.DB_PASSWORD || '',
       models: [Client, Task, Expense, TransferMethod, Transfer, Service, Contract]
     })
 
     sequelize.sync()
+  }
+
+  private serveClient() {
+    this.app.get('*', function (req, res) {
+      res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'))
+    })
   }
 
   private initializeControllers(controllers) {

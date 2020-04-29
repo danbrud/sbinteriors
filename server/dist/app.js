@@ -12,6 +12,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const bodyParser = __importStar(require("body-parser"));
+const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 const sequelize_typescript_1 = require("sequelize-typescript");
 const Client_model_1 = require("./models/Client.model");
@@ -28,6 +29,7 @@ class App {
         this.initializeMiddlewares();
         this.initializeDB();
         this.initializeControllers(controllers);
+        this.serveClient();
     }
     initializeMiddlewares() {
         if (process.env.NODE_ENV === 'development') {
@@ -38,13 +40,19 @@ class App {
     }
     initializeDB() {
         const sequelize = new sequelize_typescript_1.Sequelize({
-            database: 'sbinteriors',
+            database: process.env.DB_NAME,
             dialect: 'mysql',
-            username: 'root',
-            host: 'localhost',
+            username: process.env.DB_USERNAME,
+            host: process.env.DB_HOST,
+            password: process.env.DB_PASSWORD || '',
             models: [Client_model_1.Client, Task_model_1.Task, Expense_model_1.Expense, TransferMethod_model_1.TransferMethod, Transfer_model_1.Transfer, Service_model_1.Service, Contract_model_1.Contract]
         });
         sequelize.sync();
+    }
+    serveClient() {
+        this.app.get('*', function (req, res) {
+            res.sendFile(path_1.default.join(__dirname, '..', '..', 'build', 'index.html'));
+        });
     }
     initializeControllers(controllers) {
         controllers.forEach(controller => {
