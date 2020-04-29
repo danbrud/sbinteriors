@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx'
 import { Task } from './Task.store'
 import axios from 'axios'
 import { removeOptionalFields } from '../utils'
-const SERVER_URL = process.env.REACT_APP_SERVER_URL
+import { SERVER_URL } from '../utils'
 
 export class Tasks {
   @observable tasks: Task[] = []

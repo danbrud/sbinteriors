@@ -1,7 +1,7 @@
 import { observable, action } from "mobx"
 import axios from 'axios'
 import { adminType } from '../adminTypes'
-const SERVER_URL = process.env.REACT_APP_SERVER_URL
+import { SERVER_URL } from '../utils'
 
 export class GeneralAdmin {
   @observable services: adminType[] = []

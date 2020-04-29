@@ -23,3 +23,7 @@ export const convertDurationToString = (duration: number): string => {
   const minutes = duration < 60 ? Math.floor(duration) : Math.floor(duration % 60)
   return `${hours}:${!minutes ? '00' : minutes < 10 ? `0${minutes}` : minutes}`
 }
+
+export const SERVER_URL = process.env.NODE_ENV === 'development'
+  ? process.env.REACT_APP_SERVER_URL
+  : ''

@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx'
 import { Client } from './Client.store'
 import axios from 'axios'
 import { removeOptionalFields } from '../utils'
-const SERVER_URL = process.env.REACT_APP_SERVER_URL
+import { SERVER_URL } from '../utils'
 
 export class Clients {
   @observable clients: Client[] = []

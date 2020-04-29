@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx'
 import axios from 'axios'
 import { toProperCase } from '../utils'
-const SERVER_URL = process.env.REACT_APP_SERVER_URL
+import { SERVER_URL } from '../utils'
 
 export class Client {
   @observable id: number

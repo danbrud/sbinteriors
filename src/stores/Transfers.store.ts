@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx'
 import axios from 'axios'
 import { removeOptionalFields } from '../utils'
 import { Transfer } from './Transfer.store'
-const SERVER_URL = process.env.REACT_APP_SERVER_URL
+import { SERVER_URL } from '../utils'
 
 export class Transfers {
   @observable transfers: Transfer[] = []
