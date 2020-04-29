@@ -23,13 +23,9 @@ export class Task {
     this. description = description
   }
 
-  @computed get duration() {
+  @computed get durationInMinutes() {
     const { startTime, endTime } = this
-    const hours = endTime.getHours() - startTime.getHours()
-    const minutes = endTime.getMinutes() - startTime.getMinutes()
-
-    // const duration: string = (hours ? `${hours} hours ` : '') + (minutes ? `${minutes} minutes ` : '')
-    const duration = `${hours}:${minutes || '00'}`
-    return duration
+    const duration = +endTime - +startTime
+    return Math.floor((duration / 1000) / 60)
   }
 }

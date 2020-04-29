@@ -13,6 +13,8 @@ import { useClientsStore } from '../../../context/Clients.context'
 import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 import Loader from '../../Loader'
 import NoData from '../NoData'
+import { useTasksStore } from '../../../context/Tasks.context'
+import { convertDurationToString } from '../../../utils'
 
 const useStyles = makeStyles({
   table: {
@@ -23,26 +25,33 @@ const useStyles = makeStyles({
   }
 });
 
-const createData = (service, includedHours, hoursCompleted) => {
-  return { service, includedHours, hoursCompleted }
-}
 
 const Contract: React.FC = observer((props) => {
   const classes = useStyles()
   const { clientId } = useParams()
+
   const ClientsStore = useClientsStore()
   const GeneralAdminStore = useGeneralAdminStore()
+  const TasksStore = useTasksStore()
 
   const [isLoading, setIsLoading] = useState(true)
   const [hasContract, setHasContract] = useState(true)
 
   const checkContract = async () => {
     if (await client.hasContract) {
+      await populateTasks()
       setIsLoading(false)
     } else {
       setHasContract(false)
       setIsLoading(false)
     }
+  }
+
+  const populateTasks = async () => {
+    if (!TasksStore.isPopulated) {
+      await TasksStore.getTasksFromDB(clientId)
+    }
+    console.log(TasksStore.tasks)
   }
 
   useEffect(() => {
@@ -51,6 +60,9 @@ const Contract: React.FC = observer((props) => {
     }
   }, [])
 
+  const createData = (service, includedHours, hoursCompleted) => {
+    return { service, includedHours, hoursCompleted }
+  }
 
   const client = ClientsStore.getClient(clientId)
   return (
@@ -73,10 +85,14 @@ const Contract: React.FC = observer((props) => {
                 <TableBody>
                   {client.contract
                     .map(c => (
-                      createData(GeneralAdminStore.getService(c.serviceId).name, c.includedHours, 0)
+                      createData(
+                        GeneralAdminStore.getService(c.serviceId).name,
+                        c.includedHours,
+                        convertDurationToString(TasksStore.getTotalTimeOfService(c.serviceId))
+                      )
                     ))
                     .map((row) => (
-                      <TableRow key={row.name}>
+                      <TableRow key={row.service}>
                         <TableCell component="th" scope="row">
                           {row.service}
                         </TableCell>

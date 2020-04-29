@@ -11,6 +11,7 @@ import moment from 'moment'
 import '../../../styles/Tasks.css'
 import { Task } from '../../../stores/Task.store'
 import AccessTimeRoundedIcon from '@material-ui/icons/AccessTimeRounded'
+import { convertDurationToString } from '../../../utils'
 
 
 
@@ -58,8 +59,7 @@ const TaskCard: React.FC<TaskCardProps> = observer((props) => {
             {moment(task.startTime).format('MMM Do YY')}
           </Typography>
           <Typography className={classes.secondaryHeading}>
-            {/* <AccessTimeRoundedIcon className={classes.icon}/> {task.duration} */}
-            <i className="far fa-clock"></i> {task.duration}
+            <i className="far fa-clock"></i> {convertDurationToString(task.durationInMinutes)}
           </Typography>
         </div>
         <Typography className={classes.paragraph}>

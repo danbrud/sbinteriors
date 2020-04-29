@@ -28,6 +28,14 @@ export class Tasks {
   @computed get isPopulated() {
     return !!this.tasks.length
   }
+
+  getTotalTimeOfService(serviceTypeId: number): number {
+    const tasksDuration = this.tasks
+      .filter(t => t.serviceType.id === serviceTypeId)
+      .reduce((acc, t) => acc + t.durationInMinutes, 0)
+
+    return tasksDuration
+  }
 }
 
 export const TasksStore = new Tasks()
