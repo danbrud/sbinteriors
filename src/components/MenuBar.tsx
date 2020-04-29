@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    // marginRight: theme.spacing(2),
     color: 'white'
   },
   menuTitle: {
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   homeIcon: {
+    marginRight: theme.spacing(2),
     color: 'white',
     userSelect: 'none'
   },
@@ -51,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     margin: '5px 0'
+  },
+  img: {
+    borderRadius: '5px'
   }
 }))
 
@@ -136,15 +140,17 @@ const MenuBar: React.FC = () => {
       </AppBar> */}
       <AppBar position="fixed">
         <Toolbar>
-          {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            SB
-          </IconButton> */}
+          <Link to='/admin/clients'>
+            <IconButton edge="start" className={classes.homeIcon} color='inherit'>
+              <HomeIcon />
+            </IconButton>
+          </Link>
           <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
           <Link to='/admin/clients'>
-            <IconButton edge="end" className={classes.homeIcon} color='inherit'>
-              <HomeIcon />
+            <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu">
+              <img className={classes.img} src={`${window.location.origin}/assets/favicon-32x32.png`} />
             </IconButton>
           </Link>
         </Toolbar>
