@@ -126,6 +126,7 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
             inputVariant="standard"
             value={inputs.startTime}
             onChange={(date) => setInputs({ ...inputs, startTime: date })}
+            hideTabs
           />
           <KeyboardDateTimePicker
             required={true}
@@ -134,6 +135,7 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
             inputVariant="standard"
             value={inputs.endTime}
             onChange={(date) => setInputs({ ...inputs, endTime: date })}
+            hideTabs
           />
         </ThemeProvider>
       </MuiPickersUtilsProvider>
