@@ -45,7 +45,13 @@ class App {
       username: process.env.DB_USERNAME,
       host: process.env.DB_HOST,
       password: process.env.DB_PASSWORD || '',
-      models: [Client, Task, Expense, TransferMethod, Transfer, Service, Contract]
+      models: [Client, Task, Expense, TransferMethod, Transfer, Service, Contract],
+      dialectOptions: {
+        useUTC: false,
+        dateStrings: true,
+        typeCast: true
+      },
+      timezone: '+03:00'
     })
 
     sequelize.sync()
@@ -53,7 +59,7 @@ class App {
 
   private serveClient() {
     this.app.use(express.static(path.join(__dirname, '..', '..', 'build')))
-    
+
     this.app.get('*', function (req, res) {
       res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'))
     })
