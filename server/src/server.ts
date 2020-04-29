@@ -7,7 +7,7 @@ import { ExpensesController } from './controllers/expenses.controller'
 import { TransfersController } from './controllers/transfers.controller'
 import { AdminController } from './controllers/admin.controller'
 
-const config = dotenv.config({ path: path.join(__dirname, '../..', '.env') })
+dotenv.config({ path: path.join(__dirname, '../..', '.env') })
 
 const app = new App(
   [
@@ -17,7 +17,7 @@ const app = new App(
     new TransfersController(),
     new AdminController()
   ],
-  config.parsed.PORT
+  process.env.PORT
 )
 
 app.listen()
