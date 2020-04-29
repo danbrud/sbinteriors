@@ -23,17 +23,15 @@ class App {
     this.initializeDB()
 
     this.initializeControllers(controllers)
-    this.serveClient()
+
+    if (process.env.NODE_ENV === 'production') {
+      this.serveClient()
+    }
   }
 
   private initializeMiddlewares() {
     if (process.env.NODE_ENV === 'development') {
       this.app.use(cors())
-    }
-
-    if (process.env.NODE_ENV === 'production') {
-      console.log(path.join(__dirname, '..', '..', 'build'))
-      this.app.use(express.static(path.join(__dirname, '..', '..', 'build')))
     }
 
     this.app.use(bodyParser.json())
@@ -54,8 +52,7 @@ class App {
   }
 
   private serveClient() {
-    console.log(path.join(__dirname, '..', '..', 'build', 'index.html'))
-    this. app.get('*', function (req, res) {
+    this.app.get('*', function (req, res) {
       res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'))
     })
   }

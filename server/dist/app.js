@@ -29,15 +29,13 @@ class App {
         this.initializeMiddlewares();
         this.initializeDB();
         this.initializeControllers(controllers);
-        this.serveClient();
+        if (process.env.NODE_ENV === 'production') {
+            this.serveClient();
+        }
     }
     initializeMiddlewares() {
         if (process.env.NODE_ENV === 'development') {
             this.app.use(cors_1.default());
-        }
-        if (process.env.NODE_ENV === 'production') {
-            console.log(path_1.default.join(__dirname, '..', '..', 'build'));
-            this.app.use(express_1.default.static(path_1.default.join(__dirname, '..', '..', 'build')));
         }
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
@@ -54,7 +52,6 @@ class App {
         sequelize.sync();
     }
     serveClient() {
-        console.log(path_1.default.join(__dirname, '..', '..', 'build', 'index.html'));
         this.app.get('*', function (req, res) {
             res.sendFile(path_1.default.join(__dirname, '..', '..', 'build', 'index.html'));
         });

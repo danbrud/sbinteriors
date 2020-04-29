@@ -26,4 +26,4 @@ export const convertDurationToString = (duration: number): string => {
 
 export const SERVER_URL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_SERVER_URL
-  : ''
+  : '/api'
