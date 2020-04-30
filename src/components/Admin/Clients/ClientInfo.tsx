@@ -6,7 +6,11 @@ import ClientDetails from './ClientDetails'
 import ClientDetailItems from './ClientDetailsList'
 import { useParams } from 'react-router-dom'
 import NoData from '../NoData'
-import { Button, makeStyles } from '@material-ui/core'
+import { Button, makeStyles, Snackbar } from '@material-ui/core'
+import { AddBalanceTransferPopup } from '../Transfers/AddBalanceTransferPopup'
+import MuiAlert from '@material-ui/lab/Alert'
+
+
 
 const useStyles = makeStyles((theme) => ({
   buttonOutlined: {
@@ -21,8 +25,25 @@ const ClientInfo: React.FC = observer((props) => {
 
   const [isLoading, setIsLoading] = useState(ClientsStore.isPopulated ? false : true)
   const [showPopup, setShowPopup] = useState(false)
+  const [snackbar, setSnackbar] = useState({
+    message: '',
+    open: false,
+    severity: ''
+  })
 
   const client = ClientsStore.getClient(clientId)
+
+  const openSnackbar = (severity, message) => {
+    setSnackbar({ message, severity, open: true })
+  }
+
+  const handleClose = () => {
+    setSnackbar({
+      message: '',
+      open: false,
+      severity: ''
+    })
+  }
 
   useEffect(() => {
     if (!ClientsStore.isPopulated) {
@@ -49,9 +70,31 @@ const ClientInfo: React.FC = observer((props) => {
             TRANSFER BALANCE
           </ Button>
           <ClientDetailItems />
+          {
+            showPopup
+              ? <AddBalanceTransferPopup
+                open={showPopup}
+                setOpen={setShowPopup}
+                openSnackbar={openSnackbar}
+              />
+              : null
+          }
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={4000}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity={snackbar.severity}>
+              {snackbar.message}
+            </Alert>
+          </Snackbar>
         </div>
         : <NoData type='data' />
   )
 })
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default ClientInfo
