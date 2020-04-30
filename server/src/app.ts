@@ -10,6 +10,7 @@ import { Expense } from './models/Expense.model'
 import { Service } from './models/Service.model'
 import { TransferMethod } from './models/TransferMethod.model'
 import { Contract } from './models/Contract.model'
+import { User } from './models/User.model'
 
 class App {
   public app: express.Application
@@ -45,7 +46,9 @@ class App {
       username: process.env.DB_USERNAME,
       host: process.env.DB_HOST,
       password: process.env.DB_PASSWORD || '',
-      models: [Client, Task, Expense, TransferMethod, Transfer, Service, Contract],
+      models: [
+        Client, Task, Expense, TransferMethod, Transfer, Service, Contract, User
+      ],
       dialectOptions: {
         useUTC: false,
         dateStrings: true,

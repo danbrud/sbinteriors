@@ -22,6 +22,7 @@ const Expense_model_1 = require("./models/Expense.model");
 const Service_model_1 = require("./models/Service.model");
 const TransferMethod_model_1 = require("./models/TransferMethod.model");
 const Contract_model_1 = require("./models/Contract.model");
+const User_model_1 = require("./models/User.model");
 class App {
     constructor(controllers, port) {
         this.app = express_1.default();
@@ -47,7 +48,9 @@ class App {
             username: process.env.DB_USERNAME,
             host: process.env.DB_HOST,
             password: process.env.DB_PASSWORD || '',
-            models: [Client_model_1.Client, Task_model_1.Task, Expense_model_1.Expense, TransferMethod_model_1.TransferMethod, Transfer_model_1.Transfer, Service_model_1.Service, Contract_model_1.Contract],
+            models: [
+                Client_model_1.Client, Task_model_1.Task, Expense_model_1.Expense, TransferMethod_model_1.TransferMethod, Transfer_model_1.Transfer, Service_model_1.Service, Contract_model_1.Contract, User_model_1.User
+            ],
             dialectOptions: {
                 useUTC: false,
                 dateStrings: true,
