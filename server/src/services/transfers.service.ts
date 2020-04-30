@@ -40,7 +40,7 @@ export class TransfersService {
     return balanceTransfer
   }
 
-  public async getBalanceTransfersByClientId(clientId: string, attributes?: string[], where?): Promise<Transfer[]> {
+  public async getBalanceTransfersByClientId(clientId: string, attributes?: string[], where?): Promise<BalanceTransfer[]> {
     const options = attributes
       ? { where: {
           [Op.and]: [
@@ -52,7 +52,7 @@ export class TransfersService {
       }
       : { where: { clientId } }
 
-    const balanceTransfers = await Transfer.findAll(options)
+    const balanceTransfers = await BalanceTransfer.findAll(options)
     return balanceTransfers
   }
 }

@@ -32,6 +32,7 @@ class ClientsService {
         const transfersService = new transfers_service_1.TransfersService();
         const tasksService = new tasks_service_1.TasksService();
         const transfers = await transfersService.getTransfersByClientId(clientId, ['ilsAmount'], [{ account }]);
+        const balanceTransfers = await transfersService.getBalanceTransfersByClientId(clientId);
         let items;
         if (account === 'expenses') {
             items = await expensesService.getExpensesByClientId(clientId, ['amount']);
@@ -41,7 +42,9 @@ class ClientsService {
         }
         const itemTotal = utils_1.getTotal(items);
         const transferTotal = utils_1.getTotal(transfers);
-        const balance = transferTotal - itemTotal;
+        const fromTotal = utils_1.getTotal(balanceTransfers.filter(t => t.fromAccount === account));
+        const toTotal = utils_1.getTotal(balanceTransfers.filter(t => t.toAccount === account));
+        const balance = transferTotal - itemTotal + toTotal - fromTotal;
         return { balance };
     }
     async addContract(clientId, body) {

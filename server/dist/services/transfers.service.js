@@ -44,7 +44,7 @@ class TransfersService {
                 attributes
             }
             : { where: { clientId } };
-        const balanceTransfers = await Transfer_model_1.Transfer.findAll(options);
+        const balanceTransfers = await BalanceTransfer_model_1.BalanceTransfer.findAll(options);
         return balanceTransfers;
     }
 }

@@ -42,6 +42,7 @@ export class ClientsService {
     const tasksService = new TasksService()
 
     const transfers = await transfersService.getTransfersByClientId(clientId, ['ilsAmount'], [{ account }])
+    const balanceTransfers = await transfersService.getBalanceTransfersByClientId(clientId)
 
     let items: Expense[] | Task[]
     if (account === 'expenses') {
@@ -52,7 +53,11 @@ export class ClientsService {
 
     const itemTotal = getTotal(items)
     const transferTotal = getTotal(transfers)
-    const balance = transferTotal - itemTotal
+
+    const fromTotal = getTotal(balanceTransfers.filter(t => t.fromAccount === account))
+    const toTotal = getTotal(balanceTransfers.filter(t => t.toAccount === account))
+
+    const balance = transferTotal - itemTotal + toTotal - fromTotal
 
     return { balance }
   }

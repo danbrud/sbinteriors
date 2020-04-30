@@ -1,6 +1,7 @@
-import { Transfer } from "./models/Transfer.model";
-import { Expense } from "./models/Expense.model";
-import { Task } from "./models/Task.model";
+import { Transfer } from "./models/Transfer.model"
+import { Expense } from "./models/Expense.model"
+import { Task } from "./models/Task.model"
+import { BalanceTransfer } from "./models/BalanceTransfer.model"
 
 export const getTotal = function (data): number {
   let prop: string
@@ -10,7 +11,7 @@ export const getTotal = function (data): number {
     prop = 'ilsAmount'
   } else if (data[0] instanceof Task) {
     prop = 'price'
-  } else if (data[0] instanceof Expense) {
+  } else if (data[0] instanceof Expense || data[0] instanceof BalanceTransfer) {
     prop = 'amount'
   }
 
