@@ -38,8 +38,8 @@ class TransfersController {
         this.router.get('/', this.getTransfers);
         this.router.get('/:clientId', this.getTransfersByClientId);
         this.router.post('/', this.createTransfer);
-        this.router.post('/balance', this.createBalanceTransfer);
-        this.router.get('/:clientId', this.getBalanceTransfersByClientId);
+        this.router.post('/balances', this.createBalanceTransfer);
+        this.router.get('/:clientId/balances', this.getBalanceTransfersByClientId);
     }
 }
 exports.TransfersController = TransfersController;

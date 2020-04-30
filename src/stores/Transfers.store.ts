@@ -3,9 +3,11 @@ import axios from 'axios'
 import { removeOptionalFields } from '../utils'
 import { Transfer } from './Transfer.store'
 import { SERVER_URL } from '../utils'
+import { BalanceTransfer } from './BalanceTransfer.store'
 
 export class Transfers {
   @observable transfers: Transfer[] = []
+  @observable balanceTransfers: BalanceTransfer[] =[]
 
   @action async getTransfersFromDB(clientId: string) {
     const { data } = await axios.get<Transfer[]>(`${SERVER_URL}/transfers/${clientId}`)
@@ -25,11 +27,25 @@ export class Transfers {
     await axios.post(`${SERVER_URL}/transfers`, transfer)
   }
 
+  @action async getBalanceTransfersFromDB(clientId: string) {
+    const { data } = await axios.get<BalanceTransfer[]>(`${SERVER_URL}/transfers/${clientId}/balances`)
+    const balanceTransfers = data.map(t => new BalanceTransfer(
+      t.id, t.clientId, t.date, t.fromAccount, t.toAccount, t.amount
+    ))
+    this.balanceTransfers = balanceTransfers
+  }
+
+  async createBalanceTransfer(balanceTransfer) {
+    await axios.post(`${SERVER_URL}/transfers/balances`, balanceTransfer)
+  }
+
   @action clearStore() {
     this.transfers = []
+    this.balanceTransfers = []
   }
 
   @computed get isPopulated() {
+    //might need to check balance transfer or create separate method for that
     return !!this.transfers.length
   }
 }

@@ -27,6 +27,14 @@ __decorate([
     __metadata("design:type", String)
 ], BalanceTransfer.prototype, "toAccount", void 0);
 __decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Date)
+], BalanceTransfer.prototype, "date", void 0);
+__decorate([
+    sequelize_typescript_1.Column({ type: sequelize_typescript_1.DataType.FLOAT }),
+    __metadata("design:type", Number)
+], BalanceTransfer.prototype, "amount", void 0);
+__decorate([
     sequelize_typescript_1.BelongsTo(() => Client_model_1.Client),
     __metadata("design:type", Client_model_1.Client)
 ], BalanceTransfer.prototype, "client", void 0);
