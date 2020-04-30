@@ -5,6 +5,7 @@ import { useTransfersStore } from '../../../context/Transfers.context'
 import TransferCard from './TransferCard'
 import NoData from '../NoData'
 import Loader from '../../Loader'
+import TransferTabs from './TransferTabs'
 
 const Transfers: React.FC = observer(() => {
   const TransfersStore = useTransfersStore()
@@ -13,10 +14,14 @@ const Transfers: React.FC = observer(() => {
 
   useEffect(() => {
     if (!TransfersStore.isPopulated) {
-      TransfersStore.getTransfersFromDB(clientId)
-        .then(() => {
-          setIsLoading(false)
-        })
+      const transferPromises = [
+        TransfersStore.getTransfersFromDB(clientId),
+        TransfersStore.getBalanceTransfersFromDB(clientId)
+      ]
+
+      Promise.all(transferPromises).then(() => {
+        setIsLoading(false)
+      })
     }
   }, [])
 
@@ -24,11 +29,7 @@ const Transfers: React.FC = observer(() => {
     isLoading
       ? <Loader />
       : TransfersStore.isPopulated
-        ? <div>
-          {TransfersStore.transfers.map(transfer => (
-            <TransferCard key={transfer.id} transfer={transfer} />
-          ))}
-        </div>
+        ? <TransferTabs />
         : <NoData type='transfers' />
   )
 })

@@ -46,7 +46,7 @@ export class Transfers {
 
   @computed get isPopulated() {
     //might need to check balance transfer or create separate method for that
-    return !!this.transfers.length
+    return !!this.transfers.length || !!this.balanceTransfers.length
   }
 }
 
