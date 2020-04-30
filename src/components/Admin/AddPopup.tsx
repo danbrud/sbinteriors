@@ -35,13 +35,23 @@ export const AddPopup: React.FC<AddPopupProps> = (props) => {
     setOpen(true)
   }
 
-  const handleClose = (shouldAdd: boolean) => {
-    if (shouldAdd) {
-      GeneralAdminStore[methodName](item)
-      openSnackbar('success', `Added ${name} Successfully!`)
-    }
+  const closePopup = () => {
     setItem('')
     setOpen(false)
+  }
+
+  const handleClose = (shouldAdd: boolean) => {
+    if (shouldAdd) {
+      if (item) {
+        GeneralAdminStore[methodName](item)
+        openSnackbar('success', `Added ${name} Successfully!`)
+        closePopup()
+      } else {
+        openSnackbar('error', `Invalid! Please enter a ${name}.`)
+      }
+    } else {
+      closePopup()
+    }
   }
 
   return (

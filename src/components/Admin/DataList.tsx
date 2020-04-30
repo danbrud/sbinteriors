@@ -1,5 +1,6 @@
 import React from 'react'
-import { Clients } from '../../stores/Clients.store';
+import { Clients } from '../../stores/Clients.store'
+import '../../styles/AddItem.css'
 
 interface DataListProps {
   ClientsStore?: Clients
@@ -11,8 +12,10 @@ const DataList: React.FC<DataListProps> = (props) => {
   const { ClientsStore, clientName, setClientName } = props
 
   return (
-    <div>
+    <div id='data-list'>
       <input
+        id='client-list'
+        placeholder='Client Name'
         list='clients'
         value={clientName}
         onChange={(e) => setClientName(e.target.value)}
