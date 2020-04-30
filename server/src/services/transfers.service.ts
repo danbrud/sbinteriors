@@ -1,6 +1,7 @@
 import { Transfer } from '../models/Transfer.model'
 import { TransferMethod } from '../models/TransferMethod.model'
 import { Op } from "sequelize"
+import { BalanceTransfer } from '../models/BalanceTransfer.model'
 
 export class TransfersService {
 
@@ -30,5 +31,28 @@ export class TransfersService {
     await transfer.save()
 
     return transfer
+  }
+
+  public async createBalanceTransfer(body): Promise<BalanceTransfer> {
+    const balanceTransfer = new BalanceTransfer(body)
+    await balanceTransfer.save()
+
+    return balanceTransfer
+  }
+
+  public async getBalanceTransfersByClientId(clientId: string, attributes?: string[], where?): Promise<Transfer[]> {
+    const options = attributes
+      ? { where: {
+          [Op.and]: [
+            { clientId },
+            ...where
+          ]
+        },
+        attributes
+      }
+      : { where: { clientId } }
+
+    const balanceTransfers = await Transfer.findAll(options)
+    return balanceTransfers
   }
 }
