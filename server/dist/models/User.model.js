@@ -27,6 +27,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], User.prototype, "role", void 0);
+__decorate([
     sequelize_typescript_1.BelongsTo(() => Client_model_1.Client),
     __metadata("design:type", Client_model_1.Client)
 ], User.prototype, "client", void 0);
