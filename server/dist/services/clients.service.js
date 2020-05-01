@@ -12,12 +12,12 @@ const tasks_service_1 = require("./tasks.service");
 const transfers_service_1 = require("./transfers.service");
 const utils_1 = require("../utils");
 const Transfer_model_1 = require("../models/Transfer.model");
-const generatePDF_1 = require("../generatePDF");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const User_model_1 = require("../models/User.model");
 const uniqid_1 = __importDefault(require("uniqid"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class ClientsService {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({
@@ -43,11 +43,20 @@ class ClientsService {
         return client;
     }
     async createUser(clientId, email) {
+        //should check if the user exists
         const user = new User_model_1.User({
             clientId, username: email.split('@')[0], password: uniqid_1.default(), role: 'CLIENT'
         });
-        await user.save();
         // this.emailUserDetails(user, email)
+        bcryptjs_1.default.genSalt(10, (error, salt) => {
+            bcryptjs_1.default.hash(user.password, salt, async (err, hash) => {
+                if (err) {
+                    throw err;
+                }
+                user.password = hash;
+                await user.save();
+            });
+        });
     }
     emailUserDetails(user, email) {
         const mailOptions = this.createEmailObject(email, `Your login details for the SBInteriors App`, `Your username is ${user.username} and your password is ${user.password}`, false);
@@ -106,7 +115,7 @@ class ClientsService {
         const document = {
             html, data: client, path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
         };
-        await generatePDF_1.create(document);
+        await utils_1.createPDF(document);
         await this.sendPDFReport(client);
     }
     async sendPDFReport(client) {

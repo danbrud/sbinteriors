@@ -24,12 +24,15 @@ const TransferMethod_model_1 = require("./models/TransferMethod.model");
 const Contract_model_1 = require("./models/Contract.model");
 const User_model_1 = require("./models/User.model");
 const BalanceTransfer_model_1 = require("./models/BalanceTransfer.model");
+const passport_1 = __importDefault(require("passport"));
+const passport_2 = require("./config/passport");
 class App {
     constructor(controllers, port) {
         this.app = express_1.default();
         this.port = port;
         this.initializeMiddlewares();
         this.initializeDB();
+        this.inializeAuth();
         this.initializeControllers(controllers);
         if (process.env.NODE_ENV === 'production') {
             this.serveClient();
@@ -41,6 +44,10 @@ class App {
         }
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
+    }
+    inializeAuth() {
+        this.app.use(passport_1.default.initialize());
+        passport_2.useStrategy(passport_1.default);
     }
     initializeDB() {
         const sequelize = new sequelize_typescript_1.Sequelize({

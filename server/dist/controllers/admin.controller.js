@@ -26,6 +26,15 @@ class AdminController {
             const transferMethods = await this.adminService.getTransferMethods();
             res.send(transferMethods);
         };
+        this.loginUser = async (req, res) => {
+            const response = await this.adminService.loginUser(req.body);
+            if (response.success) {
+                res.json({ success: response.success, token: response.token });
+            }
+            else {
+                res.status(response.code).json(response.errors);
+            }
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
@@ -34,6 +43,7 @@ class AdminController {
         this.router.get('/transfer-methods', this.getTransferMethods);
         this.router.post('/transfer-methods', this.createTransferMethod);
         this.router.get('/transfer-methods', this.getTransferMethods);
+        this.router.post('/login', this.loginUser);
     }
 }
 exports.AdminController = AdminController;

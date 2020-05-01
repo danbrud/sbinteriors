@@ -5,14 +5,14 @@ import { Contract } from "../models/Contract.model"
 import { ExpensesService } from './expenses.service'
 import { TasksService } from './tasks.service'
 import { TransfersService } from './transfers.service'
-import { getTotal } from '../utils'
+import { getTotal, createPDF } from '../utils'
 import { Transfer } from "../models/Transfer.model"
-import { create } from '../generatePDF'
 import fs from 'fs'
 import path from 'path'
 import nodemailer from 'nodemailer'
 import { User } from "../models/User.model"
 import createPassword from 'uniqid'
+import bcrypt from 'bcryptjs'
 
 
 
@@ -46,35 +46,43 @@ export class ClientsService {
   }
 
   private async createUser(clientId: number, email: string): Promise<void> {
+    //should check if the user exists
     const user = new User({
       clientId, username: email.split('@')[0], password: createPassword(), role: 'CLIENT'
     })
-
-    await user.save()
     // this.emailUserDetails(user, email)
+
+    bcrypt.genSalt(10, (error, salt) => {
+      bcrypt.hash(user.password, salt, async (err, hash) => {
+        if (err) { throw err }
+
+        user.password = hash
+        await user.save()
+      })
+    })
   }
 
   private emailUserDetails(user: User, email: string): void {
-    const mailOptions = this.createEmailObject(
-      email, `Your login details for the SBInteriors App`,
-      `Your username is ${user.username} and your password is ${user.password}`, false
-    )
+  const mailOptions = this.createEmailObject(
+    email, `Your login details for the SBInteriors App`,
+    `Your username is ${user.username} and your password is ${user.password}`, false
+  )
 
     this.transporter.sendMail(mailOptions)
-  }
+}
 
-  public async updateClient(clientId, body): Promise<Client> {
-    const { prop, value } = body
+  public async updateClient(clientId, body): Promise < Client > {
+  const { prop, value } = body
 
     const client = await Client.findOne({ where: { id: clientId } })
     client[prop] = value
     client.save()
 
     return client
-  }
+}
 
-  public async getBalanceByAccount(clientId: string, account: 'expenses' | 'tasks'): Promise<{ balance: number }> {
-    const expensesService = new ExpensesService()
+  public async getBalanceByAccount(clientId: string, account: 'expenses' | 'tasks'): Promise < { balance: number } > {
+  const expensesService = new ExpensesService()
     const transfersService = new TransfersService()
     const tasksService = new TasksService()
 
@@ -82,97 +90,97 @@ export class ClientsService {
     const balanceTransfers = await transfersService.getBalanceTransfersByClientId(clientId)
 
     let items: Expense[] | Task[]
-    if (account === 'expenses') {
-      items = await expensesService.getExpensesByClientId(clientId, ['amount'])
-    } else {
-      items = await tasksService.getTasksByClientId(clientId, null, ['price'])
-    }
+    if(account === 'expenses') {
+  items = await expensesService.getExpensesByClientId(clientId, ['amount'])
+} else {
+  items = await tasksService.getTasksByClientId(clientId, null, ['price'])
+}
 
-    const itemTotal = getTotal(items)
-    const transferTotal = getTotal(transfers)
+const itemTotal = getTotal(items)
+const transferTotal = getTotal(transfers)
 
-    const fromTotal = getTotal(balanceTransfers.filter(t => t.fromAccount === account))
-    const toTotal = getTotal(balanceTransfers.filter(t => t.toAccount === account))
+const fromTotal = getTotal(balanceTransfers.filter(t => t.fromAccount === account))
+const toTotal = getTotal(balanceTransfers.filter(t => t.toAccount === account))
 
-    const balance = transferTotal - itemTotal + toTotal - fromTotal
+const balance = transferTotal - itemTotal + toTotal - fromTotal
 
-    return { balance }
+return { balance }
   }
 
-  public async addContract(clientId: string, body): Promise<Contract[]> {
-    const contract = []
-    for (let key in body) {
-      const contractItem = new Contract({
-        clientId, serviceId: key, includedHours: body[key]
-      })
-      await contractItem.save()
-      contract.push(contractItem)
-    }
+  public async addContract(clientId: string, body): Promise < Contract[] > {
+  const contract = []
+    for(let key in body) {
+  const contractItem = new Contract({
+    clientId, serviceId: key, includedHours: body[key]
+  })
+  await contractItem.save()
+  contract.push(contractItem)
+}
 
+return contract
+  }
+
+  public async getContract(clientId: string): Promise < Contract[] > {
+  const contract = Contract.findAll({ where: { clientId } })
     return contract
-  }
-
-  public async getContract(clientId: string): Promise<Contract[]> {
-    const contract = Contract.findAll({ where: { clientId } })
-    return contract
-  }
+}
 
   public async generateReport(clientId: string) {
-    const client = await this.getClientById(clientId, null, [Transfer, Task, Expense])
-    this.generatePDF(client)
+  const client = await this.getClientById(clientId, null, [Transfer, Task, Expense])
+  this.generatePDF(client)
 
-    return client
-  }
+  return client
+}
 
   private async generatePDF(client: Client) {
-    // const options = { format: 'A3', orientation: 'portrait', border: '10mm' }
-    const html = fs.readFileSync(path.join(__dirname, '..', '..', 'template.html'), 'utf8')
+  // const options = { format: 'A3', orientation: 'portrait', border: '10mm' }
+  const html = fs.readFileSync(path.join(__dirname, '..', '..', 'template.html'), 'utf8')
 
-    const document = {
-      html, data: client, path: path.join(__dirname, '..', '..', 'report.pdf')
-    }
-
-    await create(document)
-    await this.sendPDFReport(client)
+  const document = {
+    html, data: client, path: path.join(__dirname, '..', '..', 'report.pdf')
   }
+
+  await createPDF(document)
+  await this.sendPDFReport(client)
+}
 
   private async sendPDFReport(client) {
-    const mailOptions = this.createEmailObject(
-      process.env.ADMIN_EMAIL,
-      `Report for ${client.name}`,
-      `Please find the attached report for ${client.name}.`,
-      false,
-      [{
-        filename: `${client.name}-report.pdf`,
-        path: path.join(__dirname, '..', '..', 'report.pdf')
-      }]
-    )
+  const mailOptions = this.createEmailObject(
+    process.env.ADMIN_EMAIL,
+    `Report for ${client.name}`,
+    `Please find the attached report for ${client.name}.`,
+    false,
+    [{
+      filename: `${client.name}-report.pdf`,
+      path: path.join(__dirname, '..', '..', 'report.pdf')
+    }]
+  )
 
-    this.transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(info)
-      }
-    })
-  }
-
-  private createEmailObject(to: string, subject: string, content: string, isHTML: boolean = false, attachments?) {
-    const mailOptions: {
-      from: string, to: string, subject: string, text?: string,
-      html?: string, attachments?: { filename: string, path: string }[]
-    } = { from: process.env.ADMIN_EMAIL, to, subject }
-
-    if (isHTML) {
-      mailOptions.html = content
+  this.transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log(err)
     } else {
-      mailOptions.text = content
+      console.log(info)
     }
+  })
+}
 
-    if (attachments) {
-      mailOptions.attachments = attachments
-    }
+  private createEmailObject(to: string, subject: string, content: string, isHTML: boolean = false, attachments ?) {
+  const mailOptions: {
+    from: string, to: string, subject: string, text?: string,
+    html?: string, attachments?: { filename: string, path: string }[]
+  } = { from: process.env.ADMIN_EMAIL, to, subject }
 
-    return mailOptions
+  if (isHTML) {
+    mailOptions.html = content
+  } else {
+    mailOptions.text = content
   }
+
+  if (attachments) {
+    mailOptions.attachments = attachments
+  }
+
+  return mailOptions
+}
 }
