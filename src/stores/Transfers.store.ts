@@ -44,9 +44,16 @@ export class Transfers {
     this.balanceTransfers = []
   }
 
-  @computed get isPopulated() {
-    //might need to check balance transfer or create separate method for that
-    return !!this.transfers.length || !!this.balanceTransfers.length
+  @computed get isFullyPopulated() {
+    return this.isTransfersPopulated || this.isBalanceTransfersPopulated
+  }
+
+  @computed get isTransfersPopulated() {
+    return !!this.transfers.length
+  }
+
+  @computed get isBalanceTransfersPopulated() {
+    return !!this.balanceTransfers.length
   }
 }
 

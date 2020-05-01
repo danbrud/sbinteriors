@@ -35,7 +35,7 @@ const App: React.FC = observer(() => {
     const i = path.indexOf('clients')
 
     if ((i === path.length - 1) || i === -1) {
-      if (TransfersStore.isPopulated) {
+      if (TransfersStore.isFullyPopulated) {
         TransfersStore.clearStore()
       }
       if (TasksStore.isPopulated) {

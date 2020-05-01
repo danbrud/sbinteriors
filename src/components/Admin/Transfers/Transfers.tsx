@@ -10,10 +10,10 @@ import TransferTabs from './TransferTabs'
 const Transfers: React.FC = observer(() => {
   const TransfersStore = useTransfersStore()
   const { clientId } = useParams()
-  const [isLoading, setIsLoading] = useState(TransfersStore.isPopulated ? false : true)
+  const [isLoading, setIsLoading] = useState(TransfersStore.isFullyPopulated ? false : true)
 
   useEffect(() => {
-    if (!TransfersStore.isPopulated) {
+    if (!TransfersStore.isFullyPopulated) {
       const transferPromises = [
         TransfersStore.getTransfersFromDB(clientId),
         TransfersStore.getBalanceTransfersFromDB(clientId)
@@ -28,9 +28,9 @@ const Transfers: React.FC = observer(() => {
   return (
     isLoading
       ? <Loader />
-      : TransfersStore.isPopulated
-        ? <TransferTabs />
-        : <NoData type='transfers' />
+      : <TransferTabs />
+        // ? <TransferTabs />
+        // : <NoData type='transfers' />
   )
 })
 

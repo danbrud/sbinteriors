@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box'
 import { useTransfersStore } from '../../../context/Transfers.context'
 import TransferCard from './TransferCard'
 import BalanceTransferCard from './BalanceTransferCard'
+import NoData from '../NoData'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,14 +62,22 @@ const TransferTabs: React.FC = observer((props) => {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          {TransfersStore.transfers.map(transfer => (
-            <TransferCard key={transfer.id} transfer={transfer} />
-          ))}
+          {
+            TransfersStore.isTransfersPopulated
+              ? TransfersStore.transfers.map(transfer => (
+                <TransferCard key={transfer.id} transfer={transfer} />
+              ))
+              : <NoData type='transfers' />
+          }
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          {TransfersStore.balanceTransfers.map(transfer => (
-            <BalanceTransferCard key={transfer.id} transfer={transfer} />
-          ))}
+          {
+            TransfersStore.isBalanceTransfersPopulated
+              ? TransfersStore.balanceTransfers.map(transfer => (
+                <BalanceTransferCard key={transfer.id} transfer={transfer} />
+              ))
+              : <NoData type='transfers' />
+          }
         </TabPanel>
       </SwipeableViews>
     </div>
