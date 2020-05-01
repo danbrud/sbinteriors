@@ -14,6 +14,7 @@ export class ClientsController {
   private intializeRoutes() {
     this.router.get('/', this.getClients)
     this.router.post('/', this.createClient)
+    this.router.get('/:clientId', this.getClientById)
     this.router.put('/:clientId', this.updateClient)
     this.router.get('/:clientId/balance/:account', this.getBalance)
     this.router.post('/:clientId/contracts', this.addContract)
@@ -28,6 +29,11 @@ export class ClientsController {
 
   private createClient: express.RequestHandler = async (req, res) => {
     const client = await this.clientsService.createClient(req.body)
+    res.send(client)
+  }
+
+  private getClientById: express.RequestHandler = async (req, res) => {
+    const client = await this.clientsService.getClientById(req.params.clientId)
     res.send(client)
   }
 
