@@ -11,10 +11,19 @@ import { create } from '../generatePDF'
 import fs from 'fs'
 import path from 'path'
 import nodemailer from 'nodemailer'
+import { User } from "../models/User.model"
+import createPassword from 'uniqid'
 
 
 
 export class ClientsService {
+  private transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.ADMIN_EMAIL,
+      pass: process.env.ADMIN_EMAIL_PASSWORD
+    }
+  })
 
   public async getClients(): Promise<Client[]> {
     const clients = await Client.findAll()
@@ -31,8 +40,27 @@ export class ClientsService {
   public async createClient(body): Promise<Client> {
     const client = new Client(body)
     await client.save()
+    await this.createUser(client.id, client.email)
 
     return client
+  }
+
+  private async createUser(clientId: number, email: string): Promise<void> {
+    const user = new User({
+      clientId, username: email.split('@')[0], password: createPassword(), role: 'CLIENT'
+    })
+
+    await user.save()
+    this.emailUserDetails(user, email)
+  }
+
+  private emailUserDetails(user: User, email: string): void {
+    const mailOptions = this.createEmailObject(
+      email, `Your login details for the SBInteriors App`,
+      `Your username is ${user.username} and your password is ${user.password}`, false
+    )
+
+    this.transporter.sendMail(mailOptions)
   }
 
   public async updateClient(clientId, body): Promise<Client> {
@@ -105,35 +133,46 @@ export class ClientsService {
     }
 
     await create(document)
-    await this.sendEmail(client)
+    await this.sendPDFReport(client)
   }
 
-  private async sendEmail(client) {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-             user: process.env.ADMIN_EMAIL,
-             pass: process.env.ADMIN_EMAIL_PASSWORD
-         }
-    })
-
-    const mailOptions = {
-      from: process.env.ADMIN_EMAIL,
-      to: process.env.ADMIN_EMAIL,
-      subject: `Report for ${client.name}`,
-      text: `Please find the attached report for ${client.name}.`,
-      attachments: [{
+  private async sendPDFReport(client) {
+    const mailOptions = this.createEmailObject(
+      process.env.ADMIN_EMAIL,
+      `Report for ${client.name}`,
+      `Please find the attached report for ${client.name}.`,
+      false,
+      [{
         filename: `${client.name}-report.pdf`,
         path: path.join(__dirname, '..', '..', 'report.pdf')
       }]
-    }
+    )
 
-    transporter.sendMail(mailOptions, (err, info) => {
+    this.transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
         console.log(err)
       } else {
-        console.log(info);
+        console.log(info)
       }
-   })
+    })
+  }
+
+  private createEmailObject(to: string, subject: string, content: string, isHTML: boolean = false, attachments?) {
+    const mailOptions: {
+      from: string, to: string, subject: string, text?: string,
+      html?: string, attachments?: { filename: string, path: string }[]
+    } = { from: process.env.ADMIN_EMAIL, to, subject }
+
+    if (isHTML) {
+      mailOptions.html = content
+    } else {
+      mailOptions.text = content
+    }
+
+    if (attachments) {
+      mailOptions.attachments = attachments
+    }
+
+    return mailOptions
   }
 }

@@ -16,7 +16,18 @@ const generatePDF_1 = require("../generatePDF");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const User_model_1 = require("../models/User.model");
+const uniqid_1 = __importDefault(require("uniqid"));
 class ClientsService {
+    constructor() {
+        this.transporter = nodemailer_1.default.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.ADMIN_EMAIL,
+                pass: process.env.ADMIN_EMAIL_PASSWORD
+            }
+        });
+    }
     async getClients() {
         const clients = await Client_model_1.Client.findAll();
         return clients;
@@ -28,7 +39,19 @@ class ClientsService {
     async createClient(body) {
         const client = new Client_model_1.Client(body);
         await client.save();
+        await this.createUser(client.id, client.email);
         return client;
+    }
+    async createUser(clientId, email) {
+        const user = new User_model_1.User({
+            clientId, username: email.split('@')[0], password: uniqid_1.default(), role: 'CLIENT'
+        });
+        await user.save();
+        this.emailUserDetails(user, email);
+    }
+    emailUserDetails(user, email) {
+        const mailOptions = this.createEmailObject(email, `Your login details for the SBInteriors App`, `Your username is ${user.username} and your password is ${user.password}`, false);
+        this.transporter.sendMail(mailOptions);
     }
     async updateClient(clientId, body) {
         const { prop, value } = body;
@@ -84,27 +107,14 @@ class ClientsService {
             html, data: client, path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
         };
         await generatePDF_1.create(document);
-        await this.sendEmail(client);
+        await this.sendPDFReport(client);
     }
-    async sendEmail(client) {
-        const transporter = nodemailer_1.default.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.ADMIN_EMAIL,
-                pass: process.env.ADMIN_EMAIL_PASSWORD
-            }
-        });
-        const mailOptions = {
-            from: process.env.ADMIN_EMAIL,
-            to: process.env.ADMIN_EMAIL,
-            subject: `Report for ${client.name}`,
-            text: `Please find the attached report for ${client.name}.`,
-            attachments: [{
-                    filename: `${client.name}-report.pdf`,
-                    path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
-                }]
-        };
-        transporter.sendMail(mailOptions, (err, info) => {
+    async sendPDFReport(client) {
+        const mailOptions = this.createEmailObject(process.env.ADMIN_EMAIL, `Report for ${client.name}`, `Please find the attached report for ${client.name}.`, false, [{
+                filename: `${client.name}-report.pdf`,
+                path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
+            }]);
+        this.transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
                 console.log(err);
             }
@@ -112,6 +122,19 @@ class ClientsService {
                 console.log(info);
             }
         });
+    }
+    createEmailObject(to, subject, content, isHTML = false, attachments) {
+        const mailOptions = { from: process.env.ADMIN_EMAIL, to, subject };
+        if (isHTML) {
+            mailOptions.html = content;
+        }
+        else {
+            mailOptions.text = content;
+        }
+        if (attachments) {
+            mailOptions.attachments = attachments;
+        }
+        return mailOptions;
     }
 }
 exports.ClientsService = ClientsService;
