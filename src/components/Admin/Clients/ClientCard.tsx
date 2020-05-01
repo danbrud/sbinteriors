@@ -8,7 +8,7 @@ import CardActions from '@material-ui/core/CardActions'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import { Client as ClientStore } from '../../../stores/Client.store'
-import { toProperCase } from '../../../utils'
+
 
 const useStyles = makeStyles(theme => ({
   card: {

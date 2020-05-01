@@ -1,5 +1,4 @@
 import { observable } from 'mobx'
-import { adminType } from '../adminTypes'
 
 export class BalanceTransfer {
   @observable id: number

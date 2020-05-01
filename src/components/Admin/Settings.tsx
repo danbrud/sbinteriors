@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useGeneralAdminStore } from '../../context/GeneralAdmin.context'
 import { observer } from 'mobx-react'
 

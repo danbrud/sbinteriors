@@ -20,7 +20,7 @@ export class Task {
     this.startTime = new Date(startTime)
     this.endTime = new Date(endTime)
     this.price = price
-    this. description = description
+    this.description = description
   }
 
   @computed get durationInMinutes() {
