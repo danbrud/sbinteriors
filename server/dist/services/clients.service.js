@@ -15,6 +15,7 @@ const Transfer_model_1 = require("../models/Transfer.model");
 const generatePDF_1 = require("../generatePDF");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
 class ClientsService {
     async getClients() {
         const clients = await Client_model_1.Client.findAll();
@@ -76,18 +77,40 @@ class ClientsService {
         this.generatePDF(client);
         return client;
     }
-    generatePDF(client) {
+    async generatePDF(client) {
         // const options = { format: 'A3', orientation: 'portrait', border: '10mm' }
         const html = fs_1.default.readFileSync(path_1.default.join(__dirname, '..', '..', 'template.html'), 'utf8');
         const document = {
             html, data: client, path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
         };
-        generatePDF_1.create(document)
-            .then(res => {
-            console.log(res);
-        })
-            .catch(error => {
-            console.error(error);
+        await generatePDF_1.create(document);
+        await this.sendEmail(client);
+    }
+    async sendEmail(client) {
+        const transporter = nodemailer_1.default.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.ADMIN_EMAIL,
+                pass: process.env.ADMIN_EMAIL_PASSWORD
+            }
+        });
+        const mailOptions = {
+            from: process.env.ADMIN_EMAIL,
+            to: process.env.ADMIN_EMAIL,
+            subject: `Report for ${client.name}`,
+            text: `Please find the attached report for ${client.name}.`,
+            attachments: [{
+                    filename: `${client.name}-report.pdf`,
+                    path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
+                }]
+        };
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                console.log(info);
+            }
         });
     }
 }

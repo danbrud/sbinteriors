@@ -10,6 +10,8 @@ import { Transfer } from "../models/Transfer.model"
 import { create } from '../generatePDF'
 import fs from 'fs'
 import path from 'path'
+import nodemailer from 'nodemailer'
+
 
 
 export class ClientsService {
@@ -94,7 +96,7 @@ export class ClientsService {
     return client
   }
 
-  private generatePDF(client: Client) {
+  private async generatePDF(client: Client) {
     // const options = { format: 'A3', orientation: 'portrait', border: '10mm' }
     const html = fs.readFileSync(path.join(__dirname, '..', '..', 'template.html'), 'utf8')
 
@@ -102,12 +104,36 @@ export class ClientsService {
       html, data: client, path: path.join(__dirname, '..', '..', 'report.pdf')
     }
 
-    create(document)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(error => {
-        console.error(error)
-      })
+    await create(document)
+    await this.sendEmail(client)
+  }
+
+  private async sendEmail(client) {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+             user: process.env.ADMIN_EMAIL,
+             pass: process.env.ADMIN_EMAIL_PASSWORD
+         }
+    })
+
+    const mailOptions = {
+      from: process.env.ADMIN_EMAIL,
+      to: process.env.ADMIN_EMAIL,
+      subject: `Report for ${client.name}`,
+      text: `Please find the attached report for ${client.name}.`,
+      attachments: [{
+        filename: `${client.name}-report.pdf`,
+        path: path.join(__dirname, '..', '..', 'report.pdf')
+      }]
+    }
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(info);
+      }
+   })
   }
 }
