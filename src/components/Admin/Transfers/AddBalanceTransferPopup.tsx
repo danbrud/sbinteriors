@@ -12,6 +12,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import { datePickerTheme } from '../../../themes/datePicker.theme'
 import { checkRequiredFields } from '../../../utils'
 import { useParams } from 'react-router-dom'
+import { useClientsStore } from '../../../context/Clients.context'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -43,22 +44,34 @@ export const AddBalanceTransferPopup: React.FC<AddBalanceTransferPopupProps> = (
     { fromAccount: '', toAccount: '', date: new Date(), amount: '' }
   )
   const TransfersStore = useTransfersStore()
+  const ClientsStore = useClientsStore()
 
   const closePopup = () => {
     setInputs( { fromAccount: '', toAccount: '', date: new Date(), amount: '' })
     setOpen(false)
   }
 
-  const handleClose = (shouldAdd: boolean) => {
+  const checkAvailableBalance = (client) => {
+    const balanceToTransfer = inputs.fromAccount + 'Balance'
+    return client[balanceToTransfer] >= inputs.amount
+  }
+
+  const handleClose = async (shouldAdd: boolean) => {
     if (shouldAdd) {
-      if (checkRequiredFields(Object.keys(inputs), inputs) && inputs.fromAccount !== inputs.toAccount) {
-        TransfersStore.createBalanceTransfer({ ...inputs, clientId })
-        openSnackbar('success', `Transferred balance successfully!`)
-        closePopup()
-      } else if(!checkRequiredFields(Object.keys(inputs), inputs)) {
+      const client = ClientsStore.getClient(clientId)
+
+      if(!checkRequiredFields(Object.keys(inputs), inputs)) {
         openSnackbar('error', `Invalid! Please fill all inputs.`)
       } else if (inputs.fromAccount === inputs.toAccount) {
         openSnackbar('error', `Invalid! 'To' and 'From' must be different.`)
+      } else if (!checkAvailableBalance(client)) {
+        openSnackbar('error', `Invalid! 'Not enough balance in ${inputs.fromAccount} account.`)
+      } else {
+        await TransfersStore.createBalanceTransfer({ ...inputs, clientId })
+        await client.getBalance('expenses')
+        await client.getBalance('tasks')
+        closePopup()
+        openSnackbar('success', `Transferred balance successfully!`)
       }
     } else {
       closePopup()
