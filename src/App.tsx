@@ -16,6 +16,7 @@ import { useTransfersStore } from './context/Transfers.context'
 import { useTasksStore } from './context/Tasks.context'
 import { useExpensesStore } from './context/Expenses.context'
 import Contract from './components/Admin/Clients/Contract'
+import Login from './components/Login'
 
 
 const App: React.FC = observer(() => {
@@ -92,27 +93,12 @@ const App: React.FC = observer(() => {
           path='/admin/settings'
           render={() => <Settings />}
         />
+        <Route
+          exact
+          path='/login'
+          render={() => <Login />}
+        />
         <AddFab />
-        {/* <Route
-            exact
-            path='/admin/clients/:clientId/projects'
-            render={({ match }) => (
-              <ProjectsProvider value={ProjectStore}>
-                <ProjectsList match={match} />
-              </ProjectsProvider>)}
-          /> */}
-        {/* <Route
-            exact
-            path='/admin/clients/:clientId/projects/:projectId'
-            render={({ match }) => (
-              <ProjectsProvider value={ProjectStore}>
-                <TasksProvider value={TasksStore}>
-                  <ExpensesProvider value={ExpensesStore}>
-                    <ProjectDetailsWrapper match={match} />
-                  </ExpensesProvider>
-                </TasksProvider>
-              </ProjectsProvider>)}
-          /> */}
       </div>
     </div>
   )
