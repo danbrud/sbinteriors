@@ -47,7 +47,7 @@ class ClientsService {
             clientId, username: email.split('@')[0], password: uniqid_1.default(), role: 'CLIENT'
         });
         await user.save();
-        this.emailUserDetails(user, email);
+        // this.emailUserDetails(user, email)
     }
     emailUserDetails(user, email) {
         const mailOptions = this.createEmailObject(email, `Your login details for the SBInteriors App`, `Your username is ${user.username} and your password is ${user.password}`, false);

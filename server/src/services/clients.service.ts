@@ -51,7 +51,7 @@ export class ClientsService {
     })
 
     await user.save()
-    this.emailUserDetails(user, email)
+    // this.emailUserDetails(user, email)
   }
 
   private emailUserDetails(user: User, email: string): void {
