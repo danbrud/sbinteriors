@@ -6,6 +6,11 @@ import { ExpensesService } from './expenses.service'
 import { TasksService } from './tasks.service'
 import { TransfersService } from './transfers.service'
 import { getTotal } from '../utils'
+import { Transfer } from "../models/Transfer.model"
+import { create } from '../generatePDF'
+import fs from 'fs'
+import path from 'path'
+
 
 export class ClientsService {
 
@@ -14,8 +19,10 @@ export class ClientsService {
     return clients
   }
 
-  public async getClientById(id: number, attributes?: string[]): Promise<Client> {
-    const client = await Client.findOne({ where: { id }, attributes })
+  public async getClientById(
+    id: number | string, attributes?: string[], include?
+  ): Promise<Client> {
+    const client = await Client.findOne({ where: { id }, attributes, include })
     return client
   }
 
@@ -78,5 +85,29 @@ export class ClientsService {
   public async getContract(clientId: string): Promise<Contract[]> {
     const contract = Contract.findAll({ where: { clientId } })
     return contract
+  }
+
+  public async generateReport(clientId: string) {
+    const client = await this.getClientById(clientId, null, [Transfer, Task, Expense])
+    this.generatePDF(client)
+
+    return client
+  }
+
+  private generatePDF(client: Client) {
+    // const options = { format: 'A3', orientation: 'portrait', border: '10mm' }
+    const html = fs.readFileSync(path.join(__dirname, '..', '..', 'template.html'), 'utf8')
+
+    const document = {
+      html, data: client, path: path.join(__dirname, '..', '..', 'report.pdf')
+    }
+
+    create(document)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 }
