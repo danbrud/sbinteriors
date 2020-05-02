@@ -73,7 +73,7 @@ const App: React.FC<AuthProps> = observer((props) => {
         <ProtectedRoute
           auth={auth}
           exact
-          path='/admin/clients/:clientId'
+          path='/:role/clients/:clientId'
           component={ClientInfo}
         />
         <ProtectedRoute
