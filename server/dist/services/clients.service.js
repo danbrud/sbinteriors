@@ -45,9 +45,10 @@ class ClientsService {
     async createUser(clientId, email) {
         //should check if the user exists
         const user = new User_model_1.User({
-            clientId, username: email.split('@')[0], password: uniqid_1.default(), role: 'CLIENT'
+            clientId, username: email.split('@')[0], password: uniqid_1.default(), role: 'USER'
         });
         // this.emailUserDetails(user, email)
+        this.emailUserDetails(user, 'dannybrudner@gmail.com');
         bcryptjs_1.default.genSalt(10, (error, salt) => {
             bcryptjs_1.default.hash(user.password, salt, async (err, hash) => {
                 if (err) {

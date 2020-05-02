@@ -17,9 +17,9 @@ import { useTasksStore } from './context/Tasks.context'
 import { useExpensesStore } from './context/Expenses.context'
 import Contract from './components/Admin/Clients/Contract'
 import Login from './components/Login'
+import { AuthProps } from './components/AuthProps'
 
-
-const App: React.FC = observer(() => {
+const App: React.FC<AuthProps> = observer((props) => {
   const GeneralAdminStore = useGeneralAdminStore()
   const TransfersStore = useTransfersStore()
   const TasksStore = useTasksStore()
@@ -96,7 +96,7 @@ const App: React.FC = observer(() => {
         <Route
           exact
           path='/login'
-          render={() => <Login />}
+          render={() => <Login auth={props.auth}/>}
         />
         <AddFab />
       </div>

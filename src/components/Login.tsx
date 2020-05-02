@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { makeStyles, FormControl, TextField, Button } from '@material-ui/core'
+import { makeStyles, FormControl, TextField, Button, Snackbar } from '@material-ui/core'
+import { AuthProps } from './AuthProps'
+import { Redirect } from 'react-router-dom'
+import { validateLoginInput, SERVER_URL } from '../utils/utils'
+import MuiAlert from '@material-ui/lab/Alert'
+import axios from 'axios'
+import Loader from './Loader'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,55 +36,113 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Login: React.FC = () => {
+
+
+const Login: React.FC<AuthProps> = (props) => {
   const classes = useStyles()
   const [inputs, setInputs] = useState({ username: '', password: '' })
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [snackbar, setSnackbar] = useState({
+    message: '',
+    open: false,
+    severity: ''
+  })
+
+  const openSnackbar = (severity, message) => {
+    setSnackbar({ message, severity, open: true })
+  }
+
+  const handleClose = () => {
+    setSnackbar({
+      message: '',
+      open: false,
+      severity: ''
+    })
+  }
 
   const handleChange = ({ target }) => {
     setInputs({ ...inputs, [target.name]: target.value })
   }
 
-  const login = () => {
-    console.log(inputs)
+  const login = async () => {
+    const isValid = validateLoginInput(inputs).isValid
+    if (!isValid) {
+      return openSnackbar('error', 'Please enter a valid username and password!')
+    }
+
+    let res
+    try {
+      setIsLoading(true)
+      res = await axios.post(`${SERVER_URL}/admin/login`, inputs)
+    } catch (err) {
+      setIsLoading(false)
+      return openSnackbar('error', 'Incorrect username or password. Try again!')
+    }
+
+    const { token } = res.data
+    props.auth.login(token)
+    window.location.href = '/'
   }
 
+  if (props.auth.isAuthenticated) { return <Redirect to='/' /> }
+  // if(props.auth.isAuthenticated) { return <Redirect to={`/${role}/`} /> }
+
   return (
-    <FormControl className={classes.formControl}>
-      <img
-        className={classes.img}
-        src={`${window.location.origin}/assets/android-chrome-192x192.png`}
-      />
-      <TextField
-        className={classes.input}
-        required={true}
-        label='Username'
-        value={inputs.username}
-        type='text'
-        name='username'
-        fullWidth={true}
-        onChange={handleChange}
-      />
-      <TextField
-        className={classes.input}
-        required={true}
-        label='Password'
-        value={inputs.password}
-        type='password'
-        name='password'
-        fullWidth={true}
-        onChange={handleChange}
-      />
-      <Button
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        fullWidth={true}
-        onClick={login}
-      >
-        LOGIN
-      </Button>
-    </FormControl>
+    isLoading
+      ? <Loader />
+      : (
+        <div>
+          <FormControl className={classes.formControl}>
+            <img
+              className={classes.img}
+              src={`${window.location.origin}/assets/android-chrome-192x192.png`}
+            />
+            <TextField
+              className={classes.input}
+              required={true}
+              label='Username'
+              value={inputs.username}
+              type='text'
+              name='username'
+              fullWidth={true}
+              onChange={handleChange}
+            />
+            <TextField
+              className={classes.input}
+              required={true}
+              label='Password'
+              value={inputs.password}
+              type='password'
+              name='password'
+              fullWidth={true}
+              onChange={handleChange}
+            />
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              fullWidth={true}
+              onClick={login}
+            >
+              LOGIN
+          </Button>
+          </FormControl>
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={4000}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity={snackbar.severity}>
+              {snackbar.message}
+            </Alert>
+          </Snackbar>
+        </div>
+      )
   )
+}
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default Login

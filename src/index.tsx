@@ -16,7 +16,9 @@ import { TransfersStore } from './stores/Transfers.store'
 import { ExpensesProvider } from './context/Expenses.context'
 import { ExpensesStore } from './stores/Expenses.store'
 import { IntlProvider } from 'react-intl'
+import { Auth } from './utils/Auth'
 
+const auth = new Auth()
 
 ReactDOM.render(
   <Router>
@@ -27,7 +29,7 @@ ReactDOM.render(
             <TasksProvider value={TasksStore}>
               <TransfersProvider value={TransfersStore}>
                 <ExpensesProvider value={ExpensesStore}>
-                  <App />
+                  <App auth={auth} />
                 </ExpensesProvider>
               </TransfersProvider>
             </TasksProvider>

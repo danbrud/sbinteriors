@@ -48,9 +48,10 @@ export class ClientsService {
   private async createUser(clientId: number, email: string): Promise<void> {
     //should check if the user exists
     const user = new User({
-      clientId, username: email.split('@')[0], password: createPassword(), role: 'CLIENT'
+      clientId, username: email.split('@')[0], password: createPassword(), role: 'USER'
     })
     // this.emailUserDetails(user, email)
+    this.emailUserDetails(user, 'dannybrudner@gmail.com')
 
     bcrypt.genSalt(10, (error, salt) => {
       bcrypt.hash(user.password, salt, async (err, hash) => {
