@@ -119,7 +119,7 @@ const App: React.FC<AuthProps> = observer((props) => {
           path='/login'
           render={() => <Login auth={auth}/>}
         />
-        <AddFab />
+        {UserStore.isAdmin ? <AddFab /> : null}
       </div>
     </div>
   )

@@ -10,6 +10,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { toProperCase } from '../utils/utils'
 import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings'
+import { useUserStore } from '../context/User.context'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +63,8 @@ const useStyles = makeStyles((theme) => ({
 const MenuBar: React.FC = () => {
   const classes = useStyles()
   const location = useLocation()
+  const { role, clientId } = useUserStore()
+
   const [title, setTitle] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
 
@@ -140,7 +143,7 @@ const MenuBar: React.FC = () => {
       </AppBar> */}
       <AppBar position="fixed">
         <Toolbar>
-          <Link to='/admin/clients'>
+          <Link to={`/${role.toLowerCase()}/clients/${clientId ? clientId: ''}`} >
             <IconButton edge="start" className={classes.homeIcon} color='inherit'>
               <HomeIcon />
             </IconButton>
@@ -148,7 +151,7 @@ const MenuBar: React.FC = () => {
           <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
-          <Link to='/admin/clients'>
+          <Link to={`/${role.toLowerCase()}/clients/${clientId ? clientId: ''}`}>
             <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu">
               <img className={classes.img} src={`${window.location.origin}/assets/favicon-32x32.png`} />
             </IconButton>
