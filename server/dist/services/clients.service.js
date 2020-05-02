@@ -39,21 +39,21 @@ class ClientsService {
     async createClient(body) {
         const client = new Client_model_1.Client(body);
         await client.save();
-        await this.createUser(client.id, client.email);
+        await this.createUser(client);
         return client;
     }
-    async createUser(clientId, email, isAdmin) {
+    async createUser(client, isAdmin) {
         //should check if the user exists
         const user = new User_model_1.User({
-            username: email.split('@')[0],
+            username: client.email.split('@')[0],
             password: uniqid_1.default(),
             role: isAdmin ? 'ADMIN' : 'USER'
         });
         if (!isAdmin) {
-            user.clientId = clientId;
+            user.clientId = client.id;
         }
         // this.emailUserDetails(user, email)
-        this.emailUserDetails(user, 'dannybrudner@gmail.com');
+        this.emailUserDetails(user, client, 'dannybrudner@gmail.com');
         bcryptjs_1.default.genSalt(10, (error, salt) => {
             bcryptjs_1.default.hash(user.password, salt, async (err, hash) => {
                 if (err) {
@@ -64,8 +64,17 @@ class ClientsService {
             });
         });
     }
-    emailUserDetails(user, email) {
-        const mailOptions = this.createEmailObject(email, `Your login details for the SBInteriors App`, `Your username is ${user.username} and your password is ${user.password}`, false);
+    emailUserDetails(user, client, email) {
+        const template = fs_1.default.readFileSync(path_1.default.join(__dirname, '..', '..', 'templates', 'email-template.html'), 'utf-8');
+        const content = utils_1.generateHtml(template, {
+            name: client.name, username: user.username, password: user.password
+        });
+        const attachments = [{
+                filename: 'android-chrome-192x192.png',
+                cid: 'sbinteriors-email-logo',
+                path: path_1.default.join(__dirname, '..', '..', 'assets', 'android-chrome-192x192.png')
+            }];
+        const mailOptions = this.createEmailObject(email, `Your login details for the SBInteriors App`, content, true, attachments);
         this.transporter.sendMail(mailOptions);
     }
     async updateClient(clientId, body) {
