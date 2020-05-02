@@ -9,7 +9,7 @@ import NoData from '../NoData'
 import { Button, makeStyles, Snackbar } from '@material-ui/core'
 import { AddBalanceTransferPopup } from '../Transfers/AddBalanceTransferPopup'
 import MuiAlert from '@material-ui/lab/Alert'
-import { isAdmin } from '../../../utils/utils'
+import { useUserStore } from '../../../context/User.context'
 
 
 
@@ -21,8 +21,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ClientInfo: React.FC = observer((props) => {
   const classes = useStyles()
+  const { clientId } = useParams()
   const ClientsStore = useClientsStore()
-  const { clientId, role } = useParams()
+  const UserStore = useUserStore()
 
   const [isLoading, setIsLoading] = useState(ClientsStore.isPopulated ? false : true)
   const [showPopup, setShowPopup] = useState(false)
@@ -62,7 +63,7 @@ const ClientInfo: React.FC = observer((props) => {
         ? <div>
           <ClientDetails client={client} />
           {
-            isAdmin(role)
+            UserStore.isAdmin
               ? < Button
                 className={classes.buttonOutlined}
                 variant="outlined"

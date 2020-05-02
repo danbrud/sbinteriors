@@ -4,8 +4,8 @@ import { Client } from '../../../stores/Client.store'
 import LetterAvatar from '../../LetterAvatar'
 import '../../../styles/ClientDetails.css'
 import { Divider, Typography, Button } from '@material-ui/core'
-import { toProperCase, isAdmin } from '../../../utils/utils'
-import { useParams } from 'react-router-dom'
+import { toProperCase } from '../../../utils/utils'
+import { useUserStore } from '../../../context/User.context'
 
 interface ClientDetailsProps {
   client: Client
@@ -13,7 +13,7 @@ interface ClientDetailsProps {
 
 const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
   const { client } = props
-  const { role } = useParams()
+  const UserStore = useUserStore()
 
   const updateStatus = () => {
     client.updateClient('isComplete', !client.isComplete)
@@ -54,7 +54,7 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
           </div>
           <div>
             {
-              isAdmin(role)
+              UserStore.isAdmin
                 ? <Button variant='outlined' color='primary' onClick={updateStatus}>
                   {client.isComplete ? 'Mark In Progress' : 'Mark Completed'}
                 </Button>

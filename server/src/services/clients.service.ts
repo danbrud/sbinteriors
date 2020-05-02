@@ -45,11 +45,17 @@ export class ClientsService {
     return client
   }
 
-  private async createUser(clientId: number, email: string): Promise<void> {
+  public async createUser(clientId: number, email: string, isAdmin?: boolean): Promise<void> {
     //should check if the user exists
     const user = new User({
-      clientId, username: email.split('@')[0], password: createPassword(), role: 'USER'
+      username: email.split('@')[0],
+      password: createPassword(),
+      role: isAdmin ? 'ADMIN' : 'USER'
     })
+    if (!isAdmin) {
+      user.clientId = clientId
+    }
+
     // this.emailUserDetails(user, email)
     this.emailUserDetails(user, 'dannybrudner@gmail.com')
 

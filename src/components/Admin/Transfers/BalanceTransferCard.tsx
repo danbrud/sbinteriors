@@ -10,9 +10,9 @@ import moment from 'moment'
 import '../../../styles/Transfers.css'
 import { FormattedNumber } from 'react-intl'
 import { BalanceTransfer } from '../../../stores/BalanceTransfer.store'
-import { toProperCase, isAdmin } from '../../../utils/utils'
+import { toProperCase } from '../../../utils/utils'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import { useParams } from 'react-router-dom'
+import { useUserStore } from '../../../context/User.context'
 
 
 
@@ -48,7 +48,7 @@ interface BalanceTransferCardProps {
 const BalanceTransferCard: React.FC<BalanceTransferCardProps> = observer((props) => {
   const classes = useStyles()
   const { transfer } = props
-  const { role } = useParams()
+  const UserStore = useUserStore()
 
   return (
     <Card className={classes.root}>
@@ -77,7 +77,7 @@ const BalanceTransferCard: React.FC<BalanceTransferCardProps> = observer((props)
         </div>
       </CardContent>
       {
-        isAdmin(role)
+        UserStore.isAdmin
           ? <CardActions >
             <Button color='primary' size="small">Edit Balance Transfer</Button>
           </CardActions>

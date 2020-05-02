@@ -42,11 +42,16 @@ class ClientsService {
         await this.createUser(client.id, client.email);
         return client;
     }
-    async createUser(clientId, email) {
+    async createUser(clientId, email, isAdmin) {
         //should check if the user exists
         const user = new User_model_1.User({
-            clientId, username: email.split('@')[0], password: uniqid_1.default(), role: 'USER'
+            username: email.split('@')[0],
+            password: uniqid_1.default(),
+            role: isAdmin ? 'ADMIN' : 'USER'
         });
+        if (!isAdmin) {
+            user.clientId = clientId;
+        }
         // this.emailUserDetails(user, email)
         this.emailUserDetails(user, 'dannybrudner@gmail.com');
         bcryptjs_1.default.genSalt(10, (error, salt) => {

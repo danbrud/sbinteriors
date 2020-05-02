@@ -13,8 +13,6 @@ export const removeOptionalFields = (fields: string[], obj) => {
   return obj
 }
 
-export const isAdmin = (role: string): boolean => role.toLowerCase() === 'admin'
-
 export const checkRequiredFields = (fields: string[], obj) => {
   for (let key of fields) {
     if (!obj[key]) { return false }

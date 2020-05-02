@@ -6,6 +6,7 @@ import { validateLoginInput, SERVER_URL } from '../utils/utils'
 import MuiAlert from '@material-ui/lab/Alert'
 import axios from 'axios'
 import Loader from './Loader'
+import { useUserStore } from '../context/User.context'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Login: React.FC<AuthProps> = (props) => {
   const classes = useStyles()
+  const { auth } = props
+  const UserStore = useUserStore()
+
   const [inputs, setInputs] = useState({ username: '', password: '' })
   const [isLoading, setIsLoading] = React.useState(false)
   const [snackbar, setSnackbar] = useState({
@@ -80,12 +84,17 @@ const Login: React.FC<AuthProps> = (props) => {
     }
 
     const { token } = res.data
-    props.auth.login(token)
-    window.location.href = '/'
+    auth.login(token)
+    UserStore.setUser(auth.decodeToken())
+    setIsLoading(false)
   }
 
-  if (props.auth.isAuthenticated) { return <Redirect to='/' /> }
-  // if(props.auth.isAuthenticated) { return <Redirect to={`/${role}/`} /> }
+  if (auth.isAuthenticated) {
+    const { role, clientId } = UserStore
+    return <Redirect
+      to={`/${role.toLowerCase()}/clients/${clientId ? clientId: ''}`}
+    />
+  }
 
   return (
     isLoading

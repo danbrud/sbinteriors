@@ -44,6 +44,10 @@ class ClientsController {
             const success = await this.clientsService.generateReport(req.params.clientId);
             res.send({ success });
         };
+        this.addAdminUser = async (req, res) => {
+            await this.clientsService.createUser(1, req.body.email, true);
+            res.send({ success: true });
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
@@ -53,6 +57,7 @@ class ClientsController {
         this.router.put('/:clientId', this.updateClient);
         this.router.get('/:clientId/balance/:account', this.getBalance);
         this.router.post('/:clientId/contracts', this.addContract);
+        this.router.post('/user/admin', this.addAdminUser);
         this.router.get('/:clientId/contracts', this.getContract);
         this.router.get('/:clientId/report', this.generateReport);
     }

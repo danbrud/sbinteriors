@@ -17,6 +17,8 @@ import { ExpensesProvider } from './context/Expenses.context'
 import { ExpensesStore } from './stores/Expenses.store'
 import { IntlProvider } from 'react-intl'
 import { Auth } from './utils/Auth'
+import { UserProvider } from './context/User.context'
+import { UserStore } from './stores/User.store'
 
 const auth = new Auth()
 
@@ -24,17 +26,19 @@ ReactDOM.render(
   <Router>
     <IntlProvider locale={'heb'} >
       <ThemeProvider theme={mainTheme}>
-        <ClientsProvider value={ClientsStore}>
-          <GeneralAdminProvider value={GeneralAdminStore}>
-            <TasksProvider value={TasksStore}>
-              <TransfersProvider value={TransfersStore}>
-                <ExpensesProvider value={ExpensesStore}>
-                  <App auth={auth} />
-                </ExpensesProvider>
-              </TransfersProvider>
-            </TasksProvider>
-          </GeneralAdminProvider>
-        </ClientsProvider>
+        <UserProvider value={UserStore}>
+          <ClientsProvider value={ClientsStore}>
+            <GeneralAdminProvider value={GeneralAdminStore}>
+              <TasksProvider value={TasksStore}>
+                <TransfersProvider value={TransfersStore}>
+                  <ExpensesProvider value={ExpensesStore}>
+                    <App auth={auth} />
+                  </ExpensesProvider>
+                </TransfersProvider>
+              </TasksProvider>
+            </GeneralAdminProvider>
+          </ClientsProvider>
+        </UserProvider>
       </ThemeProvider>
     </IntlProvider>
   </Router>,

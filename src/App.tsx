@@ -20,6 +20,7 @@ import Login from './components/Login'
 import { AuthProps } from './components/AuthProps'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useClientsStore } from './context/Clients.context'
+import { useUserStore } from './context/User.context'
 
 const App: React.FC<AuthProps> = observer((props) => {
   const { auth } = props
@@ -29,6 +30,7 @@ const App: React.FC<AuthProps> = observer((props) => {
   const TasksStore = useTasksStore()
   const ExpensesStore = useExpensesStore()
   const ClientsStore = useClientsStore()
+  const UserStore = useUserStore()
 
   useEffect(() => {
     GeneralAdminStore.getServicesFromDB()
@@ -61,8 +63,8 @@ const App: React.FC<AuthProps> = observer((props) => {
 
   return (
     <div>
-      <MenuBar />
-      {window.location.pathname === '/' ? <Redirect to='/admin/clients' /> : null}
+      {auth.isAuthenticated ? <MenuBar /> : null}
+      {window.location.pathname === '/' ? <Redirect to='/login' /> : null}
       <div id='app-container'>
         <ProtectedRoute
           auth={auth}
