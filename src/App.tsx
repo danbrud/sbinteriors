@@ -18,12 +18,17 @@ import { useExpensesStore } from './context/Expenses.context'
 import Contract from './components/Admin/Clients/Contract'
 import Login from './components/Login'
 import { AuthProps } from './components/AuthProps'
+import ProtectedRoute from './components/ProtectedRoute'
+import { useClientsStore } from './context/Clients.context'
 
 const App: React.FC<AuthProps> = observer((props) => {
+  const { auth } = props
+
   const GeneralAdminStore = useGeneralAdminStore()
   const TransfersStore = useTransfersStore()
   const TasksStore = useTasksStore()
   const ExpensesStore = useExpensesStore()
+  const ClientsStore = useClientsStore()
 
   useEffect(() => {
     GeneralAdminStore.getServicesFromDB()
@@ -46,6 +51,12 @@ const App: React.FC<AuthProps> = observer((props) => {
         ExpensesStore.clearStore()
       }
     }
+
+    if (path[1] === 'login') {
+      if (ClientsStore.isPopulated) {
+        ClientsStore.clearStore()
+      }
+    }
   }, [location])
 
   return (
@@ -53,50 +64,58 @@ const App: React.FC<AuthProps> = observer((props) => {
       <MenuBar />
       {window.location.pathname === '/' ? <Redirect to='/admin/clients' /> : null}
       <div id='app-container'>
-        <Route
+        <ProtectedRoute
+          auth={auth}
           exact
           path='/admin/clients'
-          render={() => <AdminHome />}
+          component={AdminHome}
         />
-        <Route
+        <ProtectedRoute
+          auth={auth}
           exact
           path='/admin/clients/:clientId'
-          render={() => <ClientInfo />}
+          component={ClientInfo}
         />
-        <Route
+        <ProtectedRoute
+          auth={auth}
           exact
           path='/admin/clients/:clientId/tasks'
-          render={() => <Tasks />}
+          component={Tasks}
         />
-        <Route
+        <ProtectedRoute
+          auth={auth}
           exact
           path='/admin/clients/:clientId/transfers'
-          render={() => <Transfers />}
+          component={Transfers}
         />
-        <Route
+        <ProtectedRoute
+          auth={auth}
           exact
           path='/admin/clients/:clientId/expenses'
-          render={() => <Expenses />}
+          component={Expenses}
         />
-        <Route
+        <ProtectedRoute
+          auth={auth}
           exact
           path='/admin/clients/:clientId/contract'
-          render={() => <Contract />}
+          component={Contract}
         />
-        <Route
+        <ProtectedRoute
+          auth={auth}
           exact
           path='/admin/add/:item'
-          render={() => <AddItem />}
+          component={AddItem}
         />
-        <Route
+        <ProtectedRoute
+          auth={auth}
           exact
           path='/admin/settings'
-          render={() => <Settings />}
+          component={Settings}
         />
         <Route
           exact
           path='/login'
-          render={() => <Login auth={props.auth}/>}
+          render={() => <Login auth={auth}/>}
         />
         <AddFab />
       </div>

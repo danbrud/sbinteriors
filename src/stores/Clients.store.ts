@@ -45,6 +45,10 @@ export class Clients {
     const client = this.clients.find(c => c.name.toLowerCase() === name.toLowerCase())
     return client
   }
+
+  @action clearStore() {
+    this.clients = []
+  }
 }
 
 export const ClientsStore = new Clients()
