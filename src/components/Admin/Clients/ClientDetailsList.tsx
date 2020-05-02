@@ -20,8 +20,8 @@ const useStyles = makeStyles({
     width: '100%',
     fontSize: '16px'
   },
-  arrow: {
-
+  container: {
+    marginBottom: '10px'
   }
 })
 
@@ -40,7 +40,7 @@ const ClientDetailItems: React.FC = observer(() => {
   const detailItems = ['tasks', 'expenses', 'transfers', 'contract']
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className={classes.container} component={Paper}>
       <Table>
         <TableBody>
           {detailItems.map(item => (
@@ -56,7 +56,7 @@ const ClientDetailItems: React.FC = observer(() => {
                         : null
                   }
                 </TableCell>
-                <TableCell align="right" className={classes.arrow}>
+                <TableCell align="right">
                   <ArrowForwardIosIcon />
                 </TableCell>
               </Link>

@@ -13,11 +13,6 @@ interface ClientDetailsProps {
 
 const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
   const { client } = props
-  const UserStore = useUserStore()
-
-  const updateStatus = () => {
-    client.updateClient('isComplete', !client.isComplete)
-  }
 
   return (
     <div id='client-details-container'>
@@ -44,23 +39,12 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
       <Divider />
       <div id='project-details-container'>
         <div className='details'>
-          <div>
-            <Typography variant="subtitle1" color="textSecondary">
-              <i className="fas fa-map-marker-alt"></i> {client.address}, {client.city}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              <i className="fas fa-sync-alt"></i> {client.isComplete ? "Completed" : "In progress"}
-            </Typography>
-          </div>
-          <div>
-            {
-              UserStore.isAdmin
-                ? <Button variant='outlined' color='primary' onClick={updateStatus}>
-                  {client.isComplete ? 'Mark In Progress' : 'Mark Completed'}
-                </Button>
-                : null
-            }
-          </div>
+          <Typography variant="subtitle1" color="textSecondary">
+            <i className="fas fa-map-marker-alt"></i> {client.address}, {client.city}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            <i className="fas fa-sync-alt"></i> {client.isComplete ? "Completed" : "In progress"}
+          </Typography>
         </div>
         {!client.description ? null : (
           <div id="description">

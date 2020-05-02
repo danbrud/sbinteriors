@@ -1,5 +1,6 @@
 import express from 'express'
 import { ClientsService } from '../services/clients.service'
+import { Client } from '../models/Client.model'
 
 
 export class ClientsController {
@@ -68,7 +69,7 @@ export class ClientsController {
   }
 
   private addAdminUser: express.RequestHandler = async (req, res) => {
-    await this.clientsService.createUser(1, req.body.email, true)
+    await this.clientsService.createUser({ email: req.body.email } as Client, true)
     res.send({ success: true })
   }
 }

@@ -122,13 +122,14 @@ class ClientsService {
     async generateReport(clientId) {
         const client = await this.getClientById(clientId, null, [Transfer_model_1.Transfer, Task_model_1.Task, Expense_model_1.Expense]);
         this.generatePDF(client);
-        return client;
+        //Should handle errors
+        return true;
     }
     async generatePDF(client) {
         // const options = { format: 'A3', orientation: 'portrait', border: '10mm' }
-        const html = fs_1.default.readFileSync(path_1.default.join(__dirname, '..', '..', 'template.html'), 'utf8');
+        const html = fs_1.default.readFileSync(path_1.default.join(__dirname, '..', '..', 'templates', 'report-template.html'), 'utf8');
         const document = {
-            html, data: client, path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
+            html, data: client, path: path_1.default.join(__dirname, '..', '..', 'reports', 'report.pdf')
         };
         await utils_1.createPDF(document);
         await this.sendPDFReport(client);
@@ -136,7 +137,7 @@ class ClientsService {
     async sendPDFReport(client) {
         const mailOptions = this.createEmailObject(process.env.ADMIN_EMAIL, `Report for ${client.name}`, `Please find the attached report for ${client.name}.`, false, [{
                 filename: `${client.name}-report.pdf`,
-                path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
+                path: path_1.default.join(__dirname, '..', '..', 'reports', 'report.pdf')
             }]);
         this.transporter.sendMail(mailOptions, (err, info) => {
             if (err) {

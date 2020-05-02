@@ -75,4 +75,8 @@ export class Client {
     return this.getContract()
       .then(() => this.contract ? true : false)
   }
+
+  async generateReport() {
+    await axios.get(`${SERVER_URL}/clients/${this.id}/report`)
+  }
 }

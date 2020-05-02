@@ -45,7 +45,7 @@ class ClientsController {
             res.send({ success });
         };
         this.addAdminUser = async (req, res) => {
-            await this.clientsService.createUser(1, req.body.email, true);
+            await this.clientsService.createUser({ email: req.body.email }, true);
             res.send({ success: true });
         };
         this.intializeRoutes();

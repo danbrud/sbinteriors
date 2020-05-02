@@ -146,15 +146,16 @@ export class ClientsService {
     const client = await this.getClientById(clientId, null, [Transfer, Task, Expense])
     this.generatePDF(client)
 
-    return client
+    //Should handle errors
+    return true
   }
 
   private async generatePDF(client: Client) {
     // const options = { format: 'A3', orientation: 'portrait', border: '10mm' }
-    const html = fs.readFileSync(path.join(__dirname, '..', '..', 'template.html'), 'utf8')
+    const html = fs.readFileSync(path.join(__dirname, '..', '..', 'templates', 'report-template.html'), 'utf8')
 
     const document = {
-      html, data: client, path: path.join(__dirname, '..', '..', 'report.pdf')
+      html, data: client, path: path.join(__dirname, '..', '..', 'reports', 'report.pdf')
     }
 
     await createPDF(document)
@@ -169,7 +170,7 @@ export class ClientsService {
       false,
       [{
         filename: `${client.name}-report.pdf`,
-        path: path.join(__dirname, '..', '..', 'report.pdf')
+        path: path.join(__dirname, '..', '..', 'reports', 'report.pdf')
       }]
     )
 

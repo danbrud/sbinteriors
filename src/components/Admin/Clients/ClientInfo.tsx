@@ -10,17 +10,10 @@ import { Button, makeStyles, Snackbar } from '@material-ui/core'
 import { AddBalanceTransferPopup } from '../Transfers/AddBalanceTransferPopup'
 import MuiAlert from '@material-ui/lab/Alert'
 import { useUserStore } from '../../../context/User.context'
+import ClientActionButtons from './ClientActionButtons'
 
-
-
-const useStyles = makeStyles((theme) => ({
-  buttonOutlined: {
-    marginBottom: '10px',
-  }
-}))
 
 const ClientInfo: React.FC = observer(() => {
-  const classes = useStyles()
   const { clientId } = useParams()
   const ClientsStore = useClientsStore()
   const UserStore = useUserStore()
@@ -68,20 +61,16 @@ const ClientInfo: React.FC = observer(() => {
       : ClientsStore.isPopulated || !UserStore.isAdmin
         ? <div>
           <ClientDetails client={client} />
+          <ClientDetailItems />
           {
             UserStore.isAdmin
-              ? < Button
-                className={classes.buttonOutlined}
-                variant="outlined"
-                color="primary"
-                fullWidth={true}
-                onClick={() => setShowPopup(true)}
-              >
-                TRANSFER BALANCE
-              </ Button>
+              ? <ClientActionButtons
+                setShowPopup={setShowPopup}
+                client={client}
+                openSnackbar={openSnackbar}
+              />
               : null
           }
-          < ClientDetailItems />
           {
             showPopup
               ? <AddBalanceTransferPopup
