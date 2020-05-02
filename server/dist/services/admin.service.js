@@ -7,7 +7,6 @@ const Service_model_1 = require("../models/Service.model");
 const TransferMethod_model_1 = require("../models/TransferMethod.model");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const config_1 = require("../config/config");
 const utils_1 = require("../utils");
 const User_model_1 = require("../models/User.model");
 class AdminService {
@@ -48,7 +47,7 @@ class AdminService {
                 clientId: user.clientId,
                 role: user.role
             };
-            const token = jsonwebtoken_1.default.sign(payload, config_1.secretOrKey, {
+            const token = jsonwebtoken_1.default.sign(payload, process.env.SECRET_OR_KEY, {
                 expiresIn: 31556926
             });
             return { success: true, token };

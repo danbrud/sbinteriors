@@ -45,7 +45,7 @@ class App {
 
   private inializeAuth() {
     this.app.use(passport.initialize())
-    useStrategy(passport)
+    useStrategy(passport, process.env.SECRET_OR_KEY)
   }
 
   private initializeDB() {

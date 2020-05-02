@@ -2,9 +2,9 @@ import { Service } from '../models/Service.model'
 import { TransferMethod } from '../models/TransferMethod.model'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { secretOrKey } from '../config/config'
 import { validateLoginInput } from '../utils'
 import { User } from '../models/User.model'
+
 
 export class AdminService {
 
@@ -55,7 +55,7 @@ export class AdminService {
 
       const token = jwt.sign(
         payload,
-        secretOrKey,
+        process.env.SECRET_OR_KEY,
         {
           expiresIn: 31556926
         },

@@ -47,7 +47,7 @@ class App {
     }
     inializeAuth() {
         this.app.use(passport_1.default.initialize());
-        passport_2.useStrategy(passport_1.default);
+        passport_2.useStrategy(passport_1.default, process.env.SECRET_OR_KEY);
     }
     initializeDB() {
         const sequelize = new sequelize_typescript_1.Sequelize({
