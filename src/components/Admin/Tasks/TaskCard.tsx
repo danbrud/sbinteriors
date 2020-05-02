@@ -9,8 +9,9 @@ import { observer } from 'mobx-react'
 import moment from 'moment'
 import '../../../styles/Tasks.css'
 import { Task } from '../../../stores/Task.store'
-import { convertDurationToString } from '../../../utils/utils'
+import { convertDurationToString, isAdmin } from '../../../utils/utils'
 import { FormattedNumber } from 'react-intl'
+import { useParams } from 'react-router-dom'
 
 
 
@@ -46,6 +47,7 @@ interface TaskCardProps {
 const TaskCard: React.FC<TaskCardProps> = observer((props) => {
   const classes = useStyles()
   const { task } = props
+  const { role } = useParams()
 
   return (
     <Card className={classes.root}>
@@ -81,9 +83,13 @@ const TaskCard: React.FC<TaskCardProps> = observer((props) => {
             : null
         }
       </CardContent>
-      <CardActions >
-        <Button color='primary' size="small">Edit Task</Button>
-      </CardActions>
+      {
+        isAdmin(role)
+          ? <CardActions >
+            <Button color='primary' size="small">Edit Task</Button>
+          </CardActions>
+          : null
+      }
     </Card >
   )
 })
