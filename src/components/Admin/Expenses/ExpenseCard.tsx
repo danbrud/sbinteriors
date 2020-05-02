@@ -10,6 +10,8 @@ import { Expense } from '../../../stores/Expense.store'
 import moment from 'moment'
 import '../../../styles/Expenses.css'
 import { FormattedNumber } from 'react-intl'
+import { useParams } from 'react-router-dom'
+import { isAdmin } from '../../../utils/utils'
 
 
 
@@ -42,6 +44,7 @@ interface ExpenseCardProps {
 const ExpenseCard: React.FC<ExpenseCardProps> = observer((props) => {
   const classes = useStyles()
   const { expense } = props
+  const { role } = useParams()
 
   return (
     <Card className={classes.root}>
@@ -70,9 +73,13 @@ const ExpenseCard: React.FC<ExpenseCardProps> = observer((props) => {
             : null
         }
       </CardContent>
-      <CardActions >
-        <Button color='primary' size="small">Edit Expense</Button>
-      </CardActions>
+      {
+        isAdmin(role)
+          ? <CardActions >
+            <Button color='primary' size="small">Edit Expense</Button>
+          </CardActions>
+          : null
+      }
     </Card >
   )
 })
