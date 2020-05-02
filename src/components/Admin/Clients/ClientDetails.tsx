@@ -3,9 +3,9 @@ import { observer } from 'mobx-react'
 import { Client } from '../../../stores/Client.store'
 import LetterAvatar from '../../LetterAvatar'
 import '../../../styles/ClientDetails.css'
-import { Divider, Grid, Typography, Button } from '@material-ui/core'
-import { toProperCase } from '../../../utils/utils'
-import BalanceAvatar from '../../BalanceAvatar'
+import { Divider, Typography, Button } from '@material-ui/core'
+import { toProperCase, isAdmin } from '../../../utils/utils'
+import { useParams } from 'react-router-dom'
 
 interface ClientDetailsProps {
   client: Client
@@ -13,6 +13,7 @@ interface ClientDetailsProps {
 
 const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
   const { client } = props
+  const { role } = useParams()
 
   const updateStatus = () => {
     client.updateClient('isComplete', !client.isComplete)
@@ -52,9 +53,13 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
             </Typography>
           </div>
           <div>
-            <Button variant='outlined' color='primary' onClick={updateStatus}>
-              {client.isComplete ? 'Mark In Progress' : 'Mark Completed'}
-            </Button>
+            {
+              isAdmin(role)
+                ? <Button variant='outlined' color='primary' onClick={updateStatus}>
+                  {client.isComplete ? 'Mark In Progress' : 'Mark Completed'}
+                </Button>
+                : null
+            }
           </div>
         </div>
         {!client.description ? null : (
