@@ -7,6 +7,7 @@ import MuiAlert from '@material-ui/lab/Alert'
 import axios from 'axios'
 import Loader from './Loader'
 import { useUserStore } from '../context/User.context'
+import logo from '../assets/android-chrome-192x192.png'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -103,10 +104,7 @@ const Login: React.FC<AuthProps> = (props) => {
       : (
         <div>
           <FormControl className={classes.formControl}>
-            <img
-              className={classes.img}
-              src={`${window.location.origin}/assets/android-chrome-192x192.png`}
-            />
+            <img className={classes.img} src={logo} />
             <TextField
               className={classes.input}
               required={true}

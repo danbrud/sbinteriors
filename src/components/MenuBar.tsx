@@ -11,6 +11,7 @@ import { toProperCase } from '../utils/utils'
 import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings'
 import { useUserStore } from '../context/User.context'
+import smallLogo from '../assets/favicon-32x32.png'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -153,7 +154,7 @@ const MenuBar: React.FC = () => {
           </Typography>
           <Link to={UserStore.isAdmin ? '/admin/clients' : `/clients/${UserStore.clientId}`} >
             <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu">
-              <img className={classes.img} src={`${window.location.origin}/assets/favicon-32x32.png`} />
+              <img className={classes.img} src={smallLogo} />
             </IconButton>
           </Link>
         </Toolbar>
