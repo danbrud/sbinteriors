@@ -14,7 +14,7 @@ import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 import Loader from '../../Loader'
 import NoData from '../NoData'
 import { useTasksStore } from '../../../context/Tasks.context'
-import { convertDurationToString } from '../../../utils'
+import { convertDurationToString } from '../../../utils/utils'
 
 const useStyles = makeStyles({
   table: {

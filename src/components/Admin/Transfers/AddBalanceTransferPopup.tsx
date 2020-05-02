@@ -10,7 +10,7 @@ import { useTransfersStore } from '../../../context/Transfers.context'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import { datePickerTheme } from '../../../themes/datePicker.theme'
-import { checkRequiredFields } from '../../../utils'
+import { checkRequiredFields } from '../../../utils/utils'
 import { useParams } from 'react-router-dom'
 import { useClientsStore } from '../../../context/Clients.context'
 

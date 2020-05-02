@@ -3,7 +3,7 @@ import { TextField, Button, makeStyles } from '@material-ui/core'
 import { useClientsStore } from '../../../context/Clients.context'
 import AddContract from './AddContract'
 import { AddItemProps } from '../AddItemProps.interface'
-import { checkRequiredFields } from '../../../utils'
+import { checkRequiredFields } from '../../../utils/utils'
 
 
 const useStyles = makeStyles((theme) => ({

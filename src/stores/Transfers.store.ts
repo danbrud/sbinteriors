@@ -1,8 +1,8 @@
 import { observable, action, computed } from 'mobx'
 import axios from 'axios'
-import { removeOptionalFields } from '../utils'
+import { removeOptionalFields } from '../utils/utils'
 import { Transfer } from './Transfer.store'
-import { SERVER_URL } from '../utils'
+import { SERVER_URL } from '../utils/utils'
 import { BalanceTransfer } from './BalanceTransfer.store'
 
 export class Transfers {

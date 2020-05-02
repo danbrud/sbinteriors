@@ -1,8 +1,8 @@
 import { observable, action, computed } from 'mobx'
 import { Client } from './Client.store'
 import axios from 'axios'
-import { removeOptionalFields } from '../utils'
-import { SERVER_URL } from '../utils'
+import { removeOptionalFields } from '../utils/utils'
+import { SERVER_URL } from '../utils/utils'
 
 export class Clients {
   @observable clients: Client[] = []

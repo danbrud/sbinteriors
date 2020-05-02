@@ -9,7 +9,7 @@ import { observer } from 'mobx-react'
 import moment from 'moment'
 import '../../../styles/Tasks.css'
 import { Task } from '../../../stores/Task.store'
-import { convertDurationToString } from '../../../utils'
+import { convertDurationToString } from '../../../utils/utils'
 import { FormattedNumber } from 'react-intl'
 
 

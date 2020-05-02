@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import HomeIcon from '@material-ui/icons/Home'
 import { Link, useLocation } from 'react-router-dom'
-import { toProperCase } from '../utils'
+import { toProperCase } from '../utils/utils'
 import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings'
 

@@ -3,7 +3,7 @@ import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 import { useClientsStore } from '../../../context/Clients.context'
 import { observer } from 'mobx-react'
 import { AddItemProps } from '../AddItemProps.interface'
-import { removeOptionalFields } from '../../../utils'
+import { removeOptionalFields } from '../../../utils/utils'
 import { Button, makeStyles, TextField } from '@material-ui/core'
 import { AddPopup } from '../AddPopup'
 

@@ -6,7 +6,7 @@ import { MuiPickersUtilsProvider, DatePicker, KeyboardDatePicker } from "@materi
 import DateFnsUtils from '@date-io/date-fns';
 import { AddItemProps } from '../AddItemProps.interface'
 import { useExpensesStore } from '../../../context/Expenses.context'
-import { checkRequiredFields } from '../../../utils'
+import { checkRequiredFields } from '../../../utils/utils'
 import { datePickerTheme } from '../../../themes/datePicker.theme'
 import '../../../styles/CalendarButton.css'
 

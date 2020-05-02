@@ -10,7 +10,7 @@ import moment from 'moment'
 import '../../../styles/Transfers.css'
 import { FormattedNumber } from 'react-intl'
 import { BalanceTransfer } from '../../../stores/BalanceTransfer.store'
-import { toProperCase } from '../../../utils'
+import { toProperCase } from '../../../utils/utils'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 
 

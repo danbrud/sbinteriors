@@ -4,7 +4,7 @@ import { Client } from '../../../stores/Client.store'
 import LetterAvatar from '../../LetterAvatar'
 import '../../../styles/ClientDetails.css'
 import { Divider, Grid, Typography, Button } from '@material-ui/core'
-import { toProperCase } from '../../../utils'
+import { toProperCase } from '../../../utils/utils'
 import BalanceAvatar from '../../BalanceAvatar'
 
 interface ClientDetailsProps {

@@ -58,13 +58,7 @@ export class AdminService {
         process.env.SECRET_OR_KEY,
         {
           expiresIn: 31556926
-        },
-        // (err, token) => {
-        //   res.json({
-        //     success: true,
-        //     token: 'Bearer ' + token
-        //   })
-        // }
+        }
       )
       return { success: true, token }
     } else {

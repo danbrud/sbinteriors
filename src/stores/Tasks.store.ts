@@ -1,8 +1,8 @@
 import { observable, action, computed } from 'mobx'
 import { Task } from './Task.store'
 import axios from 'axios'
-import { removeOptionalFields } from '../utils'
-import { SERVER_URL } from '../utils'
+import { removeOptionalFields } from '../utils/utils'
+import { SERVER_URL } from '../utils/utils'
 
 export class Tasks {
   @observable tasks: Task[] = []

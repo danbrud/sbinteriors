@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx'
 import axios from 'axios'
-import { toProperCase } from '../utils'
-import { SERVER_URL } from '../utils'
+import { toProperCase } from '../utils/utils'
+import { SERVER_URL } from '../utils/utils'
 
 export class Client {
   @observable id: number
