@@ -35,7 +35,7 @@ const ClientDetailItems: React.FC = observer(() => {
   const ClientsStore = useClientsStore()
   const UserStore = useUserStore()
 
-  const client = ClientsStore.getClient(clientId)
+  const client = UserStore.isAdmin ? ClientsStore.getClient(clientId) : UserStore.client
 
   const detailItems = ['tasks', 'expenses', 'transfers', 'contract']
 
@@ -45,7 +45,7 @@ const ClientDetailItems: React.FC = observer(() => {
         <TableBody>
           {detailItems.map(item => (
             <TableRow key={item} >
-              <Link to={`/${UserStore.role}/clients/${clientId}/${item}`}>
+              <Link to={`/clients/${clientId}/${item}`}>
                 <TableCell align="left" className={classes.row}>{toProperCase(item)}</TableCell>
                 <TableCell >
                   {

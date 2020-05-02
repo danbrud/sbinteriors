@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const ClientInfo: React.FC = observer((props) => {
+const ClientInfo: React.FC = observer(() => {
   const classes = useStyles()
   const { clientId } = useParams()
   const ClientsStore = useClientsStore()
@@ -33,7 +33,6 @@ const ClientInfo: React.FC = observer((props) => {
     severity: ''
   })
 
-  const client = ClientsStore.getClient(clientId)
 
   const openSnackbar = (severity, message) => {
     setSnackbar({ message, severity, open: true })
@@ -48,18 +47,25 @@ const ClientInfo: React.FC = observer((props) => {
   }
 
   useEffect(() => {
-    if (!ClientsStore.isPopulated) {
+    if (!ClientsStore.isPopulated && UserStore.isAdmin) {
       ClientsStore.getClientsFromDB()
         .then(() => {
           setIsLoading(false)
         })
     }
-  }, [])
+
+    window.scrollTo(0, 0)
+  }, [UserStore.isAdmin])
+
+  const client = UserStore.isAdmin ? ClientsStore.getClient(clientId) : UserStore.client
+  if (isLoading && client) {
+    setIsLoading(false)
+  }
 
   return (
     isLoading
       ? <Loader />
-      : ClientsStore.isPopulated
+      : ClientsStore.isPopulated || !UserStore.isAdmin
         ? <div>
           <ClientDetails client={client} />
           {

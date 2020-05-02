@@ -15,6 +15,7 @@ import Loader from '../../Loader'
 import NoData from '../NoData'
 import { useTasksStore } from '../../../context/Tasks.context'
 import { convertDurationToString } from '../../../utils/utils'
+import { useUserStore } from '../../../context/User.context'
 
 const useStyles = makeStyles({
   table: {
@@ -33,6 +34,7 @@ const Contract: React.FC = observer((props) => {
   const ClientsStore = useClientsStore()
   const GeneralAdminStore = useGeneralAdminStore()
   const TasksStore = useTasksStore()
+  const UserStore = useUserStore()
 
   const [isLoading, setIsLoading] = useState(true)
   const [hasContract, setHasContract] = useState(true)
@@ -64,10 +66,10 @@ const Contract: React.FC = observer((props) => {
     return { service, includedHours, hoursCompleted }
   }
 
-  const client = ClientsStore.getClient(clientId)
+  const client = UserStore.isAdmin ? ClientsStore.getClient(clientId) : UserStore.client
   return (
     !ClientsStore.isPopulated || !client
-      ? <Redirect to={`/admin/clients/${clientId}`} />
+      ? <Redirect to={`/clients/${clientId}`} />
       : isLoading
         ? <Loader />
         : !hasContract

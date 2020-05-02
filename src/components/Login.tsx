@@ -90,10 +90,11 @@ const Login: React.FC<AuthProps> = (props) => {
   }
 
   if (auth.isAuthenticated) {
-    const { role, clientId } = UserStore
-    return <Redirect
-      to={`/${role.toLowerCase()}/clients/${clientId ? clientId: ''}`}
-    />
+    return (
+      UserStore.isAdmin
+        ? <Redirect to='/admin/clients'/>
+        : <Redirect to={`/clients/${UserStore.clientId}`} />
+    )
   }
 
   return (

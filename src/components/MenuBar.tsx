@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 const MenuBar: React.FC = () => {
   const classes = useStyles()
   const location = useLocation()
-  const { role, clientId } = useUserStore()
+  const UserStore = useUserStore()
 
   const [title, setTitle] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
@@ -143,7 +143,7 @@ const MenuBar: React.FC = () => {
       </AppBar> */}
       <AppBar position="fixed">
         <Toolbar>
-          <Link to={`/${role.toLowerCase()}/clients/${clientId ? clientId: ''}`} >
+          <Link to={UserStore.isAdmin ? '/admin/clients' : `/clients/${UserStore.clientId}`} >
             <IconButton edge="start" className={classes.homeIcon} color='inherit'>
               <HomeIcon />
             </IconButton>
@@ -151,7 +151,7 @@ const MenuBar: React.FC = () => {
           <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
-          <Link to={`/${role.toLowerCase()}/clients/${clientId ? clientId: ''}`}>
+          <Link to={UserStore.isAdmin ? '/admin/clients' : `/clients/${UserStore.clientId}`} >
             <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu">
               <img className={classes.img} src={`${window.location.origin}/assets/favicon-32x32.png`} />
             </IconButton>
