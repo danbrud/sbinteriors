@@ -45,11 +45,11 @@ export class ClientsService {
     return client
   }
 
-  public async createUser(client: Client, isAdmin?: boolean): Promise<void> {
+  public async createUser(client: Client, password?: string, isAdmin?: boolean): Promise<void> {
     //should check if the user exists
     const user = new User({
       username: client.email.split('@')[0],
-      password: createPassword(),
+      password: password ? password: createPassword(),
       role: isAdmin ? 'ADMIN' : 'USER'
     })
     if (!isAdmin) {

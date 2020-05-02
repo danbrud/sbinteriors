@@ -69,7 +69,9 @@ export class ClientsController {
   }
 
   private addAdminUser: express.RequestHandler = async (req, res) => {
-    await this.clientsService.createUser({ email: req.body.email } as Client, true)
+    const { email, password } = req.body
+    
+    await this.clientsService.createUser({ email } as Client, password, true)
     res.send({ success: true })
   }
 }
