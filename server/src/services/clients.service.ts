@@ -57,7 +57,7 @@ export class ClientsService {
     }
 
     // this.emailUserDetails(user, email)
-    this.emailUserDetails(user, client, 'dannybrudner@gmail.com')
+    this.emailUserDetails(user, client, process.env.ADMIN_EMAIL)
 
     bcrypt.genSalt(10, (error, salt) => {
       bcrypt.hash(user.password, salt, async (err, hash) => {
