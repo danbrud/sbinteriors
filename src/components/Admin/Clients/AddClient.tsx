@@ -76,7 +76,6 @@ const AddClient: React.FC<AddItemProps> = (props) => {
         <TextField
           className={classes.input}
           fullWidth={true}
-          required={true}
           label='Phone Number'
           name='phone'
           value={inputs.phone}
