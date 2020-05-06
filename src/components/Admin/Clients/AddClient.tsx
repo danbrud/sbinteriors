@@ -41,7 +41,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
   }
 
   const handleSubmit = async () => {
-    const requiredFields = ['name', 'phone', 'email', 'address', 'city']
+    const requiredFields = ['name', 'email', 'address', 'city']
     if (!checkRequiredFields(requiredFields, inputs)) {
       props.openSnackbar('error', 'Invalid! Make sure to fill all inputs.')
       return false
@@ -81,6 +81,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
           name='phone'
           value={inputs.phone}
           type='tel'
+          autoComplete='off'
           onChange={handleChange}
         />
         <TextField
@@ -91,6 +92,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
           name='email'
           value={inputs.email}
           type='email'
+          autoComplete='off'
           onChange={handleChange}
         />
         <TextField
@@ -98,6 +100,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
           fullWidth={true}
           label='Spouse Name'
           name='spouseName'
+          autoComplete='off'
           value={inputs.spouseName}
           onChange={handleChange}
         />
@@ -107,6 +110,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
           required={true}
           label='Address'
           name='address'
+          autoComplete='off'
           value={inputs.address}
           type='text'
           onChange={handleChange}
@@ -119,6 +123,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
           name='city'
           value={inputs.city}
           type='text'
+          autoComplete='off'
           onChange={handleChange}
         />
         <TextField
@@ -127,6 +132,7 @@ const AddClient: React.FC<AddItemProps> = (props) => {
           multiline={true}
           label='Description'
           name='description'
+          autoComplete='off'
           value={inputs.description}
           type='text'
           onChange={handleChange}

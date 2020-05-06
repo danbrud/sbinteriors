@@ -49,7 +49,7 @@ export class ClientsService {
     //should check if the user exists
     const user = new User({
       username: client.email.split('@')[0],
-      password: password ? password: createPassword(),
+      password: password ? password : createPassword(),
       role: isAdmin ? 'ADMIN' : 'USER'
     })
     if (!isAdmin) {

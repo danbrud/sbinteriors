@@ -145,6 +145,7 @@ const AddTask: React.FC<AddItemProps> = observer((props) => {
         label='Description'
         value={inputs.description}
         name='description'
+        autoComplete='off'
         type='text'
         onChange={handleChange}
       />

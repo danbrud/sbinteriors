@@ -67,6 +67,7 @@ export const AddPopup: React.FC<AddPopupProps> = (props) => {
             margin="dense"
             label={name}
             type="text"
+            autoComplete='off'
             fullWidth
             value={item}
             onChange={(e) => setItem(e.target.value)}

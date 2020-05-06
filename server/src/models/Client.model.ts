@@ -15,6 +15,7 @@ export class Client extends Model<Client> {
   @Column
   email: string
 
+  @Default(null)
   @Column
   phone: string
 
@@ -22,9 +23,11 @@ export class Client extends Model<Client> {
   @Column
   spouseName: string
 
+  @Default(null)
   @Column
   address: string
 
+  @Default(null)
   @Column
   city: string
 

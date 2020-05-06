@@ -214,6 +214,7 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
               placeholder='Foreign Amount'
               label='Foreign Amount'
               type='number'
+              autoComplete='off'
               onChange={handleChange}
               className={classes.foreignAmountInput}
             />
@@ -235,6 +236,7 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
         name='ilsAmount'
         placeholder='Amount ILS'
         type='number'
+        autoComplete='off'
         onChange={handleChange}
         label="Amount ILS"
         InputProps={{
@@ -251,6 +253,7 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
         label='Description'
         value={inputs.description}
         name='description'
+        autoComplete='off'
         type='text'
         onChange={handleChange}
       />

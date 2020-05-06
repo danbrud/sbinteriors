@@ -112,6 +112,7 @@ export const AddBalanceTransferPopup: React.FC<AddBalanceTransferPopupProps> = (
           type='number'
           name='amount'
           placeholder='Amount'
+          autoComplete='off'
           onChange={handleChange}
           label="Amount"
           InputProps={{

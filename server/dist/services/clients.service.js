@@ -42,18 +42,18 @@ class ClientsService {
         await this.createUser(client);
         return client;
     }
-    async createUser(client, isAdmin) {
+    async createUser(client, password, isAdmin) {
         //should check if the user exists
         const user = new User_model_1.User({
             username: client.email.split('@')[0],
-            password: uniqid_1.default(),
+            password: password ? password : uniqid_1.default(),
             role: isAdmin ? 'ADMIN' : 'USER'
         });
         if (!isAdmin) {
             user.clientId = client.id;
         }
         // this.emailUserDetails(user, email)
-        this.emailUserDetails(user, client, 'dannybrudner@gmail.com');
+        this.emailUserDetails(user, client, process.env.ADMIN_EMAIL);
         bcryptjs_1.default.genSalt(10, (error, salt) => {
             bcryptjs_1.default.hash(user.password, salt, async (err, hash) => {
                 if (err) {
