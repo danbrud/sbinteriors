@@ -5,7 +5,7 @@ import LetterAvatar from '../../LetterAvatar'
 import '../../../styles/ClientDetails.css'
 import { Divider, Typography, Button } from '@material-ui/core'
 import { toProperCase } from '../../../utils/utils'
-import { useUserStore } from '../../../context/User.context'
+
 
 interface ClientDetailsProps {
   client: Client

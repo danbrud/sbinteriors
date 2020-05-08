@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
-
+import EditIcon from '@material-ui/icons/Edit'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +23,12 @@ const useStyles = makeStyles((theme) => ({
     width: '20vw',
     height: '20vw',
     fontSize: '18px'
+  },
+  icon: {
+    fontSize: '18px',
+    position: 'absolute',
+    right: '15%',
+    bottom: '25%'
   }
 }))
 
@@ -46,6 +52,7 @@ const LetterAvatar: React.FC<LetterAvatarProps> = (props) => {
     <div className={classes.root}>
       <Avatar className={classes[size]} style={{ backgroundColor: colors[randomIndex] }}>
         {initials}
+        <EditIcon className={classes.icon} />
       </Avatar>
     </div>
   )
