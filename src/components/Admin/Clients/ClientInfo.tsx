@@ -11,6 +11,7 @@ import { AddBalanceTransferPopup } from '../Transfers/AddBalanceTransferPopup'
 import MuiAlert from '@material-ui/lab/Alert'
 import { useUserStore } from '../../../context/User.context'
 import ClientActionButtons from './ClientActionButtons'
+import EditClientPopup from './EditClientPopup'
 
 
 const ClientInfo: React.FC = observer(() => {
@@ -19,7 +20,8 @@ const ClientInfo: React.FC = observer(() => {
   const UserStore = useUserStore()
 
   const [isLoading, setIsLoading] = useState(ClientsStore.isPopulated ? false : true)
-  const [showPopup, setShowPopup] = useState(false)
+  const [showBalanceTransferPopup, setShowBalanceTransferPopup] = useState(false)
+  const [showEditClientPopup, setShowEditClientPopup] = useState(false)
   const [snackbar, setSnackbar] = useState({
     message: '',
     open: false,
@@ -60,22 +62,31 @@ const ClientInfo: React.FC = observer(() => {
       ? <Loader />
       : ClientsStore.isPopulated || !UserStore.isAdmin
         ? <div>
-          <ClientDetails client={client} />
+          <ClientDetails client={client} setShowEditClientPopup={setShowEditClientPopup} />
           <ClientDetailItems />
           {
             UserStore.isAdmin
               ? <ClientActionButtons
-                setShowPopup={setShowPopup}
+                setShowPopup={setShowBalanceTransferPopup}
                 client={client}
                 openSnackbar={openSnackbar}
               />
               : null
           }
           {
-            showPopup
+            showBalanceTransferPopup
               ? <AddBalanceTransferPopup
-                open={showPopup}
-                setOpen={setShowPopup}
+                open={showBalanceTransferPopup}
+                setOpen={setShowBalanceTransferPopup}
+                openSnackbar={openSnackbar}
+              />
+              : null
+          }
+          {
+            showEditClientPopup
+              ? <EditClientPopup
+                open={showEditClientPopup}
+                setOpen={setShowEditClientPopup}
                 openSnackbar={openSnackbar}
               />
               : null

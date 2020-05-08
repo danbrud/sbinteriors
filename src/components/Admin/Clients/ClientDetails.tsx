@@ -9,15 +9,16 @@ import { useUserStore } from '../../../context/User.context'
 
 interface ClientDetailsProps {
   client: Client
+  setShowEditClientPopup?: (open: boolean) => void
 }
 
 const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
-  const { client } = props
+  const { client, setShowEditClientPopup } = props
 
   return (
     <div id='client-details-container'>
       <div id='client-name-container'>
-        <div id='balance-container'>
+        <div id='balance-container' onClick={() => setShowEditClientPopup(true)}>
           <LetterAvatar size='medium' name={client.name} />
         </div>
         <div>
