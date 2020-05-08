@@ -42,12 +42,19 @@ const useStyles = makeStyles((theme) => ({
 
 interface TaskCardProps {
   task: Task
+  setShowPopup: (open: boolean) => void
+  setTaskToEdit: (task: Task | null) => void
 }
 
 const TaskCard: React.FC<TaskCardProps> = observer((props) => {
   const classes = useStyles()
-  const { task } = props
+  const { task, setShowPopup, setTaskToEdit } = props
   const UserStore = useUserStore()
+
+  const editTask = () => {
+    setShowPopup(true)
+    setTaskToEdit(task)
+  }
 
   return (
     <Card className={classes.root}>
@@ -86,7 +93,7 @@ const TaskCard: React.FC<TaskCardProps> = observer((props) => {
       {
         UserStore.isAdmin
           ? <CardActions >
-            <Button color='primary' size="small">Edit Task</Button>
+            <Button color='primary' size="small" onClick={editTask}>Edit Task</Button>
           </CardActions>
           : null
       }

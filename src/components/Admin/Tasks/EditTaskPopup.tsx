@@ -1,25 +1,15 @@
 import React, { useState, useRef } from 'react'
-import { DialogContent, DialogTitle, Dialog, TextField, makeStyles, DialogActions, Button, InputLabel, MenuItem } from '@material-ui/core'
+import { DialogContent, DialogTitle, Dialog, TextField, makeStyles, DialogActions, Button, InputLabel, MenuItem, Select, ThemeProvider } from '@material-ui/core'
 import { useClientsStore } from '../../../context/Clients.context'
 import { useParams } from 'react-router-dom'
 import { removeOptionalFields, checkRequiredFields } from '../../../utils/utils'
 import { AddPopup } from '../AddPopup'
 import { EditPopupsProps } from '../../EditPopupsProps.interface'
 import { Task } from '../../../stores/Task.store'
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    display: 'inline-block',
-    width: '25%'
-  },
-  select: {
-    display: 'grid',
-    margin: '4px'
-  },
-  input: {
-    // margin: '4px'
-  }
-}))
+import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns'
+import { datePickerTheme } from '../../../themes/datePicker.theme'
+import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 
 interface EditTaskPopupProps extends EditPopupsProps {
   task: Task
@@ -27,11 +17,12 @@ interface EditTaskPopupProps extends EditPopupsProps {
 }
 
 const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
-  const classes = useStyles()
+  const GeneralAdminStore = useGeneralAdminStore()
+  const ClientsStore = useClientsStore()
   const { openSnackbar, setOpen, open, task } = props
 
   const [inputs, setInputs] = useState({
-    taskType: task.serviceType,
+    taskType: task.serviceType.id,
     startTime: task.startTime,
     endTime: task.endTime,
     description: ''
@@ -46,21 +37,32 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
     setOpen(false)
   }
 
+  const getModifiedFields = () => {
+    if(!inputs.description) { inputs.description = null }
+    return Object.keys(inputs).filter(field => (
+      field === 'taskType' ? inputs[field] !== task.serviceType.id : inputs[field] !== task[field]
+    ))
+  }
+
+  const updateClient = async () => {
+    const client = ClientsStore.getClient(task.clientId)
+    await client.getBalance('tasks')
+  }
+
   const handleClose = async (shouldAdd: boolean) => {
     if (shouldAdd) {
-      // const fieldsToUpdate = removeOptionalFields(
-      //   ['name', 'phone', 'email', 'spouseName', 'address', 'city', 'description'],
-      //   { ...inputs }
-      // )
-      // if (Object.keys(fieldsToUpdate).length) {
-      //   for (let field in fieldsToUpdate) {
-      //     await client.updateClient(field, inputs[field])
-      //   }
-      //   closePopup()
-      //   openSnackbar('success', `Updated client successfully!`)
-      // } else {
-      //   openSnackbar('error', `Invalid! Please fill at least one field.`)
-      // }
+      const fieldsToUpdate = getModifiedFields()
+      if (fieldsToUpdate.length) {
+        for (let field of fieldsToUpdate) {
+          await task.updateTask(field, inputs[field])
+        }
+        await updateClient()
+
+        closePopup()
+        openSnackbar('success', `Updated client successfully!`)
+      } else {
+        openSnackbar('error', `Invalid! Please fill at least one field.`)
+      }
     } else {
       closePopup()
     }
@@ -70,50 +72,47 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
     setInputs({ ...inputs, [target.name]: target.value })
   }
 
+  const availableTypes = GeneralAdminStore.services
 
   return (
     <Dialog open={open} onClose={() => handleClose(false)} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Task</DialogTitle>
       <DialogContent>
-        {/* <div className={classes.select}>
-        <InputLabel className={classes.input} id="task-type-label" required={true}>Task Type</InputLabel>
+        <InputLabel id="task-type-label" required={true}>Task Type</InputLabel>
         <Select
-          className={classes.input}
           labelId="task-type-label"
           id="task-type-select"
           value={inputs.taskType}
           onChange={handleChange}
           name='taskType'
+          fullWidth
         >
           {availableTypes.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
         </Select>
-        <AddPopup name='Service' openSnackbar={props.openSnackbar}/>
-      </div>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <ThemeProvider theme={datePickerTheme}>
-          <KeyboardDateTimePicker
-            required={true}
-            className={classes.input}
-            label="Start Time"
-            inputVariant="standard"
-            value={inputs.startTime}
-            onChange={(date) => setInputs({ ...inputs, startTime: date })}
-            hideTabs
-          />
-          <KeyboardDateTimePicker
-            required={true}
-            className={classes.input}
-            label="End Time"
-            inputVariant="standard"
-            value={inputs.endTime}
-            onChange={(date) => setInputs({ ...inputs, endTime: date })}
-            hideTabs
-          />
-        </ThemeProvider>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <ThemeProvider theme={datePickerTheme}>
+            <KeyboardDateTimePicker
+              required={true}
+              label="Start Time"
+              inputVariant="standard"
+              value={inputs.startTime}
+              onChange={(date) => setInputs({ ...inputs, startTime: date })}
+              hideTabs
+              fullWidth
+            />
+            <KeyboardDateTimePicker
+              required={true}
+              label="End Time"
+              inputVariant="standard"
+              value={inputs.endTime}
+              onChange={(date) => setInputs({ ...inputs, endTime: date })}
+              hideTabs
+              fullWidth
+            />
+          </ThemeProvider>
         </MuiPickersUtilsProvider>
-        */}
         <TextField
-          className={classes.input}
+          fullWidth
           multiline={true}
           value={inputs.description}
           name='description'
