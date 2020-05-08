@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import { DialogContent, DialogTitle, Dialog, TextField, makeStyles, DialogActions, Button } from '@material-ui/core'
 import { useClientsStore } from '../../../context/Clients.context'
 import { useParams } from 'react-router-dom'
+import { removeOptionalFields, checkRequiredFields } from '../../../utils/utils'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -38,31 +39,28 @@ const EditClientPopup: React.FC<EditClientPopupProps> = (props) => {
 
 
   const closePopup = () => {
-    // setInputs( { fromAccount: '', toAccount: '', date: new Date(), amount: '' })
-    // setOpen(false)
-  }
-
-  const checkAvailableBalance = (client) => {
-    // const balanceToTransfer = inputs.fromAccount + 'Balance'
-    // return client[balanceToTransfer] >= inputs.amount
+    setInputs({
+      name: '', phone: '', email: '', spouseName: '',
+      address: '', city: '', description: ''
+    })
+    setOpen(false)
   }
 
   const handleClose = async (shouldAdd: boolean) => {
     if (shouldAdd) {
-
-      // if(!checkRequiredFields(Object.keys(inputs), inputs)) {
-      //   openSnackbar('error', `Invalid! Please fill all inputs.`)
-      // } else if (inputs.fromAccount === inputs.toAccount) {
-      //   openSnackbar('error', `Invalid! 'To' and 'From' must be different.`)
-      // } else if (!checkAvailableBalance(client)) {
-      //   openSnackbar('error', `Invalid! 'Not enough balance in ${inputs.fromAccount} account.`)
-      // } else {
-      //   await TransfersStore.createBalanceTransfer({ ...inputs, clientId })
-      //   await client.getBalance('expenses')
-      //   await client.getBalance('tasks')
-      //   closePopup()
-      //   openSnackbar('success', `Transferred balance successfully!`)
-      // }
+      const fieldsToUpdate = removeOptionalFields(
+        ['name', 'phone', 'email', 'spouseName', 'address', 'city', 'description'],
+        { ...inputs }
+      )
+      if (Object.keys(fieldsToUpdate).length) {
+        for (let field in fieldsToUpdate) {
+          await client.updateClient(field, inputs[field])
+        }
+        closePopup()
+        openSnackbar('success', `Updated client successfully!`)
+      } else {
+        openSnackbar('error', `Invalid! Please fill at least one field.`)
+      }
     } else {
       closePopup()
     }
@@ -84,7 +82,7 @@ const EditClientPopup: React.FC<EditClientPopupProps> = (props) => {
           type='tel'
           autoComplete='off'
           onChange={handleChange}
-          label={focused === 'phone' || inputs.phone ? 'Phone Number' : client.phone || 'Phone Number' }
+          label={focused === 'phone' || inputs.phone ? 'Phone Number' : client.phone || 'Phone Number'}
           placeholder={client.phone || 'Phone Number'}
           onFocus={() => setFocused('phone')}
           onBlur={() => setFocused('')}
@@ -109,7 +107,7 @@ const EditClientPopup: React.FC<EditClientPopupProps> = (props) => {
           autoComplete='off'
           value={inputs.spouseName}
           onChange={handleChange}
-          label={focused === 'spouseName' || inputs.spouseName ? 'Spouse Name' : client.spouseName || 'Spouse Name' }
+          label={focused === 'spouseName' || inputs.spouseName ? 'Spouse Name' : client.spouseName || 'Spouse Name'}
           placeholder={client.spouseName || 'Spouse Name'}
           onFocus={() => setFocused('spouseName')}
           onBlur={() => setFocused('')}
@@ -122,7 +120,7 @@ const EditClientPopup: React.FC<EditClientPopupProps> = (props) => {
           value={inputs.address}
           type='text'
           onChange={handleChange}
-          label={focused === 'address' || inputs.address ? 'Address' : client.address || 'Address' }
+          label={focused === 'address' || inputs.address ? 'Address' : client.address || 'Address'}
           placeholder={client.address || 'Address'}
           onFocus={() => setFocused('address')}
           onBlur={() => setFocused('')}
@@ -135,7 +133,7 @@ const EditClientPopup: React.FC<EditClientPopupProps> = (props) => {
           type='text'
           autoComplete='off'
           onChange={handleChange}
-          label={focused === 'city' || inputs.city ? 'City' : client.city || 'City' }
+          label={focused === 'city' || inputs.city ? 'City' : client.city || 'City'}
           placeholder={client.city || 'City'}
           onFocus={() => setFocused('city')}
           onBlur={() => setFocused('')}
@@ -149,7 +147,7 @@ const EditClientPopup: React.FC<EditClientPopupProps> = (props) => {
           value={inputs.description}
           type='text'
           onChange={handleChange}
-          label={focused === 'description' || inputs.description ? 'Description' : client.description || 'Description' }
+          label={focused === 'description' || inputs.description ? 'Description' : client.description || 'Description'}
           placeholder={client.description || 'Description'}
           onFocus={() => setFocused('description')}
           onBlur={() => setFocused('')}
