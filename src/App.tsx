@@ -20,6 +20,9 @@ import Login from './components/Login'
 import { AuthProps } from './components/AuthProps'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useClientsStore } from './context/Clients.context'
+import { useUserStore } from './context/User.context'
+import { Switch } from '@material-ui/core'
+import NotFound from './components/NotFound'
 
 const App: React.FC<AuthProps> = observer((props) => {
   const { auth } = props
@@ -29,6 +32,13 @@ const App: React.FC<AuthProps> = observer((props) => {
   const TasksStore = useTasksStore()
   const ExpensesStore = useExpensesStore()
   const ClientsStore = useClientsStore()
+  const UserStore = useUserStore()
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      UserStore.setUser(auth.decodeToken())
+    }
+  }, [])
 
   useEffect(() => {
     GeneralAdminStore.getServicesFromDB()
@@ -59,65 +69,67 @@ const App: React.FC<AuthProps> = observer((props) => {
     }
   }, [location])
 
+  
   return (
     <div>
-      <MenuBar />
-      {window.location.pathname === '/' ? <Redirect to='/admin/clients' /> : null}
+      {auth.isAuthenticated ? <MenuBar auth={auth} /> : null}
+      {window.location.pathname === '/' ? <Redirect to='/login' /> : null}
       <div id='app-container'>
-        <ProtectedRoute
-          auth={auth}
-          exact
-          path='/admin/clients'
-          component={AdminHome}
-        />
-        <ProtectedRoute
-          auth={auth}
-          exact
-          path='/:role/clients/:clientId'
-          component={ClientInfo}
-        />
-        <ProtectedRoute
-          auth={auth}
-          exact
-          path='/admin/clients/:clientId/tasks'
-          component={Tasks}
-        />
-        <ProtectedRoute
-          auth={auth}
-          exact
-          path='/admin/clients/:clientId/transfers'
-          component={Transfers}
-        />
-        <ProtectedRoute
-          auth={auth}
-          exact
-          path='/admin/clients/:clientId/expenses'
-          component={Expenses}
-        />
-        <ProtectedRoute
-          auth={auth}
-          exact
-          path='/admin/clients/:clientId/contract'
-          component={Contract}
-        />
-        <ProtectedRoute
-          auth={auth}
-          exact
-          path='/admin/add/:item'
-          component={AddItem}
-        />
-        <ProtectedRoute
-          auth={auth}
-          exact
-          path='/admin/settings'
-          component={Settings}
-        />
-        <Route
-          exact
-          path='/login'
-          render={() => <Login auth={auth}/>}
-        />
-        <AddFab />
+          <ProtectedRoute
+            auth={auth}
+            exact
+            path='/admin/clients'
+            component={AdminHome}
+          />
+          <ProtectedRoute
+            auth={auth}
+            exact
+            path='/clients/:clientId'
+            component={ClientInfo}
+          />
+          <ProtectedRoute
+            auth={auth}
+            exact
+            path='/clients/:clientId/tasks'
+            component={Tasks}
+          />
+          <ProtectedRoute
+            auth={auth}
+            exact
+            path='/clients/:clientId/transfers'
+            component={Transfers}
+          />
+          <ProtectedRoute
+            auth={auth}
+            exact
+            path='/clients/:clientId/expenses'
+            component={Expenses}
+          />
+          <ProtectedRoute
+            auth={auth}
+            exact
+            path='/clients/:clientId/contract'
+            component={Contract}
+          />
+          <ProtectedRoute
+            auth={auth}
+            exact
+            path='/admin/add/:item'
+            component={AddItem}
+          />
+          {/* <ProtectedRoute
+            auth={auth}
+            exact
+            path='/admin/settings'
+            component={Settings}
+          /> */}
+          <Route
+            exact
+            path='/login'
+            render={() => <Login auth={auth} />}
+          />
+          {/* <Route path="*" render={() => <NotFound />}/> */}
+        {UserStore.isAdmin ? <AddFab /> : null}
       </div>
     </div>
   )

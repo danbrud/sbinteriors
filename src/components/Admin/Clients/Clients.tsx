@@ -21,6 +21,7 @@ const Clients: React.FC = observer(() => {
 
   useEffect(() => {
     initializeComp()
+    window.scrollTo(0, 0)
   }, [])
 
   return (

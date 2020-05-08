@@ -8,8 +8,11 @@ import MenuIcon from '@material-ui/icons/Menu'
 import HomeIcon from '@material-ui/icons/Home'
 import { Link, useLocation } from 'react-router-dom'
 import { toProperCase } from '../utils/utils'
-import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Button } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings'
+import { useUserStore } from '../context/User.context'
+import smallLogo from '../assets/favicon-32x32.png'
+import { AuthProps } from './AuthProps'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
   homeIcon: {
     marginRight: theme.spacing(2),
     color: 'white',
-    userSelect: 'none'
+    userSelect: 'none',
+    padding: '2px'
   },
   bar: {
     backgroundColor: '#34495e',
@@ -55,13 +59,18 @@ const useStyles = makeStyles((theme) => ({
   },
   img: {
     borderRadius: '5px'
+  },
+  logout: {
+    color: 'white'
   }
 }))
 
 
-const MenuBar: React.FC = () => {
+const MenuBar: React.FC<AuthProps> = (props) => {
   const classes = useStyles()
   const location = useLocation()
+  const UserStore = useUserStore()
+
   const [title, setTitle] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
 
@@ -140,18 +149,24 @@ const MenuBar: React.FC = () => {
       </AppBar> */}
       <AppBar position="fixed">
         <Toolbar>
-          <Link to='/admin/clients'>
-            <IconButton edge="start" className={classes.homeIcon} color='inherit'>
-              <HomeIcon />
+          <Link to={UserStore.isAdmin ? '/admin/clients' : `/clients/${UserStore.clientId}`} >
+            <IconButton edge="end" className={classes.homeIcon} color="inherit" aria-label="menu">
+              <img className={classes.img} src={smallLogo} />
             </IconButton>
+            {/* <IconButton edge="start" className={classes.homeIcon} color='inherit'>
+              <HomeIcon />
+            </IconButton> */}
           </Link>
           <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
-          <Link to='/admin/clients'>
-            <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu">
-              <img className={classes.img} src={`${window.location.origin}/assets/favicon-32x32.png`} />
-            </IconButton>
+          <Link to={UserStore.isAdmin ? '/admin/clients' : `/clients/${UserStore.clientId}`} >
+            <Button
+              className={classes.logout}
+              onClick={() => props.auth.logout()}
+            >
+              Logout
+            </Button>
           </Link>
         </Toolbar>
       </AppBar>

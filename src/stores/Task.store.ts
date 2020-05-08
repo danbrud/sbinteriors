@@ -1,5 +1,7 @@
-import { observable, computed } from 'mobx'
+import { observable, computed, action } from 'mobx'
 import { adminType } from '../adminTypes'
+import axios from 'axios'
+import { SERVER_URL } from '../utils/utils'
 
 export class Task {
   @observable id: number
@@ -27,5 +29,10 @@ export class Task {
     const { startTime, endTime } = this
     const duration = +endTime - +startTime
     return Math.floor((duration / 1000) / 60)
+  }
+
+  @action async updateTask(prop: string, value: string | boolean | number) {
+    await axios.put(`${SERVER_URL}/tasks/${this.id}`, { prop, value })
+    this[prop] = value
   }
 }

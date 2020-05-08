@@ -19,7 +19,7 @@ export class Clients {
   }
 
   @action async addClient(client) {
-    client = removeOptionalFields(['spouseName', 'description'], { ...client })
+    client = removeOptionalFields(['spouseName', 'phone', 'description'], { ...client })
 
     const { data } = await axios.post<Client>(`${SERVER_URL}/clients`, client)
     const newClient = new Client(

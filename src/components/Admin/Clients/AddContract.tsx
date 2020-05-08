@@ -111,6 +111,7 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
           required={true}
           label='Price Per Hour'
           type='number'
+          autoComplete='off'
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
@@ -123,6 +124,7 @@ const AddContract: React.FC<AddContractProps> = observer((props) => {
           fullWidth={true}
           label={`Included Hours for ${s.name}`}
           type='number'
+          autoComplete='off'
           name={`${s.id}`}
           value={contract[s.id]}
           onChange={handleChange}

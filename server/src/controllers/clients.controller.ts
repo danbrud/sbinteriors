@@ -1,5 +1,6 @@
 import express from 'express'
 import { ClientsService } from '../services/clients.service'
+import { Client } from '../models/Client.model'
 
 
 export class ClientsController {
@@ -18,6 +19,7 @@ export class ClientsController {
     this.router.put('/:clientId', this.updateClient)
     this.router.get('/:clientId/balance/:account', this.getBalance)
     this.router.post('/:clientId/contracts', this.addContract)
+    this.router.post('/user/admin', this.addAdminUser)
     this.router.get('/:clientId/contracts', this.getContract)
     this.router.get('/:clientId/report', this.generateReport)
   }
@@ -64,5 +66,12 @@ export class ClientsController {
   private generateReport: express.RequestHandler = async (req, res) => {
     const success = await this.clientsService.generateReport(req.params.clientId)
     res.send({ success })
+  }
+
+  private addAdminUser: express.RequestHandler = async (req, res) => {
+    const { email, password } = req.body
+    
+    await this.clientsService.createUser({ email } as Client, password, true)
+    res.send({ success: true })
   }
 }

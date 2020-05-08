@@ -26,6 +26,7 @@ __decorate([
     __metadata("design:type", String)
 ], Client.prototype, "email", void 0);
 __decorate([
+    sequelize_typescript_1.Default(null),
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Client.prototype, "phone", void 0);
@@ -35,10 +36,12 @@ __decorate([
     __metadata("design:type", String)
 ], Client.prototype, "spouseName", void 0);
 __decorate([
+    sequelize_typescript_1.Default(null),
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Client.prototype, "address", void 0);
 __decorate([
+    sequelize_typescript_1.Default(null),
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Client.prototype, "city", void 0);

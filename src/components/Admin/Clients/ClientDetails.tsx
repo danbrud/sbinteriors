@@ -3,25 +3,22 @@ import { observer } from 'mobx-react'
 import { Client } from '../../../stores/Client.store'
 import LetterAvatar from '../../LetterAvatar'
 import '../../../styles/ClientDetails.css'
-import { Divider, Grid, Typography, Button } from '@material-ui/core'
+import { Divider, Typography, Button } from '@material-ui/core'
 import { toProperCase } from '../../../utils/utils'
-import BalanceAvatar from '../../BalanceAvatar'
+
 
 interface ClientDetailsProps {
   client: Client
+  setShowEditClientPopup?: (open: boolean) => void
 }
 
 const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
-  const { client } = props
-
-  const updateStatus = () => {
-    client.updateClient('isComplete', !client.isComplete)
-  }
+  const { client, setShowEditClientPopup } = props
 
   return (
     <div id='client-details-container'>
       <div id='client-name-container'>
-        <div id='balance-container'>
+        <div id='balance-container' onClick={() => setShowEditClientPopup(true)}>
           <LetterAvatar size='medium' name={client.name} />
         </div>
         <div>
@@ -43,19 +40,12 @@ const ClientDetails: React.FC<ClientDetailsProps> = observer((props) => {
       <Divider />
       <div id='project-details-container'>
         <div className='details'>
-          <div>
-            <Typography variant="subtitle1" color="textSecondary">
-              <i className="fas fa-map-marker-alt"></i> {client.address}, {client.city}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              <i className="fas fa-sync-alt"></i> {client.isComplete ? "Completed" : "In progress"}
-            </Typography>
-          </div>
-          <div>
-            <Button variant='outlined' color='primary' onClick={updateStatus}>
-              {client.isComplete ? 'Mark In Progress' : 'Mark Completed'}
-            </Button>
-          </div>
+          <Typography variant="subtitle1" color="textSecondary">
+            <i className="fas fa-map-marker-alt"></i> {client.address}, {client.city}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            <i className="fas fa-sync-alt"></i> {client.isComplete ? "Completed" : "In progress"}
+          </Typography>
         </div>
         {!client.description ? null : (
           <div id="description">

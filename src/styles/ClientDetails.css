@@ -35,8 +35,6 @@
 }
 .details {
   padding: 10px;
-  display: grid;
-  grid-template-columns: 3fr 1fr;
 }
 .details p {
   margin: 8px 0;

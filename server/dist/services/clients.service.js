@@ -39,16 +39,21 @@ class ClientsService {
     async createClient(body) {
         const client = new Client_model_1.Client(body);
         await client.save();
-        await this.createUser(client.id, client.email);
+        await this.createUser(client);
         return client;
     }
-    async createUser(clientId, email) {
+    async createUser(client, password, isAdmin) {
         //should check if the user exists
         const user = new User_model_1.User({
-            clientId, username: email.split('@')[0], password: uniqid_1.default(), role: 'USER'
+            username: client.email.split('@')[0],
+            password: password ? password : uniqid_1.default(),
+            role: isAdmin ? 'ADMIN' : 'USER'
         });
+        if (!isAdmin) {
+            user.clientId = client.id;
+        }
         // this.emailUserDetails(user, email)
-        this.emailUserDetails(user, 'dannybrudner@gmail.com');
+        this.emailUserDetails(user, client, process.env.ADMIN_EMAIL);
         bcryptjs_1.default.genSalt(10, (error, salt) => {
             bcryptjs_1.default.hash(user.password, salt, async (err, hash) => {
                 if (err) {
@@ -59,8 +64,17 @@ class ClientsService {
             });
         });
     }
-    emailUserDetails(user, email) {
-        const mailOptions = this.createEmailObject(email, `Your login details for the SBInteriors App`, `Your username is ${user.username} and your password is ${user.password}`, false);
+    emailUserDetails(user, client, email) {
+        const template = fs_1.default.readFileSync(path_1.default.join(__dirname, '..', '..', 'templates', 'email-template.html'), 'utf-8');
+        const content = utils_1.generateHtml(template, {
+            name: client.name, username: user.username, password: user.password
+        });
+        const attachments = [{
+                filename: 'android-chrome-192x192.png',
+                cid: 'sbinteriors-email-logo',
+                path: path_1.default.join(__dirname, '..', '..', 'assets', 'android-chrome-192x192.png')
+            }];
+        const mailOptions = this.createEmailObject(email, `Your login details for the SBInteriors App`, content, true, attachments);
         this.transporter.sendMail(mailOptions);
     }
     async updateClient(clientId, body) {
@@ -108,13 +122,14 @@ class ClientsService {
     async generateReport(clientId) {
         const client = await this.getClientById(clientId, null, [Transfer_model_1.Transfer, Task_model_1.Task, Expense_model_1.Expense]);
         this.generatePDF(client);
-        return client;
+        //Should handle errors
+        return true;
     }
     async generatePDF(client) {
         // const options = { format: 'A3', orientation: 'portrait', border: '10mm' }
-        const html = fs_1.default.readFileSync(path_1.default.join(__dirname, '..', '..', 'template.html'), 'utf8');
+        const html = fs_1.default.readFileSync(path_1.default.join(__dirname, '..', '..', 'templates', 'report-template.html'), 'utf8');
         const document = {
-            html, data: client, path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
+            html, data: client, path: path_1.default.join(__dirname, '..', '..', 'reports', 'report.pdf')
         };
         await utils_1.createPDF(document);
         await this.sendPDFReport(client);
@@ -122,7 +137,7 @@ class ClientsService {
     async sendPDFReport(client) {
         const mailOptions = this.createEmailObject(process.env.ADMIN_EMAIL, `Report for ${client.name}`, `Please find the attached report for ${client.name}.`, false, [{
                 filename: `${client.name}-report.pdf`,
-                path: path_1.default.join(__dirname, '..', '..', 'report.pdf')
+                path: path_1.default.join(__dirname, '..', '..', 'reports', 'report.pdf')
             }]);
         this.transporter.sendMail(mailOptions, (err, info) => {
             if (err) {

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <title>SBInteriors Report</title>
+  <style>
+    body {
+      font-family: Montserrat, sans-serif;
+      color: #757575;
+      margin: 20px;
+      font-size: 18px;
+    }
+
+    #img-container {
+      text-align: center;
+    }
+
+    img {
+      max-width: 150px;
+    }
+
+    .login-info-title {
+      text-decoration: underline;
+    }
+
+    span.login-detail {
+      color: #8DBDC3;
+      text-decoration: none;
+      font-style: italic;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='img-container'>
+    <img src="cid:sbinteriors-email-logo">
+  </div>
+  <h1>Hey {{name}},</h1>
+
+  <p>Thanks for using the SB Interiors app. I hope help you follow the progress of your project throughout the process.
+  </p>
+
+  <p>To login you should use the following details:</p>
+
+  <p><span class="login-info-title">Username:</span> <span class="login-detail">{{username}}</span></p>
+  <p><span class="login-info-title">Password:</span> <span class="login-detail">{{password}}</span></p>
+
+  <br>
+  <h2>Sandy Brudner</h2>
+</body>
+
+</html>

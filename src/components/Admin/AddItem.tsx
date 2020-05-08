@@ -66,7 +66,7 @@ const AddItem: React.FC = () => {
 
   if (shouldRedirect) {
     const client = ClientsStore.getClientByName(clientName)
-    return <Redirect to={`/admin/clients/${client.id}`} />
+    return <Redirect to={`/clients/${client.id}`} />
   } else if (item === 'client') {
     return (
       <div>

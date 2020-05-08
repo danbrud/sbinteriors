@@ -13,14 +13,15 @@ import { useClientsStore } from '../../../context/Clients.context'
 import '../../../styles/ClientDetailsList.css'
 import { observer } from 'mobx-react'
 import BalanceTag from '../BalanceTag'
+import { useUserStore } from '../../../context/User.context'
 
 const useStyles = makeStyles({
   row: {
     width: '100%',
     fontSize: '16px'
   },
-  arrow: {
-
+  container: {
+    marginBottom: '10px'
   }
 })
 
@@ -30,20 +31,21 @@ const useStyles = makeStyles({
 
 const ClientDetailItems: React.FC = observer(() => {
   const classes = useStyles()
-  const ClientsStore = useClientsStore()
   const { clientId } = useParams()
+  const ClientsStore = useClientsStore()
+  const UserStore = useUserStore()
 
-  const client = ClientsStore.getClient(clientId)
+  const client = UserStore.isAdmin ? ClientsStore.getClient(clientId) : UserStore.client
 
   const detailItems = ['tasks', 'expenses', 'transfers', 'contract']
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className={classes.container} component={Paper}>
       <Table>
         <TableBody>
           {detailItems.map(item => (
             <TableRow key={item} >
-              <Link to={`/admin/clients/${clientId}/${item}`}>
+              <Link to={`/clients/${clientId}/${item}`}>
                 <TableCell align="left" className={classes.row}>{toProperCase(item)}</TableCell>
                 <TableCell >
                   {
@@ -54,7 +56,7 @@ const ClientDetailItems: React.FC = observer(() => {
                         : null
                   }
                 </TableCell>
-                <TableCell align="right" className={classes.arrow}>
+                <TableCell align="right">
                   <ArrowForwardIosIcon />
                 </TableCell>
               </Link>

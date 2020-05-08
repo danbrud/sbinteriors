@@ -10,6 +10,7 @@ import { Expense } from '../../../stores/Expense.store'
 import moment from 'moment'
 import '../../../styles/Expenses.css'
 import { FormattedNumber } from 'react-intl'
+import { useUserStore } from '../../../context/User.context'
 
 
 
@@ -42,6 +43,8 @@ interface ExpenseCardProps {
 const ExpenseCard: React.FC<ExpenseCardProps> = observer((props) => {
   const classes = useStyles()
   const { expense } = props
+  const UserStore = useUserStore()
+
 
   return (
     <Card className={classes.root}>
@@ -70,9 +73,13 @@ const ExpenseCard: React.FC<ExpenseCardProps> = observer((props) => {
             : null
         }
       </CardContent>
-      <CardActions >
-        <Button color='primary' size="small">Edit Expense</Button>
-      </CardActions>
+      {
+        UserStore.isAdmin
+          ? <CardActions >
+            <Button color='primary' size="small">Edit Expense</Button>
+          </CardActions>
+          : null
+      }
     </Card >
   )
 })

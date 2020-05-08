@@ -9,29 +9,25 @@ import NoData from '../NoData'
 import { Button, makeStyles, Snackbar } from '@material-ui/core'
 import { AddBalanceTransferPopup } from '../Transfers/AddBalanceTransferPopup'
 import MuiAlert from '@material-ui/lab/Alert'
+import { useUserStore } from '../../../context/User.context'
+import ClientActionButtons from './ClientActionButtons'
+import EditClientPopup from './EditClientPopup'
 
 
-
-const useStyles = makeStyles((theme) => ({
-  buttonOutlined: {
-    marginBottom: '10px',
-  }
-}))
-
-const ClientInfo: React.FC = observer((props) => {
-  const classes = useStyles()
-  const ClientsStore = useClientsStore()
+const ClientInfo: React.FC = observer(() => {
   const { clientId } = useParams()
+  const ClientsStore = useClientsStore()
+  const UserStore = useUserStore()
 
   const [isLoading, setIsLoading] = useState(ClientsStore.isPopulated ? false : true)
-  const [showPopup, setShowPopup] = useState(false)
+  const [showBalanceTransferPopup, setShowBalanceTransferPopup] = useState(false)
+  const [showEditClientPopup, setShowEditClientPopup] = useState(false)
   const [snackbar, setSnackbar] = useState({
     message: '',
     open: false,
     severity: ''
   })
 
-  const client = ClientsStore.getClient(clientId)
 
   const openSnackbar = (severity, message) => {
     setSnackbar({ message, severity, open: true })
@@ -46,35 +42,51 @@ const ClientInfo: React.FC = observer((props) => {
   }
 
   useEffect(() => {
-    if (!ClientsStore.isPopulated) {
+    if (!ClientsStore.isPopulated && UserStore.isAdmin) {
       ClientsStore.getClientsFromDB()
         .then(() => {
           setIsLoading(false)
         })
     }
-  }, [])
+
+    window.scrollTo(0, 0)
+  }, [UserStore.isAdmin])
+
+  const client = UserStore.isAdmin ? ClientsStore.getClient(clientId) : UserStore.client
+  if (isLoading && client) {
+    setIsLoading(false)
+  }
 
   return (
     isLoading
       ? <Loader />
-      : ClientsStore.isPopulated
+      : ClientsStore.isPopulated || !UserStore.isAdmin
         ? <div>
-          <ClientDetails client={client} />
-          < Button
-            className={classes.buttonOutlined}
-            variant="outlined"
-            color="primary"
-            fullWidth={true}
-            onClick={() => setShowPopup(true)}
-          >
-            TRANSFER BALANCE
-          </ Button>
+          <ClientDetails client={client} setShowEditClientPopup={setShowEditClientPopup} />
           <ClientDetailItems />
           {
-            showPopup
+            UserStore.isAdmin
+              ? <ClientActionButtons
+                setShowPopup={setShowBalanceTransferPopup}
+                client={client}
+                openSnackbar={openSnackbar}
+              />
+              : null
+          }
+          {
+            showBalanceTransferPopup
               ? <AddBalanceTransferPopup
-                open={showPopup}
-                setOpen={setShowPopup}
+                open={showBalanceTransferPopup}
+                setOpen={setShowBalanceTransferPopup}
+                openSnackbar={openSnackbar}
+              />
+              : null
+          }
+          {
+            showEditClientPopup
+              ? <EditClientPopup
+                open={showEditClientPopup}
+                setOpen={setShowEditClientPopup}
                 openSnackbar={openSnackbar}
               />
               : null

@@ -59,7 +59,7 @@ const ClientCard: React.FC<ClientCardProps> = observer((props) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Link to={`/admin/clients/${client.id}`}>
+          <Link to={`/clients/${client.id}`}>
             <Button size="small" color="primary" variant="outlined">
               Select
             </Button>

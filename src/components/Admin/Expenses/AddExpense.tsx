@@ -97,6 +97,7 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
         value={inputs.name}
         type='text'
         name='name'
+        autoComplete='off'
         onChange={handleChange}
       />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -116,6 +117,7 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
         value={inputs.amount}
         type='number'
         name='amount'
+        autoComplete='off'
         placeholder='Amount ILS'
         onChange={handleChange}
         label="Expense Amount"
@@ -133,6 +135,7 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
         label='Description'
         value={inputs.description}
         type='text'
+        autoComplete='off'
         name='description'
         onChange={handleChange}
       />

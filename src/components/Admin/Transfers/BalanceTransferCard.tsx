@@ -12,6 +12,7 @@ import { FormattedNumber } from 'react-intl'
 import { BalanceTransfer } from '../../../stores/BalanceTransfer.store'
 import { toProperCase } from '../../../utils/utils'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import { useUserStore } from '../../../context/User.context'
 
 
 
@@ -47,6 +48,7 @@ interface BalanceTransferCardProps {
 const BalanceTransferCard: React.FC<BalanceTransferCardProps> = observer((props) => {
   const classes = useStyles()
   const { transfer } = props
+  const UserStore = useUserStore()
 
   return (
     <Card className={classes.root}>
@@ -74,9 +76,13 @@ const BalanceTransferCard: React.FC<BalanceTransferCardProps> = observer((props)
           </Typography>
         </div>
       </CardContent>
-      <CardActions >
-        <Button color='primary' size="small">Edit Balance Transfer</Button>
-      </CardActions>
+      {
+        UserStore.isAdmin
+          ? <CardActions >
+            <Button color='primary' size="small">Edit Balance Transfer</Button>
+          </CardActions>
+          : null
+      }
     </Card >
   )
 })

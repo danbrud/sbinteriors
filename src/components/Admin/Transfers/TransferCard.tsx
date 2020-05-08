@@ -10,6 +10,7 @@ import moment from 'moment'
 import '../../../styles/Transfers.css'
 import { Transfer } from '../../../stores/Transfer.store'
 import { FormattedNumber } from 'react-intl'
+import { useUserStore } from '../../../context/User.context'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,6 +42,7 @@ interface TransferCardProps {
 const TransferCard: React.FC<TransferCardProps> = observer((props) => {
   const classes = useStyles()
   const { transfer } = props
+  const UserStore = useUserStore()
 
   return (
     <Card className={classes.root}>
@@ -76,9 +78,13 @@ const TransferCard: React.FC<TransferCardProps> = observer((props) => {
             : null
         }
       </CardContent>
-      <CardActions >
-        <Button color='primary' size="small">Edit Transfer</Button>
-      </CardActions>
+      {
+        UserStore.isAdmin
+          ? <CardActions >
+            <Button color='primary' size="small">Edit Transfer</Button>
+          </CardActions>
+          : null
+      }
     </Card >
   )
 })

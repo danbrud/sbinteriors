@@ -11,6 +11,7 @@ import '../../../styles/Tasks.css'
 import { Task } from '../../../stores/Task.store'
 import { convertDurationToString } from '../../../utils/utils'
 import { FormattedNumber } from 'react-intl'
+import { useUserStore } from '../../../context/User.context'
 
 
 
@@ -41,11 +42,19 @@ const useStyles = makeStyles((theme) => ({
 
 interface TaskCardProps {
   task: Task
+  setShowPopup: (open: boolean) => void
+  setTaskToEdit: (task: Task | null) => void
 }
 
 const TaskCard: React.FC<TaskCardProps> = observer((props) => {
   const classes = useStyles()
-  const { task } = props
+  const { task, setShowPopup, setTaskToEdit } = props
+  const UserStore = useUserStore()
+
+  const editTask = () => {
+    setShowPopup(true)
+    setTaskToEdit(task)
+  }
 
   return (
     <Card className={classes.root}>
@@ -81,9 +90,13 @@ const TaskCard: React.FC<TaskCardProps> = observer((props) => {
             : null
         }
       </CardContent>
-      <CardActions >
-        <Button color='primary' size="small">Edit Task</Button>
-      </CardActions>
+      {
+        UserStore.isAdmin
+          ? <CardActions >
+            <Button color='primary' size="small" onClick={editTask}>Edit Task</Button>
+          </CardActions>
+          : null
+      }
     </Card >
   )
 })
