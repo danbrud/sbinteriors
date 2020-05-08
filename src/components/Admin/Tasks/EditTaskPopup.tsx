@@ -4,6 +4,8 @@ import { useClientsStore } from '../../../context/Clients.context'
 import { useParams } from 'react-router-dom'
 import { removeOptionalFields, checkRequiredFields } from '../../../utils/utils'
 import { AddPopup } from '../AddPopup'
+import { EditPopupsProps } from '../../EditPopupsProps.interface'
+import { Task } from '../../../stores/Task.store'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -19,23 +21,22 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-interface EditTaskPopupProps {
-  openSnackbar?: (severity: string, message: string) => void
-  setOpen?: (open: boolean) => void
-  open?: boolean
+interface EditTaskPopupProps extends EditPopupsProps {
+  task: Task
+  setTaskToEdit: (task: Task | null) => void
 }
 
 const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
   const classes = useStyles()
-  const ClientsStore = useClientsStore()
-  const { clientId } = useParams()
-  const { openSnackbar, setOpen, open } = props
+  const { openSnackbar, setOpen, open, task } = props
 
-  const [task, setTask] = useState(ClientsStore.getClient(clientId))
   const [inputs, setInputs] = useState({
-    taskType: null, startTime: new Date(), endTime: new Date(), description: ''
+    taskType: task.serviceType,
+    startTime: task.startTime,
+    endTime: task.endTime,
+    description: ''
   })
-  const [focused, setFocused] = useState('')
+  const [focused, setFocused] = useState(false)
 
 
   const closePopup = () => {
@@ -62,7 +63,6 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
       // }
     } else {
       closePopup()
-      
     }
   }
 
@@ -73,7 +73,7 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
 
   return (
     <Dialog open={open} onClose={() => handleClose(false)} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit Client</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Task</DialogTitle>
       <DialogContent>
         {/* <div className={classes.select}>
         <InputLabel className={classes.input} id="task-type-label" required={true}>Task Type</InputLabel>
@@ -110,17 +110,21 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
             hideTabs
           />
         </ThemeProvider>
-      </MuiPickersUtilsProvider>
-      <TextField
-        className={classes.input}
-        multiline={true}
-        label='Description'
-        value={inputs.description}
-        name='description'
-        autoComplete='off'
-        type='text'
-        onChange={handleChange}
-      /> */}
+        </MuiPickersUtilsProvider>
+        */}
+        <TextField
+          className={classes.input}
+          multiline={true}
+          value={inputs.description}
+          name='description'
+          autoComplete='off'
+          type='text'
+          onChange={handleChange}
+          label={focused || inputs.description ? 'Description' : task.description || 'Description'}
+          placeholder={task.description || 'Description'}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose(false)} color="primary">
