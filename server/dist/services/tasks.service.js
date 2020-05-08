@@ -57,6 +57,13 @@ class TasksService {
     getDurationInMinutes(duration) {
         return Math.floor((duration / 1000) / 60);
     }
+    async updateTask(taskId, body) {
+        const { prop, value } = body;
+        const task = await Task_model_1.Task.findOne({ where: { id: taskId } });
+        task[prop] = value;
+        await task.save();
+        return task;
+    }
 }
 exports.TasksService = TasksService;
 //# sourceMappingURL=tasks.service.js.map

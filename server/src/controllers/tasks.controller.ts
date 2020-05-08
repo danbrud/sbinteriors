@@ -15,7 +15,8 @@ export class TasksController {
   private intializeRoutes() {
     this.router.get('/', this.getTasks)
     this.router.get('/:clientId', this.getTasksByClientId)
-    this.router.post('/', this.createExpense)
+    this.router.post('/', this.createTask)
+    this.router.put('/:taskId', this.updateTask)
   }
 
   private getTasks: express.RequestHandler = async (req, res) => {
@@ -30,8 +31,13 @@ export class TasksController {
     res.send(tasks)
   }
 
-  private createExpense: express.RequestHandler = async (req, res) => {
+  private createTask: express.RequestHandler = async (req, res) => {
     const task = await this.tasksService.createTask(req.body)
+    res.send(task)
+  }
+
+  private updateTask: express.RequestHandler = async (req, res) => {
+    const task = await this.tasksService.updateTask(req.params.taskId, req.body)
     res.send(task)
   }
 }

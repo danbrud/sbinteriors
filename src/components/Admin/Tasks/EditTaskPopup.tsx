@@ -44,10 +44,10 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
     ))
   }
 
-  const updateClient = async () => {
-    const client = ClientsStore.getClient(task.clientId)
-    await client.getBalance('tasks')
-  }
+  // const updateClient = async () => {
+  //   const client = ClientsStore.getClient(task.clientId)
+  //   await client.getBalance('tasks')
+  // }
 
   const handleClose = async (shouldAdd: boolean) => {
     if (shouldAdd) {
@@ -56,7 +56,7 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
         for (let field of fieldsToUpdate) {
           await task.updateTask(field, inputs[field])
         }
-        await updateClient()
+        // await updateClient()
 
         closePopup()
         openSnackbar('success', `Updated client successfully!`)
@@ -89,7 +89,7 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
         >
           {availableTypes.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
         </Select>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <ThemeProvider theme={datePickerTheme}>
             <KeyboardDateTimePicker
               required={true}
@@ -110,7 +110,7 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
               fullWidth
             />
           </ThemeProvider>
-        </MuiPickersUtilsProvider>
+        </MuiPickersUtilsProvider> */}
         <TextField
           fullWidth
           multiline={true}

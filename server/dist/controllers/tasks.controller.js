@@ -20,8 +20,12 @@ class TasksController {
             const tasks = await this.tasksService.getTasksByClientId(clientId, [Service_model_1.Service]);
             res.send(tasks);
         };
-        this.createExpense = async (req, res) => {
+        this.createTask = async (req, res) => {
             const task = await this.tasksService.createTask(req.body);
+            res.send(task);
+        };
+        this.updateTask = async (req, res) => {
+            const task = await this.tasksService.updateTask(req.params.taskId, req.body);
             res.send(task);
         };
         this.intializeRoutes();
@@ -29,7 +33,8 @@ class TasksController {
     intializeRoutes() {
         this.router.get('/', this.getTasks);
         this.router.get('/:clientId', this.getTasksByClientId);
-        this.router.post('/', this.createExpense);
+        this.router.post('/', this.createTask);
+        this.router.put('/:taskId', this.updateTask);
     }
 }
 exports.TasksController = TasksController;

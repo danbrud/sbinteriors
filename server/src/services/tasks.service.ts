@@ -72,4 +72,13 @@ export class TasksService {
   private getDurationInMinutes(duration: number): number {
     return Math.floor((duration / 1000) / 60)
   }
+
+  public async updateTask(taskId: string, body): Promise<Task> {
+    const { prop, value } = body
+    const task = await Task.findOne({ where: { id: taskId } })
+    task[prop] = value
+    await task.save()
+
+    return task
+  }
 }
