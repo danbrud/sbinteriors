@@ -19,11 +19,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-// interface EditClientPopupProps {
-//   openSnackbar?: (severity: string, message: string) => void
-//   setOpen?: (open: boolean) => void
-//   open?: boolean
-// }
 
 const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
   const classes = useStyles()
