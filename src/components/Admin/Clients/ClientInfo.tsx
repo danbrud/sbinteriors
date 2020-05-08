@@ -12,6 +12,7 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { useUserStore } from '../../../context/User.context'
 import ClientActionButtons from './ClientActionButtons'
 import EditClientPopup from './EditClientPopup'
+import { Alert } from '../../Alert'
 
 
 const ClientInfo: React.FC = observer(() => {
@@ -104,9 +105,5 @@ const ClientInfo: React.FC = observer(() => {
         : <NoData type='data' />
   )
 })
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 export default ClientInfo

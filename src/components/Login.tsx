@@ -8,6 +8,7 @@ import axios from 'axios'
 import Loader from './Loader'
 import { useUserStore } from '../context/User.context'
 import logo from '../assets/android-chrome-192x192.png'
+import { Alert } from './Alert'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -147,10 +148,6 @@ const Login: React.FC<AuthProps> = (props) => {
         </div>
       )
   )
-}
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default Login

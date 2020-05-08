@@ -16,6 +16,7 @@ import AddExpense from './Expenses/AddExpense'
 import { Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 import AddContract from './Clients/AddContract'
+import { Alert } from '../Alert'
 
 
 const AddItem: React.FC = () => {
@@ -139,10 +140,6 @@ const AddItem: React.FC = () => {
       </div>
     )
   }
-}
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default AddItem
