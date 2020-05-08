@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react'
 import { DialogContent, DialogTitle, Dialog, TextField, makeStyles, DialogActions, Button } from '@material-ui/core'
 import { useClientsStore } from '../../../context/Clients.context'
 import { useParams } from 'react-router-dom'
-import { removeOptionalFields, checkRequiredFields } from '../../../utils/utils'
+import { removeOptionalFields } from '../../../utils/utils'
+import { EditPopupsProps } from '../../EditPopupsProps.interface'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -18,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-interface EditClientPopupProps {
-  openSnackbar?: (severity: string, message: string) => void
-  setOpen?: (open: boolean) => void
-  open?: boolean
-}
+// interface EditClientPopupProps {
+//   openSnackbar?: (severity: string, message: string) => void
+//   setOpen?: (open: boolean) => void
+//   open?: boolean
+// }
 
-const EditClientPopup: React.FC<EditClientPopupProps> = (props) => {
+const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
   const classes = useStyles()
   const ClientsStore = useClientsStore()
   const { clientId } = useParams()
