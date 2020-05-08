@@ -69,9 +69,10 @@ const App: React.FC<AuthProps> = observer((props) => {
     }
   }, [location])
 
+  
   return (
     <div>
-      {auth.isAuthenticated ? <MenuBar /> : null}
+      {auth.isAuthenticated ? <MenuBar auth={auth} /> : null}
       {window.location.pathname === '/' ? <Redirect to='/login' /> : null}
       <div id='app-container'>
           <ProtectedRoute

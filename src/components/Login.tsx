@@ -93,7 +93,7 @@ const Login: React.FC<AuthProps> = (props) => {
   if (auth.isAuthenticated) {
     return (
       UserStore.isAdmin
-        ? <Redirect to='/admin/clients'/>
+        ? <Redirect to='/admin/clients' />
         : <Redirect to={`/clients/${UserStore.clientId}`} />
     )
   }
