@@ -1,44 +1,38 @@
-import React, { useState, useRef } from 'react'
-import { DialogContent, DialogTitle, Dialog, TextField, makeStyles, DialogActions, Button } from '@material-ui/core'
-import { useClientsStore } from '../../../context/Clients.context'
-import { useParams } from 'react-router-dom'
-import { removeOptionalFields } from '../../../utils/utils'
+import React, { useState } from 'react'
 import { EditPopupsProps } from '../../EditPopupsProps.interface'
+import { Client } from '../../../stores/Client.store'
+import { DialogActions, Button, TextField, DialogContent, DialogTitle, Dialog } from '@material-ui/core'
+import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 
+interface EditContractPopupProps extends EditPopupsProps {
+  client: Client
+}
 
-const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
-  const ClientsStore = useClientsStore()
-  const { clientId } = useParams()
-  const { openSnackbar, setOpen, open } = props
+const EditContractPopup: React.FC<EditContractPopupProps> = (props) => {
+  const GeneralAdminStore = useGeneralAdminStore()
+  const { openSnackbar, setOpen, open, client } = props
 
-  const [client, setClient] = useState(ClientsStore.getClient(clientId))
-  const [inputs, setInputs] = useState({
-    name: '', phone: '', email: '', spouseName: '',
-    address: '', city: '', description: ''
-  })
+  const [contract, setContract] = useState({})
+  const [price, setPrice] = useState('')
   const [focused, setFocused] = useState('')
 
 
   const closePopup = () => {
-    setInputs({
-      name: '', phone: '', email: '', spouseName: '',
-      address: '', city: '', description: ''
-    })
+    setContract({})
     setOpen(false)
   }
 
   const handleClose = async (shouldAdd: boolean) => {
     if (shouldAdd) {
-      const fieldsToUpdate = removeOptionalFields(
-        ['name', 'phone', 'email', 'spouseName', 'address', 'city', 'description'],
-        { ...inputs }
-      )
-      if (Object.keys(fieldsToUpdate).length) {
-        for (let field in fieldsToUpdate) {
-          await client.updateClient(field, inputs[field])
+      if (Object.keys(contract).length || price) {
+        if (price) {
+          await client.updateClient('pricePerHour', price)
+        }
+        for (let id in contract) {
+          await client.updateContract(parseInt(id), contract[id])
         }
         closePopup()
-        openSnackbar('success', `Updated client successfully!`)
+        openSnackbar('success', `Updated contract successfully!`)
       } else {
         openSnackbar('error', `Invalid! Please fill at least one field.`)
       }
@@ -48,15 +42,42 @@ const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
   }
 
   const handleChange = ({ target }) => {
-    setInputs({ ...inputs, [target.name]: target.value })
+    setContract({ ...contract, [target.name]: target.value })
   }
-
 
   return (
     <Dialog open={open} onClose={() => handleClose(false)} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit Client</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Contract</DialogTitle>
       <DialogContent>
         <TextField
+          fullWidth={true}
+          type='number'
+          autoComplete='off'
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          label={focused === 'price' || price ? 'Price Per Hour' : client.pricePerHour || 'Price Per Hour'}
+          placeholder={client.pricePerHour.toString() || 'Price Per Hour'}
+          onFocus={() => setFocused('price')}
+          onBlur={() => setFocused('')}
+        />
+        {GeneralAdminStore.services.map(s => {
+          const contractService = client.contract.find(c => c.serviceId === s.id)
+
+          return <TextField
+            key={s.id}
+            fullWidth={true}
+            type='number'
+            autoComplete='off'
+            name={`${s.id}`}
+            value={contract[s.id]}
+            onChange={handleChange}
+            label={focused === `${s.id}` || contract[s.id] ? `Included Hours: ${s.name}` : contractService ? contractService.includedHours : `Included Hours: ${s.name}`}
+            placeholder={contractService ? contractService.includedHours : `Included Hours: ${s.name}`}
+            onFocus={() => setFocused(`${s.id}`)}
+            onBlur={() => setFocused('')}
+          />
+        })}
+        {/* <TextField
           fullWidth={true}
           name='phone'
           value={inputs.phone}
@@ -69,6 +90,7 @@ const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
           onBlur={() => setFocused('')}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           name='email'
           value={inputs.email}
@@ -81,6 +103,7 @@ const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
           onBlur={() => setFocused('')}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           name='spouseName'
           autoComplete='off'
@@ -92,6 +115,7 @@ const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
           onBlur={() => setFocused('')}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           name='address'
           autoComplete='off'
@@ -104,6 +128,7 @@ const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
           onBlur={() => setFocused('')}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           name='city'
           value={inputs.city}
@@ -116,6 +141,7 @@ const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
           onBlur={() => setFocused('')}
         />
         <TextField
+          className={classes.input}
           fullWidth={true}
           multiline={true}
           name='description'
@@ -127,7 +153,7 @@ const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
           placeholder={client.description || 'Description'}
           onFocus={() => setFocused('description')}
           onBlur={() => setFocused('')}
-        />
+        /> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose(false)} color="primary">
@@ -141,4 +167,4 @@ const EditClientPopup: React.FC<EditPopupsProps> = (props) => {
   )
 }
 
-export default EditClientPopup
+export default EditContractPopup

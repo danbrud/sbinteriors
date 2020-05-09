@@ -15,7 +15,7 @@ import { ExpensesStore } from '../../stores/Expenses.store'
 import AddExpense from './Expenses/AddExpense'
 import { Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
-import AddContract from './Clients/AddContract'
+import AddContract from './Contracts/AddContract'
 import { Alert } from '../Alert'
 
 

@@ -64,6 +64,10 @@ export class Client {
     this.contract = await axios.post(`${SERVER_URL}/clients/${this.id}/contracts`, contract)
   }
 
+  @action updateContract(id, includedHours) {
+    debugger
+  }
+
   @action async getContract() {
     const { data } = await axios.get(`${SERVER_URL}/clients/${this.id}/contracts`)
     if (data.contract.length) {

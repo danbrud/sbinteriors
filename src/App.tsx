@@ -15,7 +15,7 @@ import Settings from './components/Admin/Settings'
 import { useTransfersStore } from './context/Transfers.context'
 import { useTasksStore } from './context/Tasks.context'
 import { useExpensesStore } from './context/Expenses.context'
-import Contract from './components/Admin/Clients/Contract'
+import Contract from './components/Admin/Contracts/Contract'
 import Login from './components/Login'
 import { AuthProps } from './components/AuthProps'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -69,7 +69,7 @@ const App: React.FC<AuthProps> = observer((props) => {
     }
   }, [location])
 
-  
+
   return (
     <div>
       {auth.isAuthenticated ? <MenuBar auth={auth} /> : null}

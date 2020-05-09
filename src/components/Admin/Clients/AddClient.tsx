@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { TextField, Button, makeStyles } from '@material-ui/core'
 import { useClientsStore } from '../../../context/Clients.context'
-import AddContract from './AddContract'
+import AddContract from '../Contracts/AddContract'
 import { AddItemProps } from '../AddItemProps.interface'
 import { checkRequiredFields } from '../../../utils/utils'
 
