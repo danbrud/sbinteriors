@@ -73,7 +73,7 @@ export class Client {
     const service = this.contract.find(s => s.serviceId === serviceId)
     if (service) {
       service.includedHours = includedHours
-      //update db
+      await axios.put(`${SERVER_URL}/clients/${this.id}/contracts`, service)
     } else {
       await this.addContract({ [serviceId]: includedHours} )
     }

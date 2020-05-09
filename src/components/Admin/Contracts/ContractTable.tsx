@@ -40,7 +40,6 @@ const ContractTable: React.FC<ContractTableProps> = observer((props) => {
     return { service, includedHours, hoursCompleted }
   }
 
-  debugger
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>

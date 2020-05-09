@@ -18,6 +18,7 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const User_model_1 = require("../models/User.model");
 const uniqid_1 = __importDefault(require("uniqid"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const sequelize_1 = require("sequelize");
 class ClientsService {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({
@@ -121,6 +122,19 @@ class ClientsService {
             await contractItem.save();
             contract.push(contractItem);
         }
+        return contract;
+    }
+    async updateContract(contractItem) {
+        const { clientId, serviceId, includedHours } = contractItem;
+        const contract = await Contract_model_1.Contract.findOne({
+            where: {
+                [sequelize_1.Op.and]: [
+                    { clientId }, { serviceId }
+                ]
+            }
+        });
+        contract.includedHours = includedHours;
+        contract.save();
         return contract;
     }
     async getContract(clientId) {

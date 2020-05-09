@@ -21,6 +21,7 @@ export class ClientsController {
     this.router.post('/:clientId/contracts', this.addContract)
     this.router.post('/user/admin', this.addAdminUser)
     this.router.get('/:clientId/contracts', this.getContract)
+    this.router.put('/:clientId/contracts', this.updateContract)
     this.router.get('/:clientId/report', this.generateReport)
     this.router.put('/user/:userId/password', this.updatePassword)
   }
@@ -62,6 +63,11 @@ export class ClientsController {
   private getContract: express.RequestHandler = async (req, res) => {
     const contract = await this.clientsService.getContract(req.params.clientId)
     res.send({ contract })
+  }
+
+  private updateContract: express.RequestHandler = async (req, res) => {
+    const contractItem = await this.clientsService.updateContract(req.body)
+    res.send(contractItem)
   }
 
   private generateReport: express.RequestHandler = async (req, res) => {

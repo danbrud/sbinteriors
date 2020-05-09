@@ -13,6 +13,8 @@ import nodemailer from 'nodemailer'
 import { User } from "../models/User.model"
 import createPassword from 'uniqid'
 import bcrypt from 'bcryptjs'
+import { Op } from "sequelize"
+
 
 
 
@@ -142,6 +144,21 @@ export class ClientsService {
       await contractItem.save()
       contract.push(contractItem)
     }
+
+    return contract
+  }
+
+  public async updateContract(contractItem): Promise<Contract> {
+    const { clientId, serviceId, includedHours } = contractItem
+    const contract = await Contract.findOne({
+      where: {
+        [Op.and]: [
+          { clientId }, { serviceId }
+        ]
+      }
+    })
+    contract.includedHours = includedHours
+    contract.save()
 
     return contract
   }
