@@ -23,12 +23,17 @@ class ExpensesController {
             const expense = await this.expensesService.createExpense(req.body);
             res.send(expense);
         };
+        this.updateExpense = async (req, res) => {
+            const expense = await this.expensesService.updateExpense(req.params.expenseId, req.body);
+            res.send(expense);
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
         this.router.get('/', this.getExpenses);
         this.router.get('/:clientId', this.getExpensesByClientId);
         this.router.post('/', this.createExpense);
+        this.router.put('/:expenseId', this.updateExpense);
     }
 }
 exports.ExpensesController = ExpensesController;

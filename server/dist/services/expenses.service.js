@@ -18,6 +18,13 @@ class ExpensesService {
         await expense.save();
         return expense;
     }
+    async updateExpense(id, body) {
+        const expense = await Expense_model_1.Expense.findOne({ where: { id } });
+        const { prop, value } = body;
+        expense[prop] = value;
+        await expense.save();
+        return expense;
+    }
 }
 exports.ExpensesService = ExpensesService;
 //# sourceMappingURL=expenses.service.js.map

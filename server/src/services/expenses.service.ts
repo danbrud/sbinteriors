@@ -23,4 +23,13 @@ export class ExpensesService {
 
     return expense
   }
+
+  public async updateExpense(id: string, body): Promise<Expense> {
+    const expense = await Expense.findOne({ where: { id } })
+    const { prop, value } = body
+    expense[prop] = value
+    await expense.save()
+
+    return expense
+  }
 }
