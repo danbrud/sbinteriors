@@ -14,7 +14,7 @@ export class User {
     const { data } = await axios.get<Client>(`${SERVER_URL}/clients/${this.clientId}`)
     const client = new Client(
       data.id, data.name, data.email, data.phone, data.spouseName,
-      data.address, data.city, data.description, data.isComplete
+      data.address, data.city, data.description, data.isComplete, data.pricePerHour
     )
 
     this.client = client

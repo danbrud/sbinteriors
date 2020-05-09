@@ -12,7 +12,7 @@ export class Clients {
     const clients = data.map(c => (
       new Client(
         c.id, c.name, c.email, c.phone, c.spouseName,
-        c.address, c.city, c.description, c.isComplete
+        c.address, c.city, c.description, c.isComplete, c.pricePerHour
       )
     ))
     this.clients = clients
@@ -24,7 +24,7 @@ export class Clients {
     const { data } = await axios.post<Client>(`${SERVER_URL}/clients`, client)
     const newClient = new Client(
       data.id, data.name, data.email, data.phone, data.spouseName,
-      data.address, data.city, data.description, data.isComplete
+      data.address, data.city, data.description, data.isComplete, null
     )
     this.clients.push(newClient)
   }

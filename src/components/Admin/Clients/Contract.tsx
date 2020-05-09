@@ -16,15 +16,42 @@ import NoData from '../NoData'
 import { useTasksStore } from '../../../context/Tasks.context'
 import { convertDurationToString } from '../../../utils/utils'
 import { useUserStore } from '../../../context/User.context'
+import { Card, CardContent, Button, Typography } from '@material-ui/core'
+import EditIcon from '@material-ui/icons/Edit'
+import '../../../styles/Contract.css'
+import { FormattedNumber } from 'react-intl'
 
-const useStyles = makeStyles({
+
+const useStyles = makeStyles(theme => ({
   table: {
     width: '100%',
   },
   header: {
-   textDecoration: 'underline'
+    backgroundColor: theme.palette.primary.main,
+  },
+  root: {
+    width: '100%',
+    marginBottom: '10px',
+  },
+  contentContainer: {
+    display: 'grid',
+    gridTemplateColumns: '3fr 1fr',
+    alignItems: 'center'
+  },
+  heading: {
+    // flexBasis: '33.33%',
+    // flexShrink: 0,
+    fontSize: '18px'
+  },
+  secondaryHeading: {
+    color: theme.palette.text.secondary,
+    fontSize: '14px'
+  },
+  headText: {
+    color: 'white',
+    fontSize: '16px'
   }
-});
+}))
 
 
 const Contract: React.FC = observer((props) => {
@@ -53,7 +80,6 @@ const Contract: React.FC = observer((props) => {
     if (!TasksStore.isPopulated) {
       await TasksStore.getTasksFromDB(clientId)
     }
-    console.log(TasksStore.tasks)
   }
 
   useEffect(() => {
@@ -68,43 +94,64 @@ const Contract: React.FC = observer((props) => {
 
   const client = UserStore.isAdmin ? ClientsStore.getClient(clientId) : UserStore.client
   return (
-    !ClientsStore.isPopulated || !client
+    !client
       ? <Redirect to={`/clients/${clientId}`} />
       : isLoading
         ? <Loader />
         : !hasContract
           ? <NoData type='contract' />
           : (
-            <TableContainer component={Paper}>
-              <Table className={classes.table}>
-                <TableHead>
-                  <TableRow className={classes.header}>
-                    <TableCell >Service</TableCell>
-                    <TableCell align="right">Hrs Inc.</TableCell>
-                    <TableCell align="right">Hrs Used</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {client.contract
-                    .map(c => (
-                      createData(
-                        GeneralAdminStore.getService(c.serviceId).name,
-                        c.includedHours,
-                        convertDurationToString(TasksStore.getTotalTimeOfService(c.serviceId))
-                      )
-                    ))
-                    .map((row) => (
-                      <TableRow key={row.service}>
-                        <TableCell component="th" scope="row">
-                          {row.service}
-                        </TableCell>
-                        <TableCell align="right">{row.includedHours}</TableCell>
-                        <TableCell align="right">{row.hoursCompleted}</TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <div id='contract-container'>
+              <Card className={classes.root}>
+                <CardContent className={classes.contentContainer}>
+                  <Typography className={classes.heading}>
+                    Price Per Hour: <span id='price'>
+                      <i
+                        className="fas fa-shekel-sign"
+                        style={{ fontSize: '12px', color: '#757575' }}>
+                      </i> <FormattedNumber value={client.pricePerHour} />
+                    </span>
+                  </Typography>
+                  {
+                    UserStore.isAdmin
+                      ? <Button className={classes.secondaryHeading}>
+                        <EditIcon />
+                      </Button>
+                      : null
+                  }
+                </CardContent>
+              </Card >
+              <TableContainer component={Paper}>
+                <Table className={classes.table}>
+                  <TableHead>
+                    <TableRow className={classes.header}>
+                      <TableCell className={classes.headText}>Service</TableCell>
+                      <TableCell align="right" className={classes.headText}>Hrs Inc.</TableCell>
+                      <TableCell align="right" className={classes.headText}>Hrs Used</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {client.contract
+                      .map(c => (
+                        createData(
+                          GeneralAdminStore.getService(c.serviceId).name,
+                          c.includedHours,
+                          convertDurationToString(TasksStore.getTotalTimeOfService(c.serviceId))
+                        )
+                      ))
+                      .map((row) => (
+                        <TableRow key={row.service}>
+                          <TableCell component="th" scope="row">
+                            {row.service}
+                          </TableCell>
+                          <TableCell align="right">{row.includedHours}</TableCell>
+                          <TableCell align="right">{row.hoursCompleted}</TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
           )
   )
 })

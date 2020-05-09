@@ -15,11 +15,12 @@ export class Client {
   @observable expensesBalance: number
   @observable tasksBalance: number
   @observable isComplete: boolean
+  @observable pricePerHour: number
   @observable contract
 
   constructor(
     id: number, name: string, email: string, phone: string, spouseName: string | null,
-    address: string, city: string, description: string | null, isComplete: boolean
+    address: string, city: string, description: string | null, isComplete: boolean, pricePerHour: number
   ) {
     this.id = id
     this.name = name
@@ -30,6 +31,7 @@ export class Client {
     this.city = city
     this.description = description
     this.isComplete = isComplete
+    this.pricePerHour = pricePerHour
     this.getBalance('expenses')
     this.getBalance('tasks')
   }
