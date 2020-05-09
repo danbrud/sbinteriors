@@ -33,6 +33,10 @@ export class User {
   @computed get isAdmin() {
     return this.role === 'ADMIN'
   }
+
+  async updatePassword(password: string) {
+    await axios.put(`${SERVER_URL}/clients/user/${this.id}/password`, { password })
+  }
 }
 
 export const UserStore = new User()

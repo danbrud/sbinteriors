@@ -13,6 +13,7 @@ import { useUserStore } from '../../../context/User.context'
 import ClientActionButtons from './ClientActionButtons'
 import EditClientPopup from './EditClientPopup'
 import { Alert } from '../../Alert'
+import EditPasswordPopup from '../../EditPasswordPopup'
 
 
 const ClientInfo: React.FC = observer(() => {
@@ -84,13 +85,19 @@ const ClientInfo: React.FC = observer(() => {
               : null
           }
           {
-            showEditClientPopup
-              ? <EditClientPopup
-                open={showEditClientPopup}
-                setOpen={setShowEditClientPopup}
-                openSnackbar={openSnackbar}
-              />
-              : null
+            !showEditClientPopup
+              ? null
+              : UserStore.isAdmin
+                ? < EditClientPopup
+                  open={showEditClientPopup}
+                  setOpen={setShowEditClientPopup}
+                  openSnackbar={openSnackbar}
+                />
+                : <EditPasswordPopup
+                  open={showEditClientPopup}
+                  setOpen={setShowEditClientPopup}
+                  openSnackbar={openSnackbar}
+                />
           }
           <Snackbar
             open={snackbar.open}

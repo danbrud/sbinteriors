@@ -18,30 +18,29 @@ interface EditTaskPopupProps extends EditPopupsProps {
 
 const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
   const GeneralAdminStore = useGeneralAdminStore()
-  const ClientsStore = useClientsStore()
   const { openSnackbar, setOpen, open, task } = props
 
   const [inputs, setInputs] = useState({
-    taskType: task.serviceType.id,
+    serviceTypeId: task.serviceType.id,
     startTime: task.startTime,
     endTime: task.endTime,
-    description: ''
+    description: task.description
   })
   const [focused, setFocused] = useState(false)
 
 
   const closePopup = () => {
     setInputs({
-      taskType: null, startTime: new Date(), endTime: new Date(), description: ''
+      serviceTypeId: null, startTime: new Date(), endTime: new Date(), description: ''
     })
     setOpen(false)
   }
 
   const getModifiedFields = () => {
-    if(!inputs.description) { inputs.description = null }
+    if(!inputs.description && !task.description) { inputs.description = null }
     return Object.keys(inputs).filter(field => (
-      field === 'taskType' ? inputs[field] !== task.serviceType.id : inputs[field] !== task[field]
-    ))
+        field === 'serviceTypeId' ? inputs[field] !== task.serviceType.id : inputs[field] !== task[field]
+      ))
   }
 
   // const updateClient = async () => {
@@ -59,7 +58,7 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
         // await updateClient()
 
         closePopup()
-        openSnackbar('success', `Updated client successfully!`)
+        openSnackbar('success', `Updated task successfully!`)
       } else {
         openSnackbar('error', `Invalid! Please fill at least one field.`)
       }
@@ -82,9 +81,9 @@ const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
         <Select
           labelId="task-type-label"
           id="task-type-select"
-          value={inputs.taskType}
+          value={inputs.serviceTypeId}
           onChange={handleChange}
-          name='taskType'
+          name='serviceTypeId'
           fullWidth
         >
           {availableTypes.map(t => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}

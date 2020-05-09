@@ -54,8 +54,11 @@ class ClientsService {
         }
         // this.emailUserDetails(user, email)
         this.emailUserDetails(user, client, process.env.ADMIN_EMAIL);
+        this.hashPassword(user, user.password);
+    }
+    async hashPassword(user, password) {
         bcryptjs_1.default.genSalt(10, (error, salt) => {
-            bcryptjs_1.default.hash(user.password, salt, async (err, hash) => {
+            bcryptjs_1.default.hash(password, salt, async (err, hash) => {
                 if (err) {
                     throw err;
                 }
@@ -63,6 +66,11 @@ class ClientsService {
                 await user.save();
             });
         });
+    }
+    async updatePassword(userId, { password }) {
+        const user = await User_model_1.User.findOne({ where: { id: userId } });
+        await this.hashPassword(user, password);
+        return { success: true };
     }
     emailUserDetails(user, client, email) {
         const template = fs_1.default.readFileSync(path_1.default.join(__dirname, '..', '..', 'templates', 'email-template.html'), 'utf-8');

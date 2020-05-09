@@ -49,6 +49,10 @@ class ClientsController {
             await this.clientsService.createUser({ email }, password, true);
             res.send({ success: true });
         };
+        this.updatePassword = async (req, res) => {
+            const response = await this.clientsService.updatePassword(req.params.userId, req.body);
+            res.send(response);
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
@@ -61,6 +65,7 @@ class ClientsController {
         this.router.post('/user/admin', this.addAdminUser);
         this.router.get('/:clientId/contracts', this.getContract);
         this.router.get('/:clientId/report', this.generateReport);
+        this.router.put('/user/:userId/password', this.updatePassword);
     }
 }
 exports.ClientsController = ClientsController;

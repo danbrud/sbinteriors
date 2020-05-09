@@ -58,15 +58,24 @@ export class ClientsService {
 
     // this.emailUserDetails(user, email)
     this.emailUserDetails(user, client, process.env.ADMIN_EMAIL)
+    this.hashPassword(user, user.password)
+  }
 
+  private async hashPassword(user: User, password: string) {
     bcrypt.genSalt(10, (error, salt) => {
-      bcrypt.hash(user.password, salt, async (err, hash) => {
+      bcrypt.hash(password, salt, async (err, hash) => {
         if (err) { throw err }
 
         user.password = hash
         await user.save()
       })
     })
+  }
+
+  public async updatePassword(userId: string, { password }) {
+    const user = await User.findOne({ where: { id: userId } })
+    await this.hashPassword(user, password)
+    return { success: true }
   }
 
   private emailUserDetails(user: User, client: Client, email: string): void {

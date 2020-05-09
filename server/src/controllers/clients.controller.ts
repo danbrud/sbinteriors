@@ -22,6 +22,7 @@ export class ClientsController {
     this.router.post('/user/admin', this.addAdminUser)
     this.router.get('/:clientId/contracts', this.getContract)
     this.router.get('/:clientId/report', this.generateReport)
+    this.router.put('/user/:userId/password', this.updatePassword)
   }
 
   private getClients: express.RequestHandler = async (req, res) => {
@@ -70,8 +71,13 @@ export class ClientsController {
 
   private addAdminUser: express.RequestHandler = async (req, res) => {
     const { email, password } = req.body
-    
+
     await this.clientsService.createUser({ email } as Client, password, true)
     res.send({ success: true })
+  }
+
+  private updatePassword: express.RequestHandler = async (req, res) => {
+    const response = await this.clientsService.updatePassword(req.params.userId, req.body)
+    res.send(response)
   }
 }

@@ -2,6 +2,7 @@ import { observable, computed, action } from 'mobx'
 import { adminType } from '../adminTypes'
 import axios from 'axios'
 import { SERVER_URL } from '../utils/utils'
+import { GeneralAdminStore } from './GeneralAdmin'
 
 export class Task {
   @observable id: number
@@ -33,6 +34,11 @@ export class Task {
 
   @action async updateTask(prop: string, value: string | boolean | number) {
     await axios.put(`${SERVER_URL}/tasks/${this.id}`, { prop, value })
-    this[prop] = value
+    if (prop === 'serviceTypeId') {
+      const serviceType = GeneralAdminStore.getService(value as number)
+      this.serviceType = serviceType
+    } else {
+      this[prop] = value
+    }
   }
 }
