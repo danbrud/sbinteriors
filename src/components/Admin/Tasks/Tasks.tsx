@@ -64,7 +64,6 @@ const Tasks: React.FC = observer(() => {
                 setOpen={setShowPopup}
                 openSnackbar={openSnackbar}
                 task={taskToEdit}
-                setTaskToEdit={setTaskToEdit}
               />
               : null
           }

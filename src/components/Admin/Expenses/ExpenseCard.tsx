@@ -38,13 +38,19 @@ const useStyles = makeStyles((theme) => ({
 
 interface ExpenseCardProps {
   expense: Expense
+  setShowPopup: (open: boolean) => void
+  setExpenseToEdit: (expense: Expense | null) => void
 }
 
 const ExpenseCard: React.FC<ExpenseCardProps> = observer((props) => {
   const classes = useStyles()
-  const { expense } = props
+  const { expense, setShowPopup, setExpenseToEdit } = props
   const UserStore = useUserStore()
 
+  const editExpense = () => {
+    setShowPopup(true)
+    setExpenseToEdit(expense)
+  }
 
   return (
     <Card className={classes.root}>
@@ -76,7 +82,7 @@ const ExpenseCard: React.FC<ExpenseCardProps> = observer((props) => {
       {
         UserStore.isAdmin
           ? <CardActions >
-            <Button color='primary' size="small">Edit Expense</Button>
+            <Button color='primary' size="small" onClick={editExpense}>Edit Expense</Button>
           </CardActions>
           : null
       }

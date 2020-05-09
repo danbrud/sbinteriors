@@ -13,7 +13,6 @@ import { useGeneralAdminStore } from '../../../context/GeneralAdmin.context'
 
 interface EditTaskPopupProps extends EditPopupsProps {
   task: Task
-  setTaskToEdit: (task: Task | null) => void
 }
 
 const EditTaskPopup: React.FC<EditTaskPopupProps> = (props) => {
