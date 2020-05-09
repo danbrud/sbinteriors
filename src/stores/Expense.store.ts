@@ -1,4 +1,6 @@
-import { observable } from 'mobx'
+import { observable, action } from 'mobx'
+import axios from 'axios'
+import { SERVER_URL } from '../utils/utils'
 
 export class Expense {
   @observable id: number
@@ -15,5 +17,10 @@ export class Expense {
     this.date = date
     this.amount = amount
     this.description = description
+  }
+
+  @action async updateExpense(prop: string, value: string | boolean | number) {
+    await axios.put(`${SERVER_URL}/expenses/${this.id}`, { prop, value })
+    this[prop] = value
   }
 }

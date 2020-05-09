@@ -104,7 +104,7 @@ const AddExpense: React.FC<AddItemProps> = (props) => {
         <ThemeProvider theme={datePickerTheme}>
           <KeyboardDatePicker
             required={true}
-            label="Transfer Date"
+            label="Expense Date"
             value={inputs.date}
             onChange={(date) => setInputs({ ...inputs, date })}
             format='MMM do, yyyy'
