@@ -61,11 +61,22 @@ export class Client {
   }
 
   @action async addContract(contract) {
-    this.contract = await axios.post(`${SERVER_URL}/clients/${this.id}/contracts`, contract)
+    const { data } = await axios.post(`${SERVER_URL}/clients/${this.id}/contracts`, contract)
+    if (this.contract) {
+      this.contract.push(...data.contract)
+    } else {
+      this.contract = data.contract
+    }
   }
 
-  @action updateContract(id, includedHours) {
-    debugger
+  @action async updateContract(serviceId, includedHours) {
+    const service = this.contract.find(s => s.serviceId === serviceId)
+    if (service) {
+      service.includedHours = includedHours
+      //update db
+    } else {
+      await this.addContract({ [serviceId]: includedHours} )
+    }
   }
 
   @action async getContract() {

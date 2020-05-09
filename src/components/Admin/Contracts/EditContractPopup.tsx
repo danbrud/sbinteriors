@@ -28,8 +28,10 @@ const EditContractPopup: React.FC<EditContractPopupProps> = (props) => {
         if (price) {
           await client.updateClient('pricePerHour', price)
         }
-        for (let id in contract) {
-          await client.updateContract(parseInt(id), contract[id])
+        if (Object.keys(contract).length) {
+          for (let id in contract) {
+            await client.updateContract(parseInt(id), parseInt(contract[id]))
+          }
         }
         closePopup()
         openSnackbar('success', `Updated contract successfully!`)
