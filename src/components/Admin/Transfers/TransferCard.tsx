@@ -11,6 +11,7 @@ import '../../../styles/Transfers.css'
 import { Transfer } from '../../../stores/Transfer.store'
 import { FormattedNumber } from 'react-intl'
 import { useUserStore } from '../../../context/User.context'
+import { TransferTabsProps } from './TransferTabsProps.interface'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,14 +36,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-interface TransferCardProps {
+interface TransferCardProps extends TransferTabsProps {
   transfer: Transfer
 }
 
 const TransferCard: React.FC<TransferCardProps> = observer((props) => {
   const classes = useStyles()
-  const { transfer } = props
+  const { transfer, setShowPopup, setTransferToEdit } = props
   const UserStore = useUserStore()
+
+  const editTransfer = () => {
+    setShowPopup(true)
+    setTransferToEdit(transfer)
+  }
 
   return (
     <Card className={classes.root}>
@@ -81,7 +87,7 @@ const TransferCard: React.FC<TransferCardProps> = observer((props) => {
       {
         UserStore.isAdmin
           ? <CardActions >
-            <Button color='primary' size="small">Edit Transfer</Button>
+            <Button color='primary' size="small" onClick={editTransfer}>Edit Transfer</Button>
           </CardActions>
           : null
       }

@@ -17,6 +17,7 @@ export class TransfersController {
     this.router.post('/', this.createTransfer)
     this.router.post('/balances', this.createBalanceTransfer)
     this.router.get('/:clientId/balances', this.getBalanceTransfersByClientId)
+    this.router.put('/:transferId', this.updateTransfer)
   }
 
   private getTransfers: express.RequestHandler = async (req, res) => {
@@ -46,5 +47,12 @@ export class TransfersController {
 
     const balanceTransfers = await this.transfersService.getBalanceTransfersByClientId(clientId)
     res.send(balanceTransfers)
+  }
+
+  private updateTransfer: express.RequestHandler = async (req, res) => {
+    const { transferId } = req.params
+
+    const transfer = await this.transfersService.updateTransfer(transferId, req.body)
+    res.send(transfer)
   }
 }

@@ -55,4 +55,12 @@ export class TransfersService {
     const balanceTransfers = await BalanceTransfer.findAll(options)
     return balanceTransfers
   }
+
+  public async updateTransfer(id: string, body): Promise<Transfer> {
+    const transfer = await Transfer.findOne({ where: { id } })
+    transfer[body.prop] = body.value
+    await transfer.save()
+
+    return transfer
+  }
 }

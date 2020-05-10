@@ -47,6 +47,12 @@ class TransfersService {
         const balanceTransfers = await BalanceTransfer_model_1.BalanceTransfer.findAll(options);
         return balanceTransfers;
     }
+    async updateTransfer(id, body) {
+        const transfer = await Transfer_model_1.Transfer.findOne({ where: { id } });
+        transfer[body.prop] = body.value;
+        await transfer.save();
+        return transfer;
+    }
 }
 exports.TransfersService = TransfersService;
 //# sourceMappingURL=transfers.service.js.map

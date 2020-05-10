@@ -11,6 +11,9 @@ import { useTransfersStore } from '../../../context/Transfers.context'
 import TransferCard from './TransferCard'
 import BalanceTransferCard from './BalanceTransferCard'
 import NoData from '../NoData'
+import { BalanceTransfer } from '../../../stores/BalanceTransfer.store'
+import { Transfer } from '../../../stores/Transfer.store'
+import { TransferTabsProps } from './TransferTabsProps.interface'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,9 +25,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const TransferTabs: React.FC = observer((props) => {
+const TransferTabs: React.FC<TransferTabsProps> = observer((props) => {
   const classes = useStyles()
   const theme = useTheme()
+  const { setShowPopup, setTransferToEdit } = props
 
   const TransfersStore = useTransfersStore()
   const [value, setValue] = useState(0)
@@ -65,7 +69,12 @@ const TransferTabs: React.FC = observer((props) => {
           {
             TransfersStore.isTransfersPopulated
               ? TransfersStore.transfers.map(transfer => (
-                <TransferCard key={transfer.id} transfer={transfer} />
+                <TransferCard
+                  key={transfer.id}
+                  transfer={transfer}
+                  setShowPopup={setShowPopup}
+                  setTransferToEdit={setTransferToEdit}
+                />
               ))
               : <NoData type='transfers' />
           }
@@ -74,7 +83,12 @@ const TransferTabs: React.FC = observer((props) => {
           {
             TransfersStore.isBalanceTransfersPopulated
               ? TransfersStore.balanceTransfers.map(transfer => (
-                <BalanceTransferCard key={transfer.id} transfer={transfer} />
+                <BalanceTransferCard
+                  key={transfer.id}
+                  transfer={transfer}
+                  setShowPopup={setShowPopup}
+                  setTransferToEdit={setTransferToEdit}
+                />
               ))
               : <NoData type='transfers' />
           }

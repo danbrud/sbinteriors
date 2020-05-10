@@ -13,6 +13,7 @@ import { BalanceTransfer } from '../../../stores/BalanceTransfer.store'
 import { toProperCase } from '../../../utils/utils'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import { useUserStore } from '../../../context/User.context'
+import { TransferTabsProps } from './TransferTabsProps.interface'
 
 
 
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-interface BalanceTransferCardProps {
+interface BalanceTransferCardProps extends TransferTabsProps {
   transfer: BalanceTransfer
 }
 

@@ -203,7 +203,7 @@ const AddTransfer: React.FC<AddItemProps> = observer((props) => {
             color="primary"
           />
         }
-        label='Foreign Currency Tranfer?'
+        label='Foreign Currency Transfer?'
       />
       {
         hasForeignAmount

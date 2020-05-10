@@ -1,5 +1,8 @@
-import { observable } from 'mobx'
+import { observable, action } from 'mobx'
 import { adminType } from '../adminTypes'
+import axios from 'axios'
+import { SERVER_URL } from '../utils/utils'
+import { GeneralAdminStore } from './GeneralAdmin'
 
 export class Transfer {
   @observable id: number
@@ -26,5 +29,15 @@ export class Transfer {
     this.transferMethod = transferMethod
     this.description = description
     this.account = account
+  }
+
+  @action async updateTransfer(prop: string, value: string | boolean | number) {
+    await axios.put(`${SERVER_URL}/transfers/${this.id}`, { prop, value })
+    if (prop === 'transferMethod') {
+      const transferMethod = GeneralAdminStore.getTransferMethod(value as number)
+      this.transferMethod = transferMethod
+    } else {
+      this[prop] = value
+    }
   }
 }

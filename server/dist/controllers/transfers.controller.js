@@ -32,6 +32,11 @@ class TransfersController {
             const balanceTransfers = await this.transfersService.getBalanceTransfersByClientId(clientId);
             res.send(balanceTransfers);
         };
+        this.updateTransfer = async (req, res) => {
+            const { transferId } = req.params;
+            const transfer = await this.transfersService.updateTransfer(transferId, req.body);
+            res.send(transfer);
+        };
         this.intializeRoutes();
     }
     intializeRoutes() {
@@ -40,6 +45,7 @@ class TransfersController {
         this.router.post('/', this.createTransfer);
         this.router.post('/balances', this.createBalanceTransfer);
         this.router.get('/:clientId/balances', this.getBalanceTransfersByClientId);
+        this.router.put('/:transferId', this.updateTransfer);
     }
 }
 exports.TransfersController = TransfersController;
