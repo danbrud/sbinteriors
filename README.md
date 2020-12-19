@@ -1,50 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# SBInteriors
 
-## Available Scripts
+SBInteriors is a PWA built with Typescript, React, NodeJS, and MySQL for mobile. The app allows an interior design agency to track the progress, expenses, and payments throughout their clients' project. It also allows each client to view the progress of their project within their own user dashboard.
 
-In the project directory, you can run:
+Demo: [https://sbinteriors.herokuapp.com](https://sbinteriors.herokuapp.com)
 
-### `yarn start`
+Username: `admin`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Password: `sbinteriors1999`
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Table Of Contents
+- [SBInteriors](#sbinteriors)
+  * [Screenshots](#screenshots)
+    + [Client List](#client-list)
+    + [Main Client Page (1)](#main-client-page-1)
+    + [Main Client Page (2)](#main-client-page-2)
+    + [Task List](#task-list)
+    + [Contract Page](#contract-page)
+    + [Transfer List](#transfer-list)
+    + [Add Task](#add-task)
+  * [Tech Stack](#tech-stack)
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Screenshots
 
-### `yarn build`
+### Client List
+A list of all clients with quick access to their phone number and email address.
+<p align="center"><img src="assets/client-list.png" width="300" /></p>
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Main Client Page (1)
+Main dashboard to view information about the project including project status, client's balance for tasks, and balance for ongoing expenses.
+<p align="center"><img src="assets/main-client-page-1.png" width="300" /></p>
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Main Client Page (2)
+After scrolling down, some action buttons come into view to allow the designer to execute certain items. When clicking the hovering `+` button in the right hand corner, some hovering buttons expand to allow a designer to add tasks, expenses, etc... to a specific client.
+<p align="center"><img src="assets/main-client-page-2.png" width="300" /></p>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Task List
+The list of tasks for a client incliding how long the taks took to complete, when it occured, and how much it was billed for.
+<p align="center"><img src="assets/task-list.png" width="300" /></p>
 
-### `yarn eject`
+### Contract Page
+Each client has a contract which specifies how many hours of each type of task is included as well as how much it will cost for every additional hour.
+<p align="center"><img src="assets/contract-page.png" width="300" /></p>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Transfer List
+A list of transfers that the client has made to the designer to use against their balance (expenses and tasks). If their is extra in one account it can be transferred to another account by the designer (balance transfer).
+<p align="center"><img src="assets/transfers-list.png" width="300" /></p>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Add Task
+Filling out this form will add a task for the selected client.
+<p align="center"><img src="assets/add-task.png" width="300" /></p>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-email: sbinteriors.app@gmail.com
-password: sbinteriors1999
-
-username: admin
-password: sbinteriors1999
+## Techstack
+1. Typescript, React (with Hooks), Material-UI, Axios.
+2. Node.js, Express, MySQL, Sequelize, Handlebars.
