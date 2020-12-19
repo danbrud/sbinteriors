@@ -52,5 +52,5 @@ Filling out this form will add a task for the selected client.
 <p align="center"><img src="assets/add-task.png" width="300" /></p>
 
 ## Techstack
-1. Typescript, React (with Hooks), Material-UI, Axios.
-2. Node.js, Express, MySQL, Sequelize, Handlebars.
+1. Typescript, React (with Hooks), Mobx, Material-UI, Axios.
+2. Node.js, Express, MySQL, Sequelize, Handlebars, Passport, JWT.
